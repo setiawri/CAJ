@@ -1,0 +1,160 @@
+﻿@model IEnumerable<CAJWebApp.Areas.Reimbursement.Models.ReimbursementsModel>
+
+@{
+    Layout = null;
+    ViewBag.Title = "Reimbursement";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title</title>
+    @Html.Partial("Scripts")
+</head>
+<body>
+    <div id="print-area" class="bg-white mb-0 py-0">
+        @foreach (var item in Model)
+        {
+        <div style="page-break-after:always;display: block;clear: both;">
+            <div class="row mt-3">
+                <div class="col-sm-7">
+                    <h4 class="text-primary mb-2 mt-md-2 text-center">CV. Cipta Anugerah Jaya</h4>
+                    <table class="table table-borderless">
+                        <tbody>
+                            <tr style="line-height:0;">
+                                <td><span class="font-weight-semibold">@item.EmployeeFullName</span></td>
+                                <td class="text-right">PERIODE: <span class="font-weight-semibold">@string.Format("{0:MMMM yyyy}", item.PayPeriod)</span></td>
+                            </tr>
+                            <tr style="line-height:0;">
+                                <td><span class="font-weight-semibold">@item.CustomerName</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            @if (item.ReimbursementItemsList != null && item.ReimbursementItemsList.Count > 0)
+            {
+                <div class="row mt-3">
+                    <div class="col-sm-7">
+                        <div class="table-responsive">
+                            <table class="table table-borderless">
+                                <thead>
+                                    <tr style="line-height:0;">
+                                        <th>LIST</th>
+                                        <th class="text-right">@Html.DisplayFor(model => item.PayableAmount)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var ReimbursementItem in item.ReimbursementItemsList)
+                                    {
+                                        string description = ReimbursementItem.CategoryName;
+                                        if (!string.IsNullOrEmpty(ReimbursementItem.Description))
+                                        {
+                                            description += ": " + ReimbursementItem.Description;
+                                        }
+
+                                        <tr style="@(ReimbursementItem.Description.Length>95 ? "line-height:1" : "line-height:0")">
+                                            <td>@description</td>
+                                            <td class="text-right">@string.Format("{0:N0}", ReimbursementItem.Amount)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            }
+            <div class="row mt-3">
+                <div class="col-sm-7">
+                    <div class="table-responsive">
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr style="line-height:0;">
+                                    <th>PEMBAYARAN</th>
+                                    <th class="text-right">@Html.DisplayFor(model => item.PayableAmount)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (CAJWebApp.Areas.PAYROLL.Models.PayrollPaymentsModel payrollPayment in item.PaymentList)
+                                {
+                                    <tr style="line-height:0;">
+                                        <td>@string.Format("{0:dd MMM yyyy}: {1} {2}", payrollPayment.PaymentDate, payrollPayment.Banks_Name, payrollPayment.AccountNumber, payrollPayment.AccountName)</td>
+                                        <td class="text-right">@string.Format("{0:N0}", payrollPayment.Amount)</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-7">
+                    <div class="mb-4">
+                        <ul class="list list-unstyled mb-0 ml-2">
+                            <li>&nbsp;</li>
+                            <li><span>Mengetahui,</span></li>
+                            <li>
+                                @if (string.IsNullOrEmpty(item.ApproverName) || string.IsNullOrEmpty(item.ApproverSignatureFilename))
+                                {
+                                    <br />
+                                }
+                                else
+                                {
+                                    <img src="@Helper.getImageUrl(@item.ApproverSignatureFilename, Request, Server)" style="width:100px" />
+                                }
+                            </li>
+                            <li><span class="font-weight-semibold">@Html.DisplayFor(model => item.ApproverName)</span></li>
+                            <li><span class="">@Html.DisplayFor(model => item.ApproverTitle)</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        }
+    </div>
+</body>
+</html>
+
+
+@*<script type="text/javascript">
+        function back_exec() {
+            var url = '@Url.Action("Index", "Reimbursements", new { Area = "Reimbursement" })';
+            window.location.href = url.replace('_id', '');
+        }
+
+        function print_exec() {
+            var printContents = document.getElementById('print-area').innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+        }
+
+        //Code to create sticky on control with id="header"
+
+        // When the user scrolls the page, execute myFunction
+        window.onscroll = function () { myFunction() };
+
+        // Get the navbar
+        var navbar = document.getElementById("header");
+
+        // Get the offset position of the navbar
+        var sticky = navbar.offsetTop;
+
+        // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+</script>*@

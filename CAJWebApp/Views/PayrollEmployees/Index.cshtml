@@ -1,0 +1,81 @@
+﻿@model IEnumerable<CAJWebApp.Models.PayrollEmployeesModel>
+
+@{
+    ViewBag.Root = "Employees";
+    ViewBag.Title = "Index";
+}
+
+<div class="content-wrapper">
+    <!-- Content area -->
+    <div class="content">
+        <!-- Form inputs -->
+        <div class="card animated bounceInLeft">
+            <div class="card-header header-elements-inline">
+                <h5 class="card-title">@ViewBag.Root</h5>
+            </div>
+            <div class="card-body">
+                <a href="@Url.Action("Create", "PayrollEmployees", new { Area = "" })" class="btn btn-sm btn-success">Create New <i class="icon-plus22 ml-2"></i></a>
+                <div class="table-responsive">
+                    <table class="table table-hover datatable">
+                        <thead>
+                            <tr>
+                                <th>Nama / Join / Tipe</th>
+                                <th>Counter</th>
+                                <th>Rekening</th>
+                                <th class="text-right">@Html.DisplayNameFor(model => model.MandatoryDepositBalance)</th>
+                                <th class="text-right">@Html.DisplayNameFor(model => model.DebtBalance)</th>
+                                <th class="non-searchable non-sortable"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Fullname)
+                                        <br />@Html.DisplayFor(modelItem => item.JoinDate), @Html.DisplayFor(modelItem => item.EmploymentTypes_Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Customer_Name)
+                                        <br />@Html.DisplayFor(modelItem => item.Regions_Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AccountName)
+                                        <br />[@Html.DisplayFor(modelItem => item.Banks_Name)] @Html.DisplayFor(modelItem => item.AccountNumber)
+                                    </td>
+                                    <td class="text-right">@Html.DisplayFor(modelItem => item.MandatoryDepositBalance)</td>
+                                    <td class="text-right">@Html.DisplayFor(modelItem => item.DebtBalance)</td>
+                                    <td>
+                                        @if (item.Active == true)
+                                        {
+                                            <span class="badge badge-success d-block">Aktif</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-dark d-block">Non aktif</span>
+                                        }
+                                        @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                                        • <a href="javascript:void(0)" onclick="Log('@item.Id')">Log</a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /form inputs -->
+    </div>
+    <!-- /content area -->
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        activateMenu('PayrollEmployees');
+
+        if('@ViewBag.Search' != null && '@ViewBag.Search' != '')
+            $('input[aria-controls=DataTables_Table_0]').val('@ViewBag.Search').keyup(); //apply search
+    });
+</script>

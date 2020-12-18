@@ -1,0 +1,375 @@
+﻿@using CAJWebApp.Areas.PAYROLL.Controllers
+@model IEnumerable<CAJWebApp.Areas.PAYROLL.Models.PayrollsModel>
+
+@{
+    Layout = null;
+    ViewBag.Title = "Payroll";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>@ViewBag.Title</title>
+    @Html.Partial("Scripts")
+</head>
+<body>
+    <div id="print-area" class="bg-white mb-0 py-0">
+        @foreach (var item in Model)
+        {
+            <div style="page-break-after:always;display: block;clear: both;">
+                <div class="row mt-3">
+                    <div class="col-sm-7">
+                        <h4 class="text-primary mb-2 mt-md-2 text-center">CV. Cipta Anugerah Jaya</h4>
+                        <table class="table table-borderless">
+                            <tbody>
+                                <tr style="line-height:0;">
+                                    <td><span class="font-weight-semibold">@item.EmployeeFullName</span></td>
+                                    <td class="text-right">PERIODE: <span class="font-weight-semibold">@string.Format("{0:MMMM yyyy}", item.PayPeriod)</span></td>
+                                </tr>
+                                <tr style="line-height:0;">
+                                    <td><span class="font-weight-semibold">@item.CustomerName</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-sm-7">
+                        <div class="table-responsive">
+                            <table class="table table-borderless">
+                                <thead>
+                                    <tr style="line-height:0;">
+                                        <th colspan="2">GAJI POKOK</th>
+                                        <th colspan="4" class="text-right">@string.Format("{0} {1:N0}", item.PaymentPercentage == 100 ? "" : "(" + item.PaymentPercentage + "%)", item.SalaryAmount)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (item.RegularWorkDay > 0)
+                                    {
+                                        <tr style="line-height:0;">
+                                            <td>Normal/Hari</td>
+                                            <td class="text-right">@PayrollsController.GetFormattedWorkDay(item.RegularWorkDay, item.WorkHourPerDay)</td>
+                                            <td>x</td>
+                                            <td class="text-right">@Html.DisplayFor(model => item.RegularPayrate)</td>
+                                            <td>=</td>
+                                            <td class="text-right">@string.Format("{0:N0}", item.RegularWorkDay * item.RegularPayrate)</td>
+                                        </tr>
+                                    }
+
+                                    @if (item.RegularWorkHour > 0)
+                                    {
+                                        <tr style="line-height:0;">
+                                            <td>Normal/Jam</td>
+                                            <td class="text-right">@item.RegularWorkHour</td>
+                                            <td>x</td>
+                                            <td class="text-right">@Html.DisplayFor(model => item.RegularHourlyPayrate)</td>
+                                            <td>=</td>
+                                            <td class="text-right">@string.Format("{0:N0}", item.RegularWorkHour * item.RegularHourlyPayrate)</td>
+                                        </tr>
+                                    }
+
+                                    @if (item.RegularOvertimeWorkHour > 0)
+                                    {
+                                        <tr style="line-height:0;">
+                                            <td>Lembur Normal</td>
+                                            <td class="text-right">@Html.DisplayFor(model => item.RegularOvertimeWorkHour) jam</td>
+                                            <td>x</td>
+                                            <td class="text-right">@Html.DisplayFor(model => item.RegularOvertimeHourlyPayrate)</td>
+                                            <td>=</td>
+                                            <td class="text-right">@string.Format("{0:N0}", item.RegularOvertimeWorkHour * item.RegularOvertimeHourlyPayrate)</td>
+                                        </tr>
+                                    }
+
+                                    @if (item.HolidayWorkDay > 0)
+                                    {
+                                        <tr style="line-height:0;">
+                                            <td>Hari Besar</td>
+                                            <td class="text-right">@PayrollsController.GetFormattedWorkDay(item.HolidayWorkDay, item.WorkHourPerDay)</td>
+                                            <td>x</td>
+                                            <td class="text-right">@Html.DisplayFor(model => item.HolidayPayrate)</td>
+                                            <td>=</td>
+                                            <td class="text-right">@string.Format("{0:N0}", item.HolidayWorkDay * item.HolidayPayrate)</td>
+                                        </tr>
+                                    }
+
+                                    @if (item.HolidayOvertimeWorkHour > 0)
+                                    {
+                                        <tr style="line-height:0;">
+                                            <td>Lembur Hari Besar</td>
+                                            <td class="text-right">@Html.DisplayFor(model => item.HolidayOvertimeWorkHour) jam</td>
+                                            <td>x</td>
+                                            <td class="text-right">@Html.DisplayFor(model => item.HolidayOvertimeHourlyPayrate)</td>
+                                            <td>=</td>
+                                            <td class="text-right">@string.Format("{0:N0}", item.HolidayOvertimeWorkHour * item.HolidayOvertimeHourlyPayrate)</td>
+                                        </tr>
+                                    }
+
+                                    @if (!string.IsNullOrEmpty(item.Notes))
+                                    {
+                                        <tr style="line-height:0;">
+                                            <td colspan="6" class="pt-3">Notes: @Html.DisplayFor(model => item.Notes)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                @if (item.PayrollEarningsList != null && item.PayrollEarningsList.Count > 0)
+                {
+                    <div class="row mt-3">
+                        <div class="col-sm-7">
+                            <div class="table-responsive">
+                                <table class="table table-borderless">
+                                    <thead>
+                                        <tr style="line-height:0;">
+                                            <th>TAMBAHAN</th>
+                                            <th class="text-right">@Html.DisplayFor(model => item.EarningsAmount)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var payrollItem in item.PayrollEarningsList)
+                                        {
+                                            string description = payrollItem.CategoryName;
+                                            if (!string.IsNullOrEmpty(payrollItem.Description))
+                                            {
+                                                description += ": " + payrollItem.Description;
+                                            }
+
+                                            <tr style="@(payrollItem.Description.Length>95 ? "line-height:1" : "line-height:0")">
+                                                <td>@description</td>
+                                                <td class="text-right">@string.Format("{0:N0}", payrollItem.Amount)</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (item.PayrollDeductionsList != null && item.PayrollDeductionsList.Count > 0)
+                {
+                    <div class="row mt-3">
+                        <div class="col-sm-7">
+                            <div class="table-responsive">
+                                <table class="table table-borderless">
+                                    <thead>
+                                        <tr style="line-height:0">
+                                            <th>POTONGAN</th>
+                                            <th class="text-right">@Html.DisplayFor(model => item.DeductionsAmount)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var payrollItem in item.PayrollDeductionsList.Where(x => x.Amount < 0))
+                                        {
+                                            string description = payrollItem.CategoryName;
+                                            if (!string.IsNullOrEmpty(payrollItem.Description))
+                                            {
+                                                description += ": " + payrollItem.Description;
+                                            }
+
+                                            <tr style="@(payrollItem.Description.Length>95 ? "line-height:1" : "line-height:0")">
+                                                <td>@description</td>
+                                                <td class="text-right">@string.Format("{0:N0}", payrollItem.Amount)</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (item.PayrollDebtsList != null && item.PayrollDebtsList.Count > 0)
+                {
+                    <div class="row mt-3">
+                        <div class="col-sm-7">
+                            <div class="table-responsive">
+                                <table class="table table-borderless">
+                                    <thead>
+                                        <tr style="line-height:0;">
+                                            <th>HUTANG</th>
+                                            <th class="text-right">@Html.DisplayFor(model => item.DebtUpdateAmount)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var payrollItem in item.PayrollDebtsList)
+                                        {
+                                            string description = payrollItem.CategoryName;
+                                            if (!string.IsNullOrEmpty(payrollItem.Description))
+                                            {
+                                                description += ": " + payrollItem.Description;
+                                            }
+
+                                            <tr style="@(payrollItem.Description.Length>95 ? "line-height:1" : "line-height:0")">
+                                                <td>@description</td>
+                                                <td class="text-right">@string.Format("{0:N0}", payrollItem.Amount)</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @if (item.MandatoryDepositList != null && item.MandatoryDepositList.Count > 0)
+                {
+                    string mandatoryDepositUpdateAmount = string.Format("{0:N0}", -1 * item.MandatoryDepositUpdateAmount);
+
+                    <div class="row mt-3">
+                        <div class="col-sm-7">
+                            <div class="table-responsive">
+                                <table class="table table-borderless">
+                                    <thead>
+                                        <tr style="line-height:0;">
+                                            <th>TABUNGAN WAJIB</th>
+                                            <th class="text-right">@mandatoryDepositUpdateAmount</th>
+                                        </tr>
+                                    </thead>
+                                    @*<tbody>
+                                            @foreach (var payrollItem in item.MandatoryDepositList)
+                                            {
+                                                string description = payrollItem.Description;
+
+                                                <tr style="@(payrollItem.Description.Length>95 ? "line-height:1" : "line-height:0")">
+                                                    <td>@description</td>
+                                                    <td class="text-right">@string.Format("{0:N0}", payrollItem.Amount)</td>
+                                                </tr>
+                                            }
+                                        </tbody>*@
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="row mt-3">
+                    <div class="col-sm-7">
+                        <div class="table-responsive">
+                            <table class="table table-borderless">
+                                <thead>
+                                    <tr style="line-height:0;">
+                                        <th>TOTAL</th>
+                                        <th class="text-right">@Html.DisplayFor(model => item.PayableAmount)</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (CAJWebApp.Areas.PAYROLL.Models.PayrollPaymentsModel payrollPayment in item.PayrollPaymentList)
+                                    {
+                                        <tr style="line-height:0;">
+                                            <td>@string.Format("{0:dd MMM yyyy}: {1} {2} {3}", payrollPayment.PaymentDate, payrollPayment.Banks_Name, payrollPayment.AccountNumber, payrollPayment.AccountName)</td>
+                                            <td class="text-right">@string.Format("{0:N0}", payrollPayment.Amount)</td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div>
+                        <div>
+                            <table class="table table-borderless">
+                                <thead>
+                                    <tr style="line-height:0;">
+                                        <th></th>
+                                        <th>SALDO AWAL</th>
+                                        <th>SALDO AKHIR</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @{
+                                        string mandatoryDepositBalance = string.Format("{0:N0}", item.MandatoryDepositStartingBalance + item.MandatoryDepositUpdateAmount);
+                                        string debtBalance = string.Format("{0:N0}", item.DebtStartingBalance + item.DebtUpdateAmount);
+                                        string LeaveDaysBalance = string.Format("{0:N0}", item.LeaveDaysStartingBalance + item.LeaveDaysAdjustment);
+                                    }
+
+                                    <tr style="line-height:0;">
+                                        <td>Tabungan Wajib</td>
+                                        <td class="text-right">@Html.DisplayFor(model => item.MandatoryDepositStartingBalance)</td>
+                                        <td class="text-right">@mandatoryDepositBalance</td>
+                                    </tr>
+                                    <tr style="line-height:0;">
+                                        <td>Hutang</td>
+                                        <td class="text-right">@Html.DisplayFor(model => item.DebtStartingBalance)</td>
+                                        <td class="text-right">@debtBalance</td>
+                                    </tr>
+                                    <tr style="line-height:0;">
+                                        <td>Cuti</td>
+                                        <td class="text-right">@Html.DisplayFor(model => item.LeaveDaysStartingBalance)</td>
+                                        <td class="text-right">@LeaveDaysBalance</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-7">
+                        <div class="mb-4">
+                            <ul class="list list-unstyled mb-0 ml-2">
+                                <li>&nbsp;</li>
+                                <li><span>Mengetahui,</span></li>
+                                <li>
+                                    @if (string.IsNullOrEmpty(item.ApproverName) || string.IsNullOrEmpty(item.ApproverSignatureFilename))
+                                    {
+                                        <br />
+                                    }
+                                    else
+                                    {
+                                        <img src="@Helper.getImageUrl(@item.ApproverSignatureFilename, Request, Server)" style="width:100px" />
+                                    }
+                                </li>
+                                <li><span class="font-weight-semibold">@Html.DisplayFor(model => item.ApproverName)</span></li>
+                                <li><span class="">@Html.DisplayFor(model => item.ApproverTitle)</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+</body>
+</html>
+
+@*<script type="text/javascript">
+        function back_exec() {
+            var url = '@Url.Action("Index", "Payroll", new { Area = "Payroll" })';
+            window.location.href = url.replace('_id', '');
+        }
+
+        function print_exec() {
+            var printContents = document.getElementById('print-area').innerHTML;
+            var originalContents = document.body.innerHTML;
+
+            document.body.innerHTML = printContents;
+
+            window.print();
+
+            document.body.innerHTML = originalContents;
+        }
+
+        //Code to create sticky on control with id="header"
+
+        // When the user scrolls the page, execute myFunction
+        window.onscroll = function () { myFunction() };
+
+        // Get the navbar
+        var navbar = document.getElementById("header");
+
+        // Get the offset position of the navbar
+        var sticky = navbar.offsetTop;
+
+        // Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+        function myFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky")
+            } else {
+                navbar.classList.remove("sticky");
+            }
+        }
+</script>*@

@@ -1,0 +1,83 @@
+﻿
+@{
+    ViewBag.Root = "Payroll";
+    ViewBag.Title = "Create";
+}
+
+<div class="content-wrapper">
+
+    <!-- Content area -->
+    <div class="content">
+        @using (Html.BeginForm("Create", "Payrolls", FormMethod.Post, new { id = "submission" }))
+        {
+            @Html.AntiForgeryToken()
+            <input type="hidden" name="PayrollEmployees_Id" id="PayrollEmployees_Id" value="" />
+            <input type="hidden" name="year" id="PayPeriodYear" value="@ViewBag.PayPeriodYear" />
+            <input type="hidden" name="month" id="PayPeriodMonth" value="@ViewBag.PayPeriodMonth" />
+            <input type="hidden" name="payDate" id="PayDate" value="@ViewBag.PayDate" />
+            <input type="hidden" name="approval" id="Approval" value="@ViewBag.Approval" />
+            <input type="hidden" name="Banks_Id" id="Banks_Id" value="@ViewBag.Banks_Id" />
+            <input type="hidden" name="search" id="Search" value="@ViewBag.Search" />
+            <!-- Form inputs -->
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">@ViewBag.Root</h5>
+                </div>
+                <div class="card-body">
+                    <fieldset class="mb-3">
+                        <legend class="text-uppercase font-size-sm font-weight-bold">@ViewBag.Title</legend>
+                        <div>
+
+                            <div class="form-group row mb-0">
+                                <label class="col-form-label col-lg-1">Periode</label>
+                                <div class="col-lg-3">
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            <label class="form-control" readonly>@string.Format("{0:MMMM yyyy}", ViewBag.PayPeriod)</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5">
+                                </div>
+                            </div>
+                            <div class="form-group row mb-0">
+                                <label class="col-form-label col-lg-1">Nama</label>
+                                <div class="col-lg-3">
+                                    <div class="row">
+                                        <div class="col-lg-8">
+                                            @Html.DropDownList("PayrollEmployees", new SelectList(ViewBag.PayrollEmployees, "Value", "Text", "Pilih"), new { @class = "form-control select2" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <div class="mt-4">
+                        <button type="submit" class="btn btn-primary">Generate<i class="icon-paperplane ml-2"></i></button>
+                        <a href="@Url.Action("Index", "Payrolls", new { year = ViewBag.PayPeriodYear, month = ViewBag.PayPeriodMonth, payDate = ViewBag.PayDate, approval = ViewBag.Approval, Banks_Id = ViewBag.Banks_Id, search = ViewBag.Search } )" class="btn btn-warning">Cancel<i class="icon-cross2 ml-2"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- /form inputs -->
+        }
+    </div>
+    <!-- /content area -->
+
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        activateMenu('Payrolls');
+
+        if ('@ViewBag.PayrollEmployees_Id' != '') {
+            $('#PayrollEmployees').val('@ViewBag.PayrollEmployees_Id');
+        }
+    })
+
+    $('#submission').submit(function (e) {
+        $('#PayrollEmployees_Id').val($('#PayrollEmployees').val());
+    });
+
+</script>

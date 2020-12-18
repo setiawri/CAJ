@@ -1,0 +1,208 @@
+﻿@model CAJWebApp.Models.PayrollEmployeesModel
+
+@{
+    ViewBag.Root = "Employees";
+    ViewBag.Title = "Create";
+}
+
+<div class="content-wrapper">
+
+    <!-- Content area -->
+    <div class="content">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            <!-- Form inputs -->
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">@ViewBag.Root</h5>
+                </div>
+                <div class="card-body">
+                    <fieldset class="mb-3">
+                        <legend class="text-uppercase font-size-sm font-weight-bold">@ViewBag.Title</legend>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Identification, htmlAttributes: new { @class = "col-form-label col-lg-2 required" })
+                            <div class="col-lg-5">
+                                @Html.EditorFor(model => model.Identification, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Identification, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Fullname, htmlAttributes: new { @class = "col-form-label col-lg-2 required" })
+                            <div class="col-lg-5">
+                                @Html.EditorFor(model => model.Fullname, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Fullname, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Customer_CustomerID, htmlAttributes: new { @class = "col-form-label col-lg-2 required" })
+                            <div class="col-lg-5">
+                                @Html.DropDownListFor(model => model.Customer_CustomerID, ViewBag.Customer as SelectList, "Pilih", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.Customer_CustomerID, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.JoinDate, htmlAttributes: new { @class = "col-form-label col-lg-2 required" })
+                            <div class="col-lg-5">
+                                <div class="input-group">
+                                    @Html.EditorFor(model => model.JoinDate, new { htmlAttributes = new { @class = "form-control daterange-picker" } })
+                                    <span class="input-group-append">
+                                        <span class="input-group-text"><i class="icon-calendar"></i></span>
+                                    </span>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.JoinDate, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.WorkHourPerDay, htmlAttributes: new { @class = "col-form-label col-lg-2 required" })
+                            <div class="col-lg-5">
+                                @Html.EditorFor(model => model.WorkHourPerDay, new { htmlAttributes = new { @class = "form-control", @Value = @ViewBag.DefaultWorkHoursPerDay } })
+                            </div>
+                            <div class="col-lg-5">
+                                @Html.ValidationMessageFor(model => model.WorkHourPerDay, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.PayrollPaymentDates_Id, htmlAttributes: new { @class = "col-form-label col-lg-2 required" })
+                            <div class="col-lg-5">
+                                @Html.DropDownListFor(model => model.PayrollPaymentDates_Id, ViewBag.PayrollPaymentDates as SelectList, "Pilih", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.PayrollPaymentDates_Id, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.ReimbursementPaymentDates_Id, htmlAttributes: new { @class = "col-form-label col-lg-2 required" })
+                            <div class="col-lg-5">
+                                @Html.DropDownListFor(model => model.ReimbursementPaymentDates_Id, ViewBag.ReimbursementPaymentDates as SelectList, "Pilih", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.ReimbursementPaymentDates_Id, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Banks_Id, htmlAttributes: new { @class = "col-form-label col-lg-2 required" })
+                            <div class="col-lg-5">
+                                @Html.DropDownListFor(model => model.Banks_Id, ViewBag.Banks as SelectList, "Pilih", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.Banks_Id, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.AccountName, htmlAttributes: new { @class = "col-form-label col-lg-2 required" })
+                            <div class="col-lg-5">
+                                @Html.EditorFor(model => model.AccountName, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.AccountName, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.AccountNumber, htmlAttributes: new { @class = "col-form-label col-lg-2 required" })
+                            <div class="col-lg-5">
+                                @Html.EditorFor(model => model.AccountNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.AccountNumber, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.EmploymentTypes_Id, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-5">
+                                @Html.DropDownListFor(model => model.EmploymentTypes_Id, ViewBag.EmploymentTypes as SelectList, "Pilih", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.EmploymentTypes_Id, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.PayrollDepartments_Id, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-5">
+                                @Html.DropDownListFor(model => model.PayrollDepartments_Id, ViewBag.PayrollDepartments as SelectList, "Pilih", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.PayrollDepartments_Id, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.CounterAreas_Id, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-5">
+                                @Html.DropDownListFor(model => model.CounterAreas_Id, ViewBag.CounterAreas as SelectList, "Pilih", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.CounterAreas_Id, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Birthdate, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-5">
+                                <div class="input-group">
+                                    @Html.EditorFor(model => model.Birthdate, new { htmlAttributes = new { @class = "form-control daterange-picker" } })
+                                    <span class="input-group-append">
+                                        <span class="input-group-text"><i class="icon-calendar"></i></span>
+                                    </span>
+                                </div>
+                                @Html.ValidationMessageFor(model => model.Birthdate, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-5">
+                                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Phone1, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-5">
+                                @Html.EditorFor(model => model.Phone1, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Phone1, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Phone2, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-5">
+                                @Html.EditorFor(model => model.Phone2, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Phone2, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.MaritalStatuses_Id, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-5">
+                                @Html.DropDownListFor(model => model.MaritalStatuses_Id, ViewBag.MaritalStatuses as SelectList, "Pilih", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.MaritalStatuses_Id, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.DependentCount, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-5">
+                                @Html.EditorFor(model => model.DependentCount, new { htmlAttributes = new { @class = "form-control", @type = "text", @Value = "0" } })
+                                @Html.ValidationMessageFor(model => model.DependentCount, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                    </fieldset>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Submit<i class="icon-paperplane ml-2"></i></button>
+                        <a href="@Url.Action("Index", "PayrollEmployees", new { Area = "" })" class="btn btn-warning">Cancel<i class="icon-cross2 ml-2"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- /form inputs -->
+        }
+    </div>
+    <!-- /content area -->
+
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        activateMenu('PayrollEmployees');
+    });
+
+</script>
+

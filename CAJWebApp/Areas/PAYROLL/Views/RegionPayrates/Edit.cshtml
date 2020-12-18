@@ -1,0 +1,113 @@
+﻿@model CAJWebApp.Areas.PAYROLL.Models.RegionPayratesModel
+
+@{
+    ViewBag.Root = "UMP";
+    ViewBag.Title = "Edit";
+}
+
+<div class="content-wrapper">
+
+    <!-- Content area -->
+    <div class="content">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+            @Html.HiddenFor(model => model.Id)
+            @Html.HiddenFor(model => model.Regions_Name)
+            <!-- Form inputs -->
+            <div class="card">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">@ViewBag.Root</h5>
+                </div>
+                <div class="card-body">
+                    <fieldset class="mb-3">
+                        <legend class="text-uppercase font-size-sm font-weight-bold">@ViewBag.Title</legend>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.Regions_Id, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-5">
+                                @Html.DropDownListFor(model => model.Regions_Id, ViewBag.Regions as SelectList, "Pilih", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.Regions_Id, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.MinimumPayrate, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-5">
+                                @Html.EditorFor(model => model.MinimumPayrate, new { htmlAttributes = new { @class = "form-control", @onkeyup = "calculatePayrates(this.value)", @onchange = "Multiplier(this.value)" } })
+                                @Html.ValidationMessageFor(model => model.MinimumPayrate, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.RegularPayrate, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-5">
+                                @Html.EditorFor(model => model.RegularPayrate, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.RegularPayrate, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.HolidayPayrate, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-5">
+                                @Html.EditorFor(model => model.HolidayPayrate, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.HolidayPayrate, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.RegularOvertimeHourlyPayrate, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-5">
+                                @Html.EditorFor(model => model.RegularOvertimeHourlyPayrate, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.RegularOvertimeHourlyPayrate, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.HolidayOvertimeHourlyPayrate, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-5">
+                                @Html.EditorFor(model => model.HolidayOvertimeHourlyPayrate, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.HolidayOvertimeHourlyPayrate, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                    </fieldset>
+                    <div>
+                        <button type="submit" class="btn btn-primary">Submit <i class="icon-paperplane ml-2"></i></button>
+                        <a href="@Url.Action("Index", "RegionPayrates", new { Area = "Payroll" })" class="btn btn-warning">Cancel <i class="icon-cross2 ml-2"></i></a>
+                    </div>
+                </div>
+            </div>
+            <!-- /form inputs -->
+        }
+    </div>
+    <!-- /content area -->
+
+</div>
+<script type="text/javascript">
+    function calculatePayrates(minimumPayrate) {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("calculatePayrates", "RegionPayrates")',
+            data: {
+                minimumPayrate: minimumPayrate
+            },
+            success: function (data) {
+                //console.log(data);
+                $('#RegularPayrate').val(data.regularPayrate);
+                $('#HolidayPayrate').val(data.holidayPayrate);
+                $('#RegularOvertimeHourlyPayrate').val(data.regularOvertimeHourlyPayrate);
+                $('#HolidayOvertimeHourlyPayrate').val(data.holidayOvertimeHourlyPayrate);
+            }, //end success
+            error: function (result) {
+                bootbox.alert({ backdrop: true, message: "Error " + result });
+            } //end error
+        }); //end ajax
+    };       
+
+    $(document).ready(function () {
+        $('#Regions_Id').change(function() {
+            $('#Regions_Name').val($('#Regions_Id option:selected').text()); //set model member to the selected text
+        });
+    });
+
+</script>

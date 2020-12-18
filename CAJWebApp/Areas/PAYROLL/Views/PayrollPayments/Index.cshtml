@@ -1,0 +1,230 @@
+﻿@model IEnumerable<CAJWebApp.Areas.PAYROLL.Models.PayrollPaymentsModel>
+
+@{
+    ViewBag.Root = "Payment";
+    ViewBag.Title = "Index";
+}
+
+<div class="content-wrapper">
+    <!-- Content area -->
+    <div class="content">
+        <!-- Form inputs -->
+        <div class="card animated bounceInLeft">
+            <div class="card-header header-elements-inline">
+                <h5 class="card-title">@ViewBag.Root</h5>
+            </div>
+            <div class="card-body">
+
+                <div class="row mt-0">
+                    <div class="col-lg-3">
+                        <div class="row col-lg-12">
+                            <label class="mb-0">Periode</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="btn btn-light" onclick="ReloadTable('@EnumActions.Previous.ToString()')">&lt;</button>
+                                    <select id="PayPeriodMonth" class="form-control select2" onchange="ReloadTable()">
+                                        <option value="1">January</option>
+                                        <option value="2">February</option>
+                                        <option value="3">March</option>
+                                        <option value="4">April</option>
+                                        <option value="5">May</option>
+                                        <option value="6">June</option>
+                                        <option value="7">July</option>
+                                        <option value="8">August</option>
+                                        <option value="9">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                    </select>
+                                </div>
+                                <input id="PayPeriodYear" type="number" class="form-control text-center positiveintegeronly" value="@ViewBag.PayPeriodYear">
+                                <button type="button" class="btn btn-light" onclick="ReloadTable('@EnumActions.Next.ToString()')">&gt;</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-lg-1">
+                        <div class="col-lg-12">
+                            <label class="mb-0">Tgl Bayar</label>
+                            <div class="input-group">
+                                @Html.DropDownList("PayrollPaymentDates", ViewBag.PayrollPaymentDates as SelectList, "ALL", new { @class = "custom-select", @style = "height:auto;", onchange = "ReloadTable()" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-lg-2">
+                        <div class="col-lg-12">
+                            <label class="mb-0">Bank</label>
+                            <div class="input-group">
+                                @Html.DropDownList("Banks", ViewBag.Banks as SelectList, "ALL", new { @class = "custom-select", @style = "height:auto;", onchange = "ReloadTable()" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-lg-2">
+                        <div class="col-lg-12">
+                            <label class="mb-0">Jenis</label>
+                            <div class="input-group">
+                                <select id="FILTER_ActionType" class="custom-select" onchange="ReloadTable()">
+                                    <option value="" selected>ALL</option>
+                                    <option value="1">Payroll</option>
+                                    <option value="2">Reimbursement</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row col-lg-2">
+                        <div class="col-lg-12">
+                            <label class="mb-0">&nbsp;</label>
+                            <div class="form-group mb-0">
+                                <div class="btn-toolbar">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-outline-primary form-control" onclick="ReloadTable()"><i class="icon-reload-alt mr-2"></i>Reload</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-lg-1">
+                        <div class="form-group mb-0">
+                            <div class="btn-toolbar">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-outline-success form-control" onclick="GenerateReport()"><i class="icon-coins mr-2"></i>Report</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-1">
+                        <div class="form-group mb-0">
+                            <div class="btn-toolbar">
+                                <div class="btn-group">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7"></div>
+                    <div class="col-lg-3">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white">Total Payment</span>
+                            </div>
+                            <input type="text" class="form-control text-right" value="@ViewBag.TotalPaymentAmount" readonly>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover datatable">
+                        <thead>
+                            <tr>
+                                <th>@Html.DisplayNameFor(model => model.RowNumber)</th>
+                                <th>@Html.DisplayNameFor(model => model.PaymentDate)</th>
+                                <th>@Html.DisplayNameFor(model => model.EmployeeFullName)</th>
+                                <th>@Html.DisplayNameFor(model => model.CustomerName)</th>
+                                <th>@Html.DisplayNameFor(model => model.AccountName)</th>
+                                <th class="text-right">@Html.DisplayNameFor(model => model.Amount)</th>
+                                <th class="non-searchable non-sortable"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.RowNumber)</td>
+                                    <td>@Html.DisplayFor(modelItem => item.PaymentDate)</td>
+                                    <td>
+                                        @Html.ActionLink(item.EmployeeFullName, "Index", "PayrollEmployees", new { Area = "", search = item.EmployeeFullName }, new { target = "_blank" })
+                                        <br />Join: @Html.DisplayFor(modelItem => item.JoinDate)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CustomerName)
+                                        <br />@Html.DisplayFor(modelItem => item.Regions_Name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.AccountName)
+                                        <br />[@Html.DisplayFor(modelItem => item.Banks_Name)] @Html.DisplayFor(modelItem => item.AccountNumber)
+                                    </td>
+                                    <td class="text-right">@Html.DisplayFor(modelItem => item.Amount)</td>
+                                    <td>
+                                        @if (item.Cancelled)
+                                        {
+                                            <span class="badge badge-danger d-block">Cancelled</span>
+                                        }
+                                        else
+                                        {
+                                            <a href="javascript:void(0)" onclick="CancelPayment('@item.Id', '@item.Payrolls_Id', @item.Amount)" class="badge badge-primary d-block">Cancel</a>
+                                        }
+
+                                        <a href="javascript:void(0)" onclick="Log('@item.Id')">Log</a>
+                                        •
+                                        @if (item.Payrolls_Id != null)
+                                        {
+                                            @Html.ActionLink("Payroll", "Index", "Payrolls", new { Area = "Payroll", PayPeriod = item.PayPeriod.ToShortDateString(), search = item.EmployeeFullName }, new { target = "_blank" })
+                                        }
+                                        else
+                                        {
+                                            @Html.ActionLink("Reimbursement", "Index", "Reimbursements", new { Area = "Reimbursement", PayPeriod = item.PayPeriod.ToShortDateString(), search = item.EmployeeFullName }, new { target = "_blank" })
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /form inputs -->
+    </div>
+    <!-- /content area -->
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        activateMenu('PayrollPayments');
+
+        $('#PayPeriodMonth').val('@ViewBag.PayPeriodMonth');
+        $('#PayPeriodYear').val('@ViewBag.PayPeriodYear');
+        $('#Banks').val('@ViewBag.Banks_Id');
+        $('#FILTER_ActionType').val('@ViewBag.Type');
+
+        $('#PayrollPaymentDates').append('<option value="" disabled selected>ALL</option>'); //add placeholder
+        $('#PayrollPaymentDates option:selected').text(@ViewBag.PayDate);
+
+        if('@ViewBag.Search' != null && '@ViewBag.Search' != '')
+            $('input[aria-controls=DataTables_Table_0]').val('@ViewBag.Search').keyup(); //apply search
+    });
+
+    function ReloadTable(periodChange) {
+        var url = '@Url.Action("Index","PayrollPayments",new { Area = "Payroll", year = "__data" })';
+        window.location.href = url.replace("__data", getAllFilterString() + (periodChange != null ? "&periodChange=" + periodChange : ''));
+    }
+
+    function GenerateReport() {
+        var bankId = $('#Bank').val();
+        var url = '@Url.Action("Report", "PayrollPayments", new { year = "__data" })';
+        window.location.href = url.replace('__data', getAllFilterString());
+    }
+
+    function CancelPayment(id, Payrolls_Id, Amount) {
+        if (confirm("Konfirmasi cancel payment?")) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("update_Cancelled", "PayrollPayments")',
+                data: {
+                    id: id,
+                    Payrolls_Id: Payrolls_Id,
+                    Amount: Amount
+                },
+                success: function (data) {
+                    ReloadTable();
+                }, //end success
+                error: function (result) {
+                    bootbox.alert({ backdrop: true, message: "Error " + result });
+                } //end error
+            }); //end ajax
+        }
+    }
+
+</script>
+

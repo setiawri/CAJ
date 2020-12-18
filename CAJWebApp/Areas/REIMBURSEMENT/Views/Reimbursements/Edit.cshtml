@@ -1,0 +1,384 @@
+﻿@using CAJWebApp.Controllers
+@using LIBUtil
+@model CAJWebApp.Areas.Reimbursement.Models.ReimbursementsModel
+
+@{
+    ViewBag.Root = "Reimbursement";
+    ViewBag.Title = "Edit";
+}
+
+<div class="content-wrapper">
+
+    <!-- Content area -->
+    <div class="content">
+        @using (Html.BeginForm("Edit", "Reimbursements", FormMethod.Post, new { id = "target" }))
+        {
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.PayrollEmployees_Id)
+                @Html.HiddenFor(model => model.Customer_CustomerID)
+                @Html.HiddenFor(model => model.ApproverName)
+                @Html.HiddenFor(model => model.ApproverTitle)
+                @Html.HiddenFor(model => model.ApproverSignatureFilename)
+                @Html.HiddenFor(model => model.ApprovalOperator_ID)
+                @Html.HiddenFor(model => model.ReimbursementItemsListString)
+                @Html.HiddenFor(model => model.FILTER_PayPeriodYear)
+                @Html.HiddenFor(model => model.FILTER_PayPeriodMonth)
+                @Html.HiddenFor(model => model.FILTER_Approval)
+                @Html.HiddenFor(model => model.FILTER_Banks_Id)
+                @Html.HiddenFor(model => model.FILTER_Search)
+                <!-- Form inputs -->
+                <div class="card">
+                    <div class="card-header header-elements-inline">
+                        <h5 class="card-title">@ViewBag.Root</h5>
+                    </div>
+                    <div class="card-body">
+                        <fieldset class="mb-3">
+                            <legend class="text-uppercase font-size-sm font-weight-bold">@ViewBag.Title</legend>
+                            <!--TOP INFO-->
+                            <div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.EmployeeFullName, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                                    <div class="col-lg-5">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                @Html.EditorFor(model => model.EmployeeFullName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.CustomerName, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                                    <div class="col-lg-5">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-lg-2">Tgl Join / Lama Kerja</label>
+                                    <div class="col-lg-5">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                @Html.EditorFor(model => model.JoinDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <input type="text" id="TotalMonthsSinceJoin" value="@Helper.GetTotalMonthsSinceJoin(Model.JoinDate, Model.PayPeriod)" class="form-control" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.PayPeriod, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                                    <div class="col-lg-5">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                @Html.EditorFor(model => model.PayPeriod, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                                @Html.ValidationMessageFor(model => model.PayPeriod, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                    </div>
+                                </div>
+                            </div>
+                            <!--TOP INFO-->
+                            <!--ADDITIONAL INFO-->
+                            <div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.RowNumber, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                                    <div class="col-lg-5">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                @Html.EditorFor(model => model.RowNumber, new { htmlAttributes = new { @class = "form-control positiveintegeronly", @type = "text" } })
+                                                @Html.ValidationMessageFor(model => model.RowNumber, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.PaymentDate, htmlAttributes: new { @class = "col-form-label col-lg-2 required" })
+                                    <div class="col-lg-5">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div class="input-group">
+                                                    @Html.EditorFor(model => model.PaymentDate, new { htmlAttributes = new { @class = "form-control daterange-picker" } })
+                                                    <span class="input-group-append">
+                                                        <span class="input-group-text"><i class="icon-calendar"></i></span>
+                                                    </span>
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.PaymentDate, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5"></div>
+                                </div>
+                            </div>
+                            <!--/ADDITIONAL INFO-->
+                            <hr />
+                            <!--ITEMS-->
+                            <div>
+                                <div>
+                                    <label class="col-lg-12 text-center h5 font-weight-semibold">LIST</label>
+                                    @Html.ValidationMessageFor(model => model.ReimbursementItemsListString, "", new { @class = "text-danger" })
+                                    <div class="form-group row">
+                                        <div class="col-lg-12">
+                                            <table class="table table-condensed">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th style="width:3%">
+                                                            <a href="javascript:void(0)" class="text-success" onclick="AddReimbursement()"><i class="fa fa-2x fa-plus-square"></i></a>
+                                                        </th>
+                                                        <th style="width:30%">Kategori</th>
+                                                        <th style="width:45%">Deskripsi</th>
+                                                        <th style="width:22%" class="text-center">Nilai</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="itemList">
+                                                    @{ int itemRowIndex = 0; }
+                                                    @if (Model.ReimbursementItemsList != null)
+                                                    {
+                                                        foreach (var item in Model.ReimbursementItemsList)
+                                                        {
+                                                            <tr id="reimbursement_@itemRowIndex">
+                                                                <td><a href="javascript:void(0)" onclick="RemoveRow('reimbursement', @itemRowIndex)" class="text-danger"><i class="fa fa-2x fa-times"></i></a></td>
+                                                                <td>@Html.DropDownList("ddlReimbursementCategories_" + itemRowIndex, new SelectList(ViewBag.ReimbursementCategories, "Value", "Text", item.ReimbursementCategories_Id), new { @class = "form-control select2 ddlReimbursementCategories" })</td>
+                                                                <td><input type="text" class="form-control item-Description" value="@item.Description" /></td>
+                                                                <td><input type="text" class="form-control text-right positiveintegeronly item-Amount" value='@item.Amount' onkeyup="CalculateTotals()" /></td>
+                                                                <td style="display:none">
+                                                                    <input id="item-Reimbursements_Id" value="@item.Reimbursements_Id" />
+                                                                    <input id="item-ReimbursementItems_Id" value="@item.Id" />
+                                                                    @(itemRowIndex++)
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th colspan="5">
+                                                            <div class="col-lg-12">
+                                                                <div class="row">
+                                                                    <div class="col-lg-9">
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        <div class="row">
+                                                                            <label class="col-form-label col-lg-7 text-right">TOTAL</label>
+                                                                            <label class="col-form-label col-lg-5 text-right totalItemAmount">0</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/ITEMS-->
+                            <hr />
+                            <div class="form-group row">
+                                <label class="col-form-label col-lg-2"><strong>PAYABLE</strong></label>
+                                <label id="PayableAmount" class="col-form-label col-lg-2"><strong>0</strong></label>
+                            </div>
+                        </fieldset>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Update<i class="icon-paperplane ml-2"></i></button>
+                            <button type="button" onclick="Print('@Model.Id')" class="btn btn-success">Print<i class="icon-printer4 ml-2"></i></button>
+                            @*@if (Util.hasAccess(Session, OperatorController.SESSION_OperatorPrivilegePayrollModel_ReimbursementApproval))
+                            {
+                                <button type="button" onclick="Approve('@Model.Id')" class="btn btn-warning">Approve<i class="icon-database-check ml-2"></i></button>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-warning disabled">Approve<i class="icon-database-check ml-2"></i></button>
+                            }*@
+                            <a href="@Url.Action("Index", "Reimbursements", new {  year = ViewBag.PayPeriodYear, month = ViewBag.PayPeriodMonth, payDate = ViewBag.PayDate, approval = ViewBag.Approval, Banks_Id = ViewBag.Banks_Id, search = ViewBag.Search } )" class="btn btn-warning">Cancel<i class="icon-cross2 ml-2"></i></a>
+
+                            <button type="button" class="btn btn-danger ml-5" onclick="Regenerate()">Regenerate<i class="icon-reload-alt ml-2"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- /form inputs -->
+            }
+        }
+    </div>
+    <!-- /content area -->
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        CalculateTotals(); //calculate on first load
+    });
+
+    //ITEMS ========================================================================================================================================================
+
+    var item_no = 100;
+    function AddReimbursement() {
+        item_no += 1;
+        var itemRow = '<tr id="reimbursement_' + item_no + '">'
+            + '<td><a href="javascript:void(0)" onclick="RemoveRow(\'reimbursement\',' + item_no + ')" class="text-danger"><i class="fa fa-2x fa-times"></i></a></td>'
+            + '<td><select class="form-control ddlReimbursementCategories" id="ddlReimbursementCategories_' + item_no + '" name="ddlReimbursementCategories_' + item_no + '"></select></td>'
+            + '<td><input type="text" class="form-control item-Description" /></td>'
+            + '<td><input type="text" class="form-control text-right positiveintegeronly item-Amount" value=0 onkeyup="CalculateTotals()" onchange="CalculateTotals()" /></td>'
+            + '</tr>';
+        $('#itemList').append(itemRow);
+
+        $.get('@Url.Action("getDropdownlistData", "ReimbursementCategories")', function (data) {
+            $.each(data.result, function (index, row) {
+                $('#ddlReimbursementCategories_' + item_no).append("<option value='" + row.Id + "'>" + row.Name + "</option>")
+            });
+        });
+        $('#ddlReimbursementCategories_' + item_no).select2();
+
+        applyEventsToInputs();
+    }
+
+    //REMOVE ITEM ROW =====================================================================================================================================================
+
+    function RemoveRow(key, row) {
+        $('#' + key + '_' + row).remove();
+        CalculateTotals();
+    }
+
+    //CALCULATE TOTALS =============================================================================================================================================
+
+    function CalculateTotals() {
+
+        var totalItemAmount = 0;
+        $('input.item-Amount').each(function () {
+            totalItemAmount += parseInt(ZeroIfEmpty($(this).val()));
+        });
+        $('.totalItemAmount').text($.number(totalItemAmount));
+
+        var payableAmount = totalItemAmount;
+        $('#PayableAmount').html($.number(payableAmount));
+    }
+
+    //REGENERATE DATA ==============================================================================================================================================
+
+    function Regenerate() {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetRegenerateData", "Reimbursements", new { Area = "Reimbursement" })',
+            data: {
+                id: $('#Id').val()
+            },
+            success: function (data) {
+                var log = "";
+
+                log = appendChange(log, $('#EmployeeFullName').val(), data.model.EmployeeFullName, "Nama: ");
+                $('#EmployeeFullName').val(data.model.EmployeeFullName);
+
+                log = appendChange(log, $('#CustomerName').val(), data.model.CustomerName, "Counter: ");
+                $('#CustomerName').val(data.model.CustomerName);
+                $('#Customer_CustomerID').val(data.model.Customer_CustomerID);
+
+                var oldJoinDate = formatDate(new Date($('#JoinDate').val()), 'dd MMM yyyy');
+                var newJoinDate = formatDate(parseJSONDate(data.model.JoinDate), 'dd MMM yyyy');
+                log = appendChange(log, oldJoinDate, newJoinDate, "Tgl Join: ");
+                $('#JoinDate').val(newJoinDate);
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetJsonTotalMonthsSinceJoin", "Reimbursements", new { Area = "Reimbursement" })',
+                    data: {
+                        JoinDate: $('#JoinDate').val(),
+                        PayPeriod: $('#PayPeriod').val()
+                    },
+                    success: (function (data) {
+                        $('#TotalMonthsSinceJoin').val(data.TotalMonthsSinceJoin);
+                    })
+                });
+
+                log = appendChange(log, $('#ApproverName').val(), data.model.ApproverName, "Nama Approver: ");
+                $('#ApproverName').val(data.model.ApproverName);
+
+                log = appendChange(log, $('#ApproverTitle').val(), data.model.ApproverTitle, "Title Approver: ");
+                $('#ApproverTitle').val(data.model.ApproverTitle);
+
+                log = appendChange(log, $('#ApproverSignatureFilename').val(), data.model.ApproverSignatureFilename, "Tanda Tangan Approver: ");
+                $('#ApproverSignatureFilename').val(data.model.ApproverSignatureFilename);
+
+                if (log == "")
+                    log = "Tidak ada perubahan data";
+                else
+                    log = "Perubahan data:<BR><BR>" + log;
+
+                bootbox.alert({ backdrop: true, message: log });
+            }, //end success
+            error: function (result) {
+                bootbox.alert({ backdrop: true, message: "Error " + result });
+            } //end error
+        }); //end ajax
+    }
+
+    //SUBMISSION ===================================================================================================================================================
+
+    $(document).ready(function () {
+        activateMenu('Reimbursements');
+
+        //set calendar values
+        $('#PaymentDate').data('daterangepicker').setStartDate('@string.Format("{0:yyyy/MM/dd}", Model.PaymentDate)');
+        $('#PaymentDate').data('daterangepicker').setEndDate('@string.Format("{0:yyyy/MM/dd}", Model.PaymentDate)');
+
+    });
+
+    function Print(id) {
+        $('#SubmitAction').val("Print");
+        $('#target').submit();
+
+        var url = '@Url.Action("Print","Reimbursements",new { id = "__data" })';
+        url = url.replace("__data", id);
+        window.open(url,"_blank")
+    }
+
+    function Approve(id) {
+        $('#SubmitAction').val("Approve");
+        $('#ApprovalOperator_ID').val(parseInt(@CAJWebApp.Controllers.OperatorController.getUserId(Session)));
+        $('#target').submit();
+    }
+
+    $('#target').submit(function (e) {
+        $(this).find(':submit').attr('disabled', 'disabled'); //prevent double click on submit
+
+        $('#FILTER_PayDate').val(@ViewBag.PayDate);
+        $('#FILTER_PayPeriodYear').val(@ViewBag.PayPeriodYear);
+        $('#FILTER_PayPeriodMonth').val(@ViewBag.PayPeriodMonth);
+
+        var arrItems = [];
+        $('#itemList tr').each(function () {
+            var ReimbursementItems_Id = $(this).find('input#item-ReimbursementItems_Id').val();
+            var Reimbursements_Id = $(this).find('input#item-Reimbursements_Id').val();
+            var ReimbursementCategories_Id = $(this).find('select.ddlReimbursementCategories').val();
+            var description = $(this).find('input.item-Description').val();
+            var amount = $(this).find('input.item-Amount').val();
+            var categoryname = $(this).find('select.ddlReimbursementCategories').find(":selected").text();
+
+            var objItems = {
+                Id: ReimbursementItems_Id,
+                Reimbursements_Id: Reimbursements_Id,
+                ReimbursementCategories_Id: ReimbursementCategories_Id,
+                CategoryName: categoryname,
+                Description: description,
+                Amount: amount
+            };
+            arrItems.push(objItems);
+        });
+        $('#ReimbursementItemsListString').val(JSON.stringify(arrItems));
+    });
+</script>
+

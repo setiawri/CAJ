@@ -1,0 +1,395 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F68C7E84-DA53-4966-A694-F9EEB63C1376}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CAJWebApp</RootNamespace>
+    <AssemblyName>CAJWebApp</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <MvcBuildViews>false</MvcBuildViews>
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus, Version=5.4.0.0, Culture=neutral, PublicKeyToken=ea159fdaa78159a1, processorArchitecture=MSIL">
+      <HintPath>..\packages\EPPlus.5.4.0\lib\net45\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="Rotativa, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Rotativa.1.7.4-rc\lib\net45\Rotativa.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.4.7.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Threading.Tasks" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http">
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest">
+    </Reference>
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.Helpers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc, Version=5.2.7.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.7\lib\net45\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.7\lib\net45\System.Web.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Deployment, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Deployment.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <Private>True</Private>
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.7\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="WebGrease">
+      <Private>True</Private>
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+    </Reference>
+    <Reference Include="Antlr3.Runtime">
+      <Private>True</Private>
+      <HintPath>..\packages\Antlr.3.5.0.2\lib\Antlr3.Runtime.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Areas\PAYROLL\Controllers\PayrollDebtsController.cs" />
+    <Compile Include="Areas\PAYROLL\Controllers\PayrollDeductionsController.cs" />
+    <Compile Include="Areas\PAYROLL\Controllers\PayrollPaymentsController.cs" />
+    <Compile Include="Areas\PAYROLL\Controllers\PayrollItemsController.cs" />
+    <Compile Include="Areas\PAYROLL\Controllers\PayrollPaymentDatesController.cs" />
+    <Compile Include="Areas\PAYROLL\Controllers\PayrollsController.cs" />
+    <Compile Include="Areas\PAYROLL\Controllers\RegionPayratesController.cs" />
+    <Compile Include="Areas\PAYROLL\Controllers\PayrollEarningsController.cs" />
+    <Compile Include="Areas\PAYROLL\Models\PayrollDebtsModel.cs" />
+    <Compile Include="Areas\PAYROLL\Models\PayrollItemsModel.cs" />
+    <Compile Include="Areas\PAYROLL\Models\PayrollDeductionsModel.cs" />
+    <Compile Include="Areas\PAYROLL\Models\PayrollPaymentDatesModel.cs" />
+    <Compile Include="Areas\PAYROLL\Models\PayrollPaymentsModel.cs" />
+    <Compile Include="Areas\PAYROLL\Models\RegionPayratesModel.cs" />
+    <Compile Include="Areas\PAYROLL\Models\PayrollsModel.cs" />
+    <Compile Include="Areas\PAYROLL\Models\PayrollEarningsModel.cs" />
+    <Compile Include="Areas\PAYROLL\PAYROLLAreaRegistration.cs" />
+    <Compile Include="Areas\REIMBURSEMENT\Controllers\ReimbursementItemsController.cs" />
+    <Compile Include="Areas\REIMBURSEMENT\Controllers\ReimbursementsController.cs" />
+    <Compile Include="Areas\REIMBURSEMENT\Controllers\ReimbursementCategoriesController.cs" />
+    <Compile Include="Areas\REIMBURSEMENT\Controllers\ReimbursementPaymentDatesController.cs" />
+    <Compile Include="Areas\REIMBURSEMENT\REIMBURSEMENTAreaRegistration.cs" />
+    <Compile Include="Areas\REIMBURSEMENT\Models\ReimbursementItemsModel.cs" />
+    <Compile Include="Areas\REIMBURSEMENT\Models\ReimbursementPaymentDatesModel.cs" />
+    <Compile Include="DBContext.cs" />
+    <Compile Include="Common\Helper.cs" />
+    <Compile Include="Common\Enums.cs" />
+    <Compile Include="Controllers\ActivityLogsController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\OperatorController.cs" />
+    <Compile Include="Controllers\BanksController.cs" />
+    <Compile Include="Controllers\EmploymentTypesController.cs" />
+    <Compile Include="Controllers\MaritalStatusesController.cs" />
+    <Compile Include="Controllers\CounterAreasController.cs" />
+    <Compile Include="Controllers\PayrollDepartmentsController.cs" />
+    <Compile Include="Controllers\PayrollEmployeesController.cs" />
+    <Compile Include="Controllers\RegionsController.cs" />
+    <Compile Include="Controllers\SettingsController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Areas\REIMBURSEMENT\Models\ReimbursementCategoriesModel.cs" />
+    <Compile Include="Models\CustomerModel.cs" />
+    <Compile Include="Models\BanksModel.cs" />
+    <Compile Include="Models\OperatorModel.cs" />
+    <Compile Include="Models\OperatorPrivilegePayrollModel.cs" />
+    <Compile Include="Models\ActivityLogsModel.cs" />
+    <Compile Include="Models\EmploymentTypesModel.cs" />
+    <Compile Include="Models\MaritalStatusesModel.cs" />
+    <Compile Include="Models\CounterAreasModel.cs" />
+    <Compile Include="Models\PayrollDepartmentsModel.cs" />
+    <Compile Include="Models\PayrollEmployeesModel.cs" />
+    <Compile Include="Areas\REIMBURSEMENT\Models\ReimbursementsModel.cs" />
+    <Compile Include="Models\RegionsModel.cs" />
+    <Compile Include="Models\SettingsModel.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="assets\css\animate.min.css" />
+    <Content Include="assets\css\bootstrap-datetimepicker.css" />
+    <Content Include="assets\css\bootstrap.min.css" />
+    <Content Include="assets\css\bootstrap_limitless.min.css" />
+    <Content Include="assets\css\colors.min.css" />
+    <Content Include="assets\css\components.min.css" />
+    <Content Include="assets\css\icons\fontawesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="assets\css\icons\fontawesome\styles.min.css" />
+    <Content Include="assets\css\icons\icomoon\fonts\icomoon.svg" />
+    <Content Include="assets\css\icons\icomoon\styles.css" />
+    <Content Include="assets\css\layout.min.css" />
+    <Content Include="assets\font\Roboto.css" />
+    <Content Include="assets\img\no-image.jpg" />
+    <Content Include="assets\img\profile.png" />
+    <Content Include="assets\img\TTD Bu Merry.jpg" />
+    <Content Include="assets\js\app.js" />
+    <Content Include="assets\js\main\bootstrap.bundle.min.js" />
+    <Content Include="assets\js\main\jquery.min.js" />
+    <Content Include="assets\js\plugins\forms\number\jquery.number.min.js" />
+    <Content Include="assets\js\plugins\forms\selects\select2.min.js" />
+    <Content Include="assets\js\plugins\forms\styling\switch.min.js" />
+    <Content Include="assets\js\plugins\forms\styling\switchery.min.js" />
+    <Content Include="assets\js\plugins\forms\styling\uniform.min.js" />
+    <Content Include="assets\js\plugins\loaders\blockui.min.js" />
+    <Content Include="assets\js\plugins\multiselectdropdown\bootstrap-select.js" />
+    <Content Include="assets\js\plugins\multiselectdropdown\bootstrap-select.min.css" />
+    <Content Include="assets\js\plugins\notifications\bootbox.min.js" />
+    <Content Include="assets\js\plugins\pickers\anytime.min.js" />
+    <Content Include="assets\js\plugins\pickers\daterangepicker.js" />
+    <Content Include="assets\js\plugins\pickers\pickadate\picker.date.js" />
+    <Content Include="assets\js\plugins\pickers\pickadate\picker.js" />
+    <Content Include="assets\js\plugins\pickers\pickadate\picker.time.js" />
+    <Content Include="assets\js\plugins\tables\datatables\datatables.min.js" />
+    <Content Include="assets\js\plugins\tables\datatables\extensions\autofill.min.js" />
+    <Content Include="assets\js\plugins\tables\datatables\extensions\buttons.min.js" />
+    <Content Include="assets\js\plugins\tables\datatables\extensions\checkboxes.min.js" />
+    <Content Include="assets\js\plugins\tables\datatables\extensions\col_reorder.min.js" />
+    <Content Include="assets\js\plugins\tables\datatables\extensions\fixed_columns.min.js" />
+    <Content Include="assets\js\plugins\tables\datatables\extensions\fixed_header.min.js" />
+    <Content Include="assets\js\plugins\tables\datatables\extensions\jszip\jszip.min.js" />
+    <Content Include="assets\js\plugins\tables\datatables\extensions\key_table.min.js" />
+    <Content Include="assets\js\plugins\tables\datatables\extensions\natural_sort.js" />
+    <Content Include="assets\js\plugins\tables\datatables\extensions\pdfmake\pdfmake.min.js" />
+    <Content Include="assets\js\plugins\tables\datatables\extensions\pdfmake\vfs_fonts.min.js" />
+    <Content Include="assets\js\plugins\tables\datatables\extensions\responsive.min.js" />
+    <Content Include="assets\js\plugins\tables\datatables\extensions\row_reorder.min.js" />
+    <Content Include="assets\js\plugins\tables\datatables\extensions\scroller.min.js" />
+    <Content Include="assets\js\plugins\tables\datatables\extensions\select.min.js" />
+    <Content Include="assets\js\plugins\ui\moment\moment.min.js" />
+    <Content Include="assets\js\plugins\ui\moment\moment_locales.min.js" />
+    <Content Include="favicon.ico" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Global.asax" />
+    <Content Include="Areas\PAYROLL\Views\web.config" />
+    <Content Include="assets\css\icons\fontawesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="assets\css\icons\fontawesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="assets\css\icons\fontawesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="assets\css\icons\fontawesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="assets\css\icons\fontawesome\fonts\FontAwesome.otf" />
+    <Content Include="assets\css\icons\icomoon\fonts\icomoon.eot" />
+    <Content Include="assets\css\icons\icomoon\fonts\icomoon.ttf" />
+    <Content Include="assets\css\icons\icomoon\fonts\icomoon.woff" />
+    <Content Include="Areas\PAYROLL\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\PAYROLL\Views\RegionPayrates\Index.cshtml" />
+    <Content Include="Areas\PAYROLL\Views\RegionPayrates\Create.cshtml" />
+    <Content Include="Areas\PAYROLL\Views\RegionPayrates\Edit.cshtml" />
+    <Content Include="Areas\PAYROLL\Views\PayrollEarnings\Create.cshtml" />
+    <Content Include="Areas\PAYROLL\Views\PayrollEarnings\Edit.cshtml" />
+    <Content Include="Areas\PAYROLL\Views\PayrollEarnings\Index.cshtml" />
+    <Content Include="Areas\PAYROLL\Views\PayrollDeductions\Create.cshtml" />
+    <Content Include="Areas\PAYROLL\Views\PayrollDeductions\Edit.cshtml" />
+    <Content Include="Areas\PAYROLL\Views\PayrollDeductions\Index.cshtml" />
+    <Content Include="Areas\PAYROLL\Views\PayrollPaymentDates\Create.cshtml" />
+    <Content Include="Areas\PAYROLL\Views\PayrollPaymentDates\Edit.cshtml" />
+    <Content Include="Areas\PAYROLL\Views\PayrollPaymentDates\Index.cshtml" />
+    <Content Include="Areas\PAYROLL\Views\Payrolls\Create.cshtml" />
+    <Content Include="Areas\PAYROLL\Views\Payrolls\Edit.cshtml" />
+    <Content Include="Areas\PAYROLL\Views\Payrolls\Index.cshtml" />
+    <Content Include="Areas\PAYROLL\Views\Payrolls\Print.cshtml" />
+    <Content Include="Areas\PAYROLL\Views\PayrollPayments\Index.cshtml" />
+    <Content Include="Areas\REIMBURSEMENT\Views\web.config" />
+    <Content Include="Areas\PAYROLL\Views\PayrollDebts\Create.cshtml" />
+    <Content Include="Areas\PAYROLL\Views\PayrollDebts\Edit.cshtml" />
+    <Content Include="Areas\PAYROLL\Views\PayrollDebts\Index.cshtml" />
+    <Content Include="App_Browsers\qt.browser" />
+    <Content Include="Areas\REIMBURSEMENT\Views\ReimbursementPaymentDates\Create.cshtml" />
+    <Content Include="Areas\REIMBURSEMENT\Views\ReimbursementPaymentDates\Edit.cshtml" />
+    <Content Include="Areas\REIMBURSEMENT\Views\ReimbursementPaymentDates\Index.cshtml" />
+    <Content Include="Areas\REIMBURSEMENT\Views\_ViewStart.cshtml" />
+    <Content Include="Areas\REIMBURSEMENT\Views\ReimbursementCategories\Create.cshtml" />
+    <Content Include="Areas\REIMBURSEMENT\Views\ReimbursementCategories\Edit.cshtml" />
+    <Content Include="Areas\REIMBURSEMENT\Views\ReimbursementCategories\Index.cshtml" />
+    <Content Include="Areas\REIMBURSEMENT\Views\Reimbursements\Create.cshtml" />
+    <Content Include="Areas\REIMBURSEMENT\Views\Reimbursements\Edit.cshtml" />
+    <Content Include="Areas\REIMBURSEMENT\Views\Reimbursements\Index.cshtml" />
+    <Content Include="Areas\REIMBURSEMENT\Views\Reimbursements\Print.cshtml" />
+    <None Include="Properties\PublishProfiles\CAJWebApp.pubxml" />
+    <Content Include="Rotativa\help-wkhtmltoimage.txt" />
+    <Content Include="Rotativa\help-wkhtmltopdf.txt" />
+    <Content Include="Rotativa\wkhtmltoimage.exe" />
+    <Content Include="Rotativa\wkhtmltopdf.exe" />
+    <Content Include="Web.config" />
+    <Content Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Web.config" />
+    <Content Include="Views\_ViewStart.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Shared\_LayoutLimitless.cshtml" />
+    <Content Include="Views\Operator\Login.cshtml" />
+    <Content Include="Views\Settings\Edit.cshtml" />
+    <Content Include="Views\Banks\Create.cshtml" />
+    <Content Include="Views\Banks\Edit.cshtml" />
+    <Content Include="Views\Banks\Index.cshtml" />
+    <Content Include="Views\Regions\Create.cshtml" />
+    <Content Include="Views\Regions\Edit.cshtml" />
+    <Content Include="Views\Regions\Index.cshtml" />
+    <Content Include="Views\EmploymentTypes\Create.cshtml" />
+    <Content Include="Views\EmploymentTypes\Edit.cshtml" />
+    <Content Include="Views\EmploymentTypes\Index.cshtml" />
+    <Content Include="Views\MaritalStatuses\Create.cshtml" />
+    <Content Include="Views\MaritalStatuses\Edit.cshtml" />
+    <Content Include="Views\MaritalStatuses\Index.cshtml" />
+    <Content Include="Views\CounterAreas\Create.cshtml" />
+    <Content Include="Views\CounterAreas\Edit.cshtml" />
+    <Content Include="Views\CounterAreas\Index.cshtml" />
+    <Content Include="Views\PayrollDepartments\Create.cshtml" />
+    <Content Include="Views\PayrollDepartments\Edit.cshtml" />
+    <Content Include="Views\PayrollDepartments\Index.cshtml" />
+    <Content Include="Views\PayrollEmployees\Create.cshtml" />
+    <Content Include="Views\PayrollEmployees\Edit.cshtml" />
+    <Content Include="Views\PayrollEmployees\Index.cshtml" />
+    <Content Include="Views\Shared\Scripts.cshtml" />
+    <Content Include="User Manual - Payroll and Reimbursement.pdf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+    <Folder Include="Areas\PAYROLL\Data\" />
+    <Folder Include="Areas\PAYROLL\Views\Shared\" />
+    <Folder Include="Areas\REIMBURSEMENT\Data\" />
+    <Folder Include="Areas\REIMBURSEMENT\Views\Shared\" />
+    <Folder Include="Reports\" />
+    <Folder Include="Views\ActivityLogs\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <Target Name="MvcBuildViews" AfterTargets="AfterBuild" Condition="'$(MvcBuildViews)'=='true'">
+    <AspNetCompiler VirtualPath="temp" PhysicalPath="$(WebProjectOutputDir)" />
+  </Target>
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>52825</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:52825/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.2.0.1\build\net46\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target> -->
+</Project>

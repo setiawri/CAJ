@@ -1,0 +1,282 @@
+﻿@using CAJWebApp.Controllers
+@using LIBUtil
+@model IEnumerable<CAJWebApp.Areas.Reimbursement.Models.ReimbursementsModel>
+
+@{
+    ViewBag.Root = "Reimbursement";
+    ViewBag.Title = "Index";
+}
+
+<div class="content-wrapper">
+    <!-- Content area -->
+    <div class="content">
+        <!-- Form inputs -->
+        <div class="card animated bounceInLeft">
+            <div class="card-header header-elements-inline">
+                <h5 class="card-title">@ViewBag.Root</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mt-0">
+                    <div class="col-lg-3">
+                        <div class="row col-lg-12">
+                            <label class="mb-0">Periode</label>
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <button type="button" class="btn btn-light" onclick="ReloadTable('@EnumActions.Previous.ToString()')">&lt;</button>
+                                    <select id="PayPeriodMonth" class="form-control select2" onchange="ReloadTable()">
+                                        <option value="1">January</option>
+                                        <option value="2">February</option>
+                                        <option value="3">March</option>
+                                        <option value="4">April</option>
+                                        <option value="5">May</option>
+                                        <option value="6">June</option>
+                                        <option value="7">July</option>
+                                        <option value="8">August</option>
+                                        <option value="9">September</option>
+                                        <option value="10">October</option>
+                                        <option value="11">November</option>
+                                        <option value="12">December</option>
+                                    </select>
+                                </div>
+                                <input id="PayPeriodYear" type="number" class="form-control text-center positiveintegeronly" value="@ViewBag.PayPeriodYear">
+                                <button type="button" class="btn btn-light" onclick="ReloadTable('@EnumActions.Next.ToString()')">&gt;</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-lg-2">
+                        <div class="col-lg-12">
+                            <label class="mb-0">Bank</label>
+                            <div class="input-group">
+                                @Html.DropDownList("Banks", ViewBag.Banks as SelectList, "ALL", new { @class = "custom-select", @style = "height:auto;", onchange = "ReloadTable()" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-lg-2">
+                        <div class="col-lg-10">
+                            <label class="mb-0">Approval</label>
+                            <div class="input-group">
+                                <select id="FILTER_Approval" class="custom-select" onchange="ReloadTable()">
+                                    <option value="" selected>ALL</option>
+                                    <option value="1">Approved</option>
+                                    <option value="0">Not Approved</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row col-lg-2">
+                        <div class="col-lg-12">
+                            <label class="mb-0">&nbsp;</label>
+                            <div class="form-group mb-0">
+                                <div class="btn-toolbar">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-outline-primary form-control" onclick="ReloadTable()"><i class="icon-reload-alt mr-2"></i>SEARCH</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-lg-1">
+                        <div class="form-group mb-0">
+                            <div class="btn-toolbar">
+                                <div class="btn-group">
+                                    <button onclick="Create()" class="btn btn-success">ADD<i class="icon-plus22 ml-2"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group mb-0">
+                            <div class="btn-toolbar">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-outline-success form-control" onclick="PrintToPdf()"><i class="icon-file-pdf mr-2"></i>PDF</button>
+                                    <button type="button" class="btn btn-outline-success form-control" onclick="GenerateReport()"><i class="icon-coins mr-2"></i>Report</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text bg-white">Approved Total</span>
+                            </div>
+                            <input type="text" class="form-control text-right" value="@ViewBag.TotalApprovedPayableAmount" readonly>
+                            <div class="input-group-prepend ml-1">
+                                <span class="input-group-text bg-white">Approved Due</span>
+                            </div>
+                            <input type="text" class="form-control text-right" value="@ViewBag.TotalApprovedDueAmount" readonly>
+                            <button type="button" class="btn btn-outline-warning form-control ml-1" onclick="CreatePayments()"><i class="icon-coins mr-2"></i>Create Payments</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="table-responsive mt-2">
+                    <table class="table table-hover datatable">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Nama/Counter/Tgl Bayar</th>
+                                <th class="text-right">Total</th>
+                                <th class="text-right">Payment</th>
+                                <th class="text-right">Due</th>
+                                <th class="non-searchable non-sortable"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@Html.DisplayFor(modelItem => item.RowNumber)</td>
+                                    <td>
+                                        @Html.ActionLink(item.EmployeeFullName, "Index", "PayrollEmployees", new { Area = "", search = item.EmployeeFullName }, new { target = "_blank" })
+                                        <br />@Html.DisplayFor(modelItem => item.CustomerName)
+                                        <br />Tgl Bayar: @Html.DisplayFor(modelItem => item.PaymentDate)
+                                    </td>
+                                    <td class="text-right">@Html.DisplayFor(modelItem => item.PayableAmount)</td>
+                                    <td class="text-right">
+                                        @if (item.PaymentAmount != 0)
+                                        {
+                                            @Html.ActionLink(item.PaymentAmount.ToString("N0"), "Index", "PayrollPayments", new { Area = "Payroll", PayPeriod = item.PayPeriod.ToShortDateString(), search = item.EmployeeFullName }, new { target = "_blank" })
+                                        }
+                                        else
+                                        {
+                                            @Html.DisplayFor(modelItem => item.PaymentAmount)
+                                        }
+                                    </td>
+                                    <td class="text-right">@(string.Format("{0:N0}", item.PayableAmount - @item.PaymentAmount))</td>
+                                    <td>
+                                        @if (item.ApprovalOperator_ID == null)
+                                        {
+                                            <span class="badge badge-dark d-block">Not Approved</span>
+                                            if (Util.hasAccess(Session, OperatorController.SESSION_OperatorPrivilegePayrollModel_ReimbursementApproval))
+                                            {
+                                                <a href="javascript:void(0)" onclick="UpdateApproval('@item.Id', true, '@item.EmployeeFullName')" class="badge badge-warning d-block">Approve</a>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-success d-block">Approved</span>
+                                            if (Util.hasAccess(Session, OperatorController.SESSION_OperatorPrivilegePayrollModel_ReimbursementApproval))
+                                            {
+                                                <a href="javascript:void(0)" onclick="UpdateApproval('@item.Id', false, '@item.EmployeeFullName')" class="badge badge-warning d-block">Cancel Approval</a>
+                                            }
+                                        }
+
+                                        <a href="@Url.Action("Print","Reimbursements",new { id = item.Id })" target="_blank">View</a>
+                                        • @Html.ActionLink("PDF", "PrintToPdf", new { id = item.Id, name = item.EmployeeFullName, payPeriod = item.PayPeriod })
+                                        • <a href="javascript:void(0)" onclick="Log('@item.Id')">Log</a>
+
+                                        @if (item.ApprovalOperator_ID == null)
+                                        {
+                                            @(" • ")<a href="javascript:void(0)" onclick="Edit('@item.Id')">Edit</a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!-- /form inputs -->
+    </div>
+    <!-- /content area -->
+</div>
+
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        activateMenu('Reimbursements');
+
+        $('#PayPeriodMonth').val('@ViewBag.PayPeriodMonth');
+        $('#PayPeriodYear').val('@ViewBag.PayPeriodYear');
+        $('#Banks').val('@ViewBag.Banks_Id');
+        $('#FILTER_Approval').val('@ViewBag.Approval');
+
+        $('#PayrollPaymentDates').append('<option value="" disabled selected>ALL</option>'); //add placeholder
+        $('#PayrollPaymentDates option:selected').text(@ViewBag.PayDate);
+
+        if('@ViewBag.Search' != null && '@ViewBag.Search' != '')
+            $('input[aria-controls=DataTables_Table_0]').val('@ViewBag.Search').keyup(); //apply search
+    });
+
+    function ReloadTable(periodChange) {
+        var url = '@Url.Action("Index","Reimbursements",new { year = "__data" })';
+        window.location.href = url.replace("__data", getFilterString() + (periodChange != null ? "&periodChange=" + periodChange : ''));
+    }
+
+    function Create() {
+        var url = '@Url.Action("Create", "Reimbursements",new { year = "__data" })';
+        window.location.href = url.replace("__data", getFilterString());
+    }
+
+    function Edit(id) {
+        var url = '@Url.Action("Edit", "Reimbursements",new { id = "__data" })';
+        window.location.href = url.replace("__data", id + "?year=" + getFilterString());
+    }
+
+    function PrintToPdf() {
+        var url = '@Url.Action("PrintToPdf", "Reimbursements",new { year = "__data" })';
+        window.location.href = url.replace("__data", getFilterString());
+    }
+
+    function GenerateReport() {
+        var bankId = $('#Bank').val();
+        var url = '@Url.Action("Report", "Reimbursements", new { year = "__data" })';
+        window.location.href = url.replace('__data', getFilterString() + '&bankId=' + bankId);
+    }
+
+    function CreatePayments() {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("CreatePayments", "PayrollPayments", new { Area = "Payroll" })',
+            data: {
+                year: $('#PayPeriodYear').val(),
+                month: $('#PayPeriodMonth').val(),
+                payDate: parseInt($('#PayrollPaymentDates option:selected').text()),
+                actionType: @((int)EnumActionTypes.Reimbursement)
+            },
+            success: function (data) {
+                bootbox.alert({
+                    backdrop: true, message: data.insertCount + " pembayaran telah dibuat",
+                    callback: function() {
+                        ReloadTable();
+                    }
+                });
+            }, //end success
+            error: function (result) {
+                bootbox.alert({ backdrop: true, message: "Error " + result });
+            } //end error
+        }); //end ajax
+    }
+
+    function UpdateApproval(id, isApproval, employeeName) {
+        var confirmationMessage = "Konfirmasi approval ";
+        if (isApproval == false)
+            confirmationMessage = "Konfirmasi cancel approval "
+
+        confirmationMessage += employeeName + "?";
+        
+        if (confirm(confirmationMessage)) {
+            $.ajax({
+                type: "POST",
+                url: '@Url.Action("update_ApprovalOperator_ID", "Reimbursements")',
+                data: {
+                    key: isApproval ? '@EnumActions.Approve.ToString()' : '@EnumActions.Cancel.ToString()',
+                    id: id
+                },
+                success: function (data) {
+                    ReloadTable();
+                }, //end success
+                error: function (result) {
+                    bootbox.alert({ backdrop: true, message: "Error " + result });
+                } //end error
+            }); //end ajax
+        }
+    }
+
+</script>
+

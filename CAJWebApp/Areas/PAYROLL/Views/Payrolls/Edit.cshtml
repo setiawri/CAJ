@@ -1,0 +1,877 @@
+﻿@using CAJWebApp.Controllers
+@using LIBUtil 
+@model CAJWebApp.Areas.PAYROLL.Models.PayrollsModel
+
+@{
+    ViewBag.Root = "Payroll";
+    ViewBag.Title = "Edit";
+}
+
+<div class="content-wrapper">
+
+    <!-- Content area -->
+    <div class="content">
+        @using (Html.BeginForm("Edit", "Payrolls", FormMethod.Post, new { id = "target" }))
+        {
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(model => model.Id)
+                @Html.HiddenFor(model => model.PayrollEmployees_Id)
+                @Html.HiddenFor(model => model.Customer_CustomerID)
+                @Html.HiddenFor(model => model.MandatoryDeposit_PayrollItems_Id)
+                @Html.HiddenFor(model => model.ApproverName)
+                @Html.HiddenFor(model => model.ApproverTitle)
+                @Html.HiddenFor(model => model.ApproverSignatureFilename)
+                @Html.HiddenFor(model => model.ApprovalOperator_ID)
+                @Html.HiddenFor(model => model.PayrollDepartments_Name)
+                @Html.HiddenFor(model => model.Regions_Name)
+                @Html.HiddenFor(model => model.PayrollEarningsListString)
+                @Html.HiddenFor(model => model.PayrollDeductionsListString)
+                @Html.HiddenFor(model => model.PayrollDebtsListString)
+                @Html.HiddenFor(model => model.DebtStartingBalance)
+                @Html.HiddenFor(model => model.FILTER_PayPeriodYear)
+                @Html.HiddenFor(model => model.FILTER_PayPeriodMonth)
+                @Html.HiddenFor(model => model.FILTER_PayDate)
+                <!-- Form inputs -->
+                <div class="card">
+                    <div class="card-header header-elements-inline">
+                        <h5 class="card-title">@ViewBag.Root</h5>
+                    </div>
+                    <div class="card-body">
+                        <fieldset class="mb-3">
+                            <legend class="text-uppercase font-size-sm font-weight-bold">@ViewBag.Title</legend>
+                            <!--TOP INFO-->
+                            <div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.EmployeeFullName, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                                    <div class="col-lg-5">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                @Html.EditorFor(model => model.EmployeeFullName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.CustomerName, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                                    <div class="col-lg-5">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-form-label col-lg-2">Tgl Join / Lama Kerja</label>
+                                    <div class="col-lg-5">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                @Html.EditorFor(model => model.JoinDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <input type="text" id="TotalMonthsSinceJoin" value="@Helper.GetTotalMonthsSinceJoin(Model.JoinDate, Model.PayPeriod)" class="form-control" readonly />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.PayPeriod, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                                    <div class="col-lg-5">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                @Html.EditorFor(model => model.PayPeriod, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                                @Html.ValidationMessageFor(model => model.PayPeriod, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                    </div>
+                                </div>
+                            </div>
+                            <!--TOP INFO-->
+                            <!--ADDITIONAL INFO-->
+                            <div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.RowNumber, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                                    <div class="col-lg-5">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                @Html.EditorFor(model => model.RowNumber, new { htmlAttributes = new { @class = "form-control positiveintegeronly col-lg-4", @type = "text" } })
+                                                @Html.ValidationMessageFor(model => model.RowNumber, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    @Html.LabelFor(model => model.PayrollPaymentDates_PayDate, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                                    <div class="col-lg-5">
+                                        <div class="row">
+                                            <div class="col-lg-8">
+                                                @Html.EditorFor(model => model.PayrollPaymentDates_PayDate, new { htmlAttributes = new { @class = "form-control positiveintegeronly col-lg-4", @type = "text", @min = "1", @max = "31" } })
+                                                @Html.ValidationMessageFor(model => model.PayrollPaymentDates_PayDate, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-5">
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/ADDITIONAL INFO-->
+                            <hr />
+                            <!--SALARY-->
+                            <div>
+                                <label class="col-lg-12 text-center h5 font-weight-semibold">GAJI POKOK</label>
+                                <div class="col-lg-3">
+                                    <div class="form-group row">
+                                        <label class="col-form-label col-lg-5">Jam Kerja / Hari</label>
+                                        <div class="col-lg-4">
+                                            @Html.EditorFor(model => model.WorkHourPerDay, new { htmlAttributes = new { @class = "form-control positiveintegeronly", @min = "1", @max = "24", onkeyup = "CalculateWorkDays()", onchange = "CalculateWorkDays()" } })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <div class="table-responsive">
+                                            <table class="table table-condensed">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th></th>
+                                                        <th class="text-center">JAM</th>
+                                                        <th class="text-center">HARI</th>
+                                                        <th class="text-center">RATE</th>
+                                                        <th class="text-center">TOTAL</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!--NORMAL HARI-->
+                                                    <tr>
+                                                        <td>Normal/Hari</td>
+                                                        <td><input type="number" id="CalculatedRegularWorkHour" class="form-control positiveintegeronly" value="0" step="1" onkeyup="CalculateWorkDays()" onchange="CalculateWorkDays()" /></td>
+                                                        <td>
+                                                            @Html.EditorFor(model => model.RegularWorkDay, new { htmlAttributes = new { @class = "form-control positivenumericonly", @type = "text", onkeyup = "CalculatePay()", onchange = "CalculatePay()" } })
+                                                            @Html.ValidationMessageFor(model => model.RegularWorkDay, "", new { @class = "text-danger" })
+                                                        </td>
+                                                        <td>
+                                                            @Html.EditorFor(model => model.RegularPayrate, new { htmlAttributes = new { @class = "form-control positiveintegeronly text-right", @type = "text", onkeyup = "CalculatePay()", onchange = "CalculatePay()" } })
+                                                            @Html.ValidationMessageFor(model => model.RegularPayrate, "", new { @class = "text-danger" })
+                                                        </td>
+                                                        <td>
+                                                            @Html.Editor("RegularPayableAmount", new { htmlAttributes = new { @class = "form-control text-right", @readonly = "readonly", @Value = 0 } })
+                                                        </td>
+                                                    </tr>
+                                                    <!--NORMAL JAM-->
+                                                    <tr>
+                                                        <td>Normal/Jam</td>
+                                                        <td>
+                                                            @Html.EditorFor(model => model.RegularWorkHour, new { htmlAttributes = new { @class = "form-control positiveintegeronly", onkeyup = "CalculatePay()", onchange = "CalculatePay()" } })
+                                                            @Html.ValidationMessageFor(model => model.RegularWorkHour, "", new { @class = "text-danger" })
+                                                        </td>
+                                                        <td></td>
+                                                        <td><input type="text" disabled id="RegularHourlyPayrate" class="form-control text-right" /></td>
+                                                        <td>
+                                                            @Html.Editor("RegularHourPayableAmount", new { htmlAttributes = new { @class = "form-control text-right", @readonly = "readonly", @Value = 0 } })
+                                                        </td>
+                                                    </tr>
+                                                    <!--LEMBUR NORMAL-->
+                                                    <tr>
+                                                        <td>Lembur Normal</td>
+                                                        <td>
+                                                            @Html.EditorFor(model => model.RegularOvertimeWorkHour, new { htmlAttributes = new { @class = "form-control positiveintegeronly", @type = "number", @step = "1", onkeyup = "CalculatePay()", onchange = "CalculatePay()" } })
+                                                            @Html.ValidationMessageFor(model => model.RegularOvertimeWorkHour, "", new { @class = "text-danger" })
+                                                        </td>
+                                                        <td></td>
+                                                        <td>
+                                                            @Html.EditorFor(model => model.RegularOvertimeHourlyPayrate, new { htmlAttributes = new { @class = "form-control positiveintegeronly text-right", @type = "text", onkeyup = "CalculatePay()", onchange = "CalculatePay()" } })
+                                                            @Html.ValidationMessageFor(model => model.RegularOvertimeHourlyPayrate, "", new { @class = "text-danger" })
+                                                        </td>
+                                                        <td>
+                                                            @Html.Editor("RegularOvertimePayableAmount", new { htmlAttributes = new { @class = "form-control text-right", @readonly = "readonly", @Value = 0 } })
+                                                        </td>
+                                                    </tr>
+                                                    <!--HARI BESAR-->
+                                                    <tr>
+                                                        <td>Hari Besar</td>
+                                                        <td><input type="number" id="HolidayWorkHour" class="form-control positiveintegeronly" value="0" step="1" onkeyup="CalculateWorkDays()" onchange="CalculateWorkDays()" /></td>
+                                                        <td>
+                                                            @Html.EditorFor(model => model.HolidayWorkDay, new { htmlAttributes = new { @class = "form-control positivenumericonly", @type = "text", @step = "any", onkeyup = "CalculatePay()", onchange = "CalculatePay()" } })
+                                                            @Html.ValidationMessageFor(model => model.HolidayWorkDay, "", new { @class = "text-danger" })
+                                                        </td>
+                                                        <td>
+                                                            @Html.EditorFor(model => model.HolidayPayrate, new { htmlAttributes = new { @class = "form-control positiveintegeronly text-right", @type = "text", onkeyup = "CalculatePay()", onchange = "CalculatePay()" } })
+                                                            @Html.ValidationMessageFor(model => model.HolidayPayrate, "", new { @class = "text-danger" })
+                                                        </td>
+                                                        <td>
+                                                            @Html.Editor("HolidayPayableAmount", new { htmlAttributes = new { @class = "form-control text-right", @readonly = "readonly", @Value = 0 } })
+                                                        </td>
+                                                    </tr>
+                                                    <!--LEMBUR HARI BESAR-->
+                                                    <tr>
+                                                        <td>Lembur Hari Besar</td>
+                                                        <td>
+                                                            @Html.EditorFor(model => model.HolidayOvertimeWorkHour, new { htmlAttributes = new { @class = "form-control positiveintegeronly", @type = "number", @step = "1", onkeyup = "CalculatePay()", onchange = "CalculatePay()" } })
+                                                            @Html.ValidationMessageFor(model => model.HolidayOvertimeWorkHour, "", new { @class = "text-danger" })
+                                                        </td>
+                                                        <td></td>
+                                                        <td>
+                                                            @Html.EditorFor(model => model.HolidayOvertimeHourlyPayrate, new { htmlAttributes = new { @class = "form-control positiveintegeronly text-right", @type = "text", onkeyup = "CalculatePay()", onchange = "CalculatePay()" } })
+                                                            @Html.ValidationMessageFor(model => model.HolidayOvertimeHourlyPayrate, "", new { @class = "text-danger" })
+                                                        </td>
+                                                        <td>
+                                                            @Html.Editor("HolidayOvertimePayableAmount", new { htmlAttributes = new { @class = "form-control text-right", @readonly = "readonly", @Value = 0 } })
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th colspan="5">
+                                                            <div class="col-lg-12">
+                                                                <div class="row">
+                                                                    <div class="col-lg-6">
+                                                                        <div class="row">
+                                                                            <label class="col-form-label col-lg-2">Notes</label>
+                                                                            <div class="col-lg-10">
+                                                                                @Html.EditorFor(model => model.Notes, new { htmlAttributes = new { @class = "form-control" } })
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <label class="col-form-label col-lg-2 text-right">Persentase Dibayar</label>
+                                                                    <div class="col-lg-1">
+                                                                        @Html.EditorFor(model => model.PaymentPercentage, new { htmlAttributes = new { @class = "form-control positiveintegeronly", @min = "0", @max = "100", onkeyup = "CalculateTotals()", onchange = "CalculateTotals()" } })
+                                                                        @Html.ValidationMessageFor(model => model.PaymentPercentage, "", new { @class = "text-danger" })
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        <div class="row">
+                                                                            <label class="col-form-label col-lg-7 text-right">TOTAL GAJI POKOK</label>
+                                                                            <label id="SalaryAmount" class="col-form-label col-lg-5 text-right total-salaryAmount">0</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/SALARY-->
+                            <!--EARNINGS-->
+                            <div>
+                                <div>
+                                    <label class="col-lg-12 text-center h5 font-weight-semibold">TAMBAHAN</label>
+                                    @Html.ValidationMessageFor(model => model.PayrollEarningsListString, "", new { @class = "text-danger" })
+                                    <div class="form-group row">
+                                        <div class="col-lg-12">
+                                            <table class="table table-condensed">
+                                                <thead class="thead-light">
+                                                    <tr>
+                                                        <th style="width:3%">
+                                                            <a href="javascript:void(0)" class="text-success" onclick="AddEarning()"><i class="fa fa-2x fa-plus-square"></i></a>
+                                                        </th>
+                                                        <th style="width:30%">Kategori</th>
+                                                        <th style="width:45%">Deskripsi</th>
+                                                        <th style="width:22%" class="text-center">Nilai</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="earningList">
+                                                    @{ int earningRowIndex = 0; }
+                                                    @if (Model.PayrollEarningsList != null)
+                                                    {
+                                                        foreach (var item in Model.PayrollEarningsList)
+                                                        {
+                                                            <tr id="earning_@earningRowIndex">
+                                                                <td><a href="javascript:void(0)" onclick="RemoveRow('earning', @earningRowIndex)" class="text-danger"><i class="fa fa-2x fa-times"></i></a></td>
+                                                                <td>@Html.DropDownList("ddlPayrollEarnings_" + earningRowIndex, new SelectList(ViewBag.PayrollEarnings, "Value", "Text", item.PayrollEarnings_Id), new { @class = "form-control select2 ddlPayrollEarnings" })</td>
+                                                                <td><input type="text" class="form-control earning-Description" value="@item.Description" /></td>
+                                                                <td><input type="text" class="form-control text-right positiveintegeronly earning-Amount" value='@item.Amount' onkeyup="CalculateTotals()" /></td>
+                                                                <td style="display:none">
+                                                                    <input id="earning-Payrolls_Id" value="@item.Payrolls_Id" />
+                                                                    <input id="earning-PayrollItems_Id" value="@item.Id" />
+                                                                    @(earningRowIndex++)
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                </tbody>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th colspan="5">
+                                                            <div class="col-lg-12">
+                                                                <div class="row">
+                                                                    <div class="col-lg-9">
+                                                                    </div>
+                                                                    <div class="col-lg-3">
+                                                                        <div class="row">
+                                                                            <label class="col-form-label col-lg-7 text-right">TOTAL TAMBAHAN</label>
+                                                                            <label class="col-form-label col-lg-5 text-right totalEarningsAmount">0</label>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/EARNINGS-->
+                            <!--DEDUCTIONS-->
+                            <div>
+                                <label class="col-lg-12 text-center h5 font-weight-semibold">POTONGAN</label>
+                                @Html.ValidationMessageFor(model => model.PayrollDeductionsListString, "", new { @class = "text-danger" })
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <table class="table table-condensed">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th style="width:3%">
+                                                        <a href="javascript:void(0)" class="text-success" onclick="AddDeduction()"><i class="fa fa-2x fa-plus-square"></i></a>
+                                                    </th>
+                                                    <th style="width:30%">Kategori</th>
+                                                    <th style="width:45%">Deskripsi</th>
+                                                    <th style="width:22%" class="text-center">Nilai</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="deductionList">
+                                                @{ int deductionRowIndex = 0; }
+                                                @if (Model.PayrollDeductionsList != null)
+                                                {
+                                                    foreach (var item in Model.PayrollDeductionsList)
+                                                    {
+                                                        <tr id="deduction_@deductionRowIndex">
+                                                            <td><a href="javascript:void(0)" onclick="RemoveRow('deduction', @deductionRowIndex)" class="text-danger"><i class="fa fa-2x fa-times"></i></a></td>
+                                                            <td>@Html.DropDownList("ddlDeduction_" + deductionRowIndex, new SelectList(ViewBag.PayrollDeductions, "Value", "Text", item.PayrollDeductions_Id), new { @class = "form-control select2 ddlPayrollDeductions" })</td>
+                                                            <td><input type="text" class="form-control deduction-Description" value="@item.Description" /></td>
+                                                            <td><input type="text" class="form-control text-right positiveintegeronly deduction-Amount" value='@(item.Amount*-1)' onkeyup="CalculateTotals()" /></td>
+                                                            <td style="display:none">
+                                                                <input id="deduction-Payrolls_Id" value="@item.Payrolls_Id" />
+                                                                <input id="deduction-PayrollItems_Id" value="@item.Id" />
+                                                                @(deductionRowIndex++)
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th colspan="5">
+                                                        <div class="col-lg-12">
+                                                            <div class="row">
+                                                                <div class="col-lg-9">
+                                                                </div>
+                                                                <div class="col-lg-3">
+                                                                    <div class="row">
+                                                                        <label class="col-form-label col-lg-7 text-right">TOTAL POTONGAN</label>
+                                                                        <label class="col-form-label col-lg-5 text-right totalDeductionsAmount">0</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/DEDUCTIONS-->
+                            <!--DEBT-->
+                            <div>
+                                <label class="col-lg-12 text-center h5 font-weight-semibold">HUTANG</label>
+                                @Html.ValidationMessageFor(model => model.PayrollDebtsListString, "", new { @class = "text-danger" })
+                                <div class="form-group row">
+                                    <div class="col-lg-12">
+                                        <table class="table table-condensed">
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th style="width:3%">
+                                                        <a href="javascript:void(0)" class="text-success" onclick="AddDebt()"><i class="fa fa-2x fa-plus-square"></i></a>
+                                                    </th>
+                                                    <th style="width:30%">Kategori</th>
+                                                    <th style="width:45%">Deskripsi</th>
+                                                    <th style="width:22%">
+                                                        <div class="row">
+                                                            <label class="col-form-label col-lg-6 text-right font-weight-normal pr-3">SALDO AWAL</label>
+                                                            <label id="DebtStartingBalanceLabel" class="col-form-label col-lg-6 text-right font-weight-normal pr-3">@string.Format("{0:N0}", Model.DebtStartingBalance)</label>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="debtList">
+                                                @{ int debtRowIndex = 0; }
+                                                @if (Model.PayrollDebtsList != null)
+                                                {
+                                                    foreach (var item in Model.PayrollDebtsList)
+                                                    {
+                                                        <tr id="debt_@debtRowIndex">
+                                                            <td><a href="javascript:void(0)" onclick="RemoveRow('debt', @debtRowIndex)" class="text-danger"><i class="fa fa-2x fa-times"></i></a></td>
+                                                            <td>@Html.DropDownList("ddlDebt_" + debtRowIndex, new SelectList(ViewBag.PayrollDebts, "Value", "Text", item.PayrollDebts_Id), new { @class = "form-control select2 ddlPayrollDebts" })</td>
+                                                            <td><input type="text" class="form-control debt-Description" value="@item.Description" /></td>
+                                                            <td><input type="text" class="form-control text-right integeronly debt-Amount" value='@item.Amount' onkeyup="CalculateTotals()" /></td>
+                                                            <td style="display:none">
+                                                                <input id="debt-Payrolls_Id" value="@item.Payrolls_Id" />
+                                                                <input id="debt-PayrollItems_Id" value="@item.Id" />
+                                                                @(debtRowIndex++)
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th colspan="5">
+                                                        <div class="col-lg-12">
+                                                            <div class="row">
+                                                                <div class="col-lg-9"></div>
+                                                                <div class="col-lg-3">
+                                                                    <div class="row">
+                                                                        <label class="col-form-label col-lg-7 text-right">UPDATE</label>
+                                                                        <label id="DebtUpdateAmount" class="col-form-label col-lg-5 text-right">0</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-lg-9"></div>
+                                                                <div class="col-lg-3">
+                                                                    <div class="row">
+                                                                        <label class="col-form-label col-lg-7 text-right font-weight-normal">SALDO AKHIR</label>
+                                                                        <label id="DebtEndingBalance" class="col-form-label col-lg-5 text-right font-weight-normal">0</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--/DEBT-->
+                            <div class="form-group row">
+                                <div class="col-lg-5">
+                                    <table class="table table-condensed">
+                                        <thead>
+                                            <tr>
+                                                <th class="col-lg-2"></th>
+                                                <th class="text-center col-lg-2">SALDO AWAL</th>
+                                                <th class="text-center col-lg-2">UPDATE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Tabungan Wajib</td>
+                                                <td>@Html.EditorFor(model => model.MandatoryDepositStartingBalance, new { htmlAttributes = new { @class = "form-control text-right", @type = "text", @readonly = "readonly" } })</td>
+                                                <td>
+                                                    @Html.EditorFor(model => model.MandatoryDepositUpdateAmount, new { htmlAttributes = new { @class = "form-control integeronly text-right", @type = "text", @onkeyup = "CalculateTotals()" } })
+                                                    @Html.ValidationMessageFor(model => model.MandatoryDepositUpdateAmount, "", new { @class = "text-danger" })
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td>Cuti</td>
+                                                <td>@Html.EditorFor(model => model.LeaveDaysStartingBalance, new { htmlAttributes = new { @class = "form-control text-right", @type = "text", @readonly = "readonly" } })</td>
+                                                <td>
+                                                    @Html.EditorFor(model => model.LeaveDaysAdjustment, new { htmlAttributes = new { @class = "form-control integeronly text-right", @type = "text" } })
+                                                    @Html.ValidationMessageFor(model => model.LeaveDaysAdjustment, "", new { @class = "text-danger" })
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-lg-7"></div>
+                            </div>
+                            <hr />
+                            <div class="form-group row">
+                                <label class="col-form-label col-lg-2"><strong>PAYABLE</strong></label>
+                                <label id="PayableAmount" class="col-form-label col-lg-2"><strong>0</strong></label>
+                            </div>
+                        </fieldset>
+                        <div>
+                            <button type="submit" class="btn btn-primary">Update<i class="icon-paperplane ml-2"></i></button>
+                            <button type="button" onclick="Print('@Model.Id')" class="btn btn-success">Print<i class="icon-printer4 ml-2"></i></button>
+                            @*@if (Util.hasAccess(Session, OperatorController.SESSION_OperatorPrivilegePayrollModel_PayrollApproval))
+                            {
+                                <button type="button" onclick="Approve('@Model.Id')" class="btn btn-warning">Approve<i class="icon-database-check ml-2"></i></button>
+                            }
+                            else
+                            {
+                                <button type="button" class="btn btn-warning disabled">Approve<i class="icon-database-check ml-2"></i></button>
+                            }*@
+                            <a href="@Url.Action("Index", "Payrolls",
+                                    new {  year = ViewBag.PayPeriodYear, month = ViewBag.PayPeriodMonth, payDate = ViewBag.PayDate, approval = ViewBag.Approval, Banks_Id = ViewBag.Banks_Id, search = ViewBag.Search } )"
+                               class="btn btn-warning">Cancel<i class="icon-cross2 ml-2"></i></a>
+
+                            <button type="button" class="btn btn-danger ml-5" onclick="Regenerate()">Regenerate<i class="icon-reload-alt ml-2"></i></button>
+                        </div>
+                    </div>
+                </div>
+                <!-- /form inputs -->
+            }
+        }
+    </div>
+    <!-- /content area -->
+</div>
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        CalculatePay(); //calculate on first load
+        activateMenu('Payrolls');
+    });
+
+    //GAJI POKOK ===================================================================================================================================================
+
+    function CalculateWorkDays() {
+        $('#WorkHourPerDay').val(setIfEmpty($('#WorkHourPerDay').val(), 1));
+
+        $('#CalculatedRegularWorkHour').val(ZeroIfEmpty($('#CalculatedRegularWorkHour').val()));
+        $('#RegularWorkDay').val(parseFloat($('#CalculatedRegularWorkHour').val()) / parseFloat($('#WorkHourPerDay').val()));
+        
+        $('#HolidayWorkHour').val(ZeroIfEmpty($('#HolidayWorkHour').val()));
+        $('#HolidayWorkDay').val(parseFloat($('#HolidayWorkHour').val()) / parseFloat($('#WorkHourPerDay').val()));
+
+        CalculatePay();
+    }
+
+    function CalculatePay() {
+        $('#RegularWorkDay').val(ZeroIfEmpty($('#RegularWorkDay').val()));
+        $('#RegularPayrate').val(ZeroIfEmpty($('#RegularPayrate').val()));
+        $('#CalculatedRegularWorkHour').val(parseFloat($('#WorkHourPerDay').val()) * parseFloat($('#RegularWorkDay').val()));
+        var RegularPayableAmount = Math.ceil(parseFloat($('#RegularWorkDay').val()) * parseFloat($('#RegularPayrate').val()));
+        $('#RegularPayableAmount').val($.number(RegularPayableAmount));
+
+        $('#RegularWorkHour').val(ZeroIfEmpty($('#RegularWorkHour').val()));
+        $('#RegularHourlyPayrate').val(Math.ceil(parseFloat($('#RegularPayrate').val()) / parseFloat($('#WorkHourPerDay').val())));
+        var RegularHourPayableAmount = Math.ceil(parseFloat($('#RegularWorkHour').val()) * parseFloat($('#RegularHourlyPayrate').val()));
+        $('#RegularHourPayableAmount').val($.number(RegularHourPayableAmount));
+
+        $('#RegularOvertimeWorkHour').val(ZeroIfEmpty($('#RegularOvertimeWorkHour').val()));
+        $('#RegularOvertimeHourlyPayrate').val(ZeroIfEmpty($('#RegularOvertimeHourlyPayrate').val()));
+        var RegularOvertimePayableAmount = Math.ceil(parseFloat($('#RegularOvertimeWorkHour').val()) * parseFloat($('#RegularOvertimeHourlyPayrate').val()));
+        $('#RegularOvertimePayableAmount').val($.number(RegularOvertimePayableAmount));
+
+        $('#HolidayWorkDay').val(ZeroIfEmpty($('#HolidayWorkDay').val()));
+        $('#HolidayPayrate').val(ZeroIfEmpty($('#HolidayPayrate').val()));
+
+        $('#HolidayWorkHour').val(parseFloat($('#WorkHourPerDay').val()) * parseFloat($('#HolidayWorkDay').val()));
+        var HolidayPayableAmount = Math.ceil(parseFloat($('#HolidayWorkDay').val()) * parseFloat($('#HolidayPayrate').val()));
+        $('#HolidayPayableAmount').val($.number(HolidayPayableAmount));
+
+        $('#HolidayOvertimeWorkHour').val(ZeroIfEmpty($('#HolidayOvertimeWorkHour').val()));
+        $('#HolidayOvertimeHourlyPayrate').val(ZeroIfEmpty($('#HolidayOvertimeHourlyPayrate').val()));
+        var HolidayOvertimePayableAmount = Math.ceil(parseFloat($('#HolidayOvertimeWorkHour').val()) * parseFloat($('#HolidayOvertimeHourlyPayrate').val()));
+        $('#HolidayOvertimePayableAmount').val($.number(HolidayOvertimePayableAmount));
+
+        CalculateTotals();
+    }
+
+    //EARNINGS =====================================================================================================================================================
+
+    var earning_no = 100;
+    function AddEarning() {
+        earning_no += 1;
+        var earningRow = '<tr id="earning_' + earning_no + '">'
+            + '<td><a href="javascript:void(0)" onclick="RemoveRow(\'earning\',' + earning_no + ')" class="text-danger"><i class="fa fa-2x fa-times"></i></a></td>'
+            + '<td><select class="form-control ddlPayrollEarnings" id="ddlPayrollEarnings_' + earning_no + '" name="ddlPayrollEarnings_' + earning_no + '"></select></td>'
+            + '<td><input type="text" class="form-control earning-Description" /></td>'
+            + '<td><input type="text" class="form-control text-right positiveintegeronly earning-Amount" value=0 onkeyup="CalculateTotals()" onchange="CalculateTotals()" /></td>'
+            + '</tr>';
+        $('#earningList').append(earningRow);
+
+        $.get('@Url.Action("getDropdownlistData", "PayrollEarnings")', function (data) {
+            $.each(data.result, function (index, row) {
+                $('#ddlPayrollEarnings_' + earning_no).append("<option value='" + row.Id + "'>" + row.Name + "</option>")
+            });
+        });
+        $('#ddlPayrollEarnings_' + earning_no).select2();
+
+        applyEventsToInputs();
+    }
+
+    //DEDUCTIONS ===================================================================================================================================================
+
+    var deduction_no = 100;
+    function AddDeduction() {
+        deduction_no += 1;
+        var deductionRow = '<tr id="deduction_' + deduction_no + '">'
+            + '<td><a href="javascript:void(0)" onclick="RemoveRow(\'deduction\',' + deduction_no + ')" class="text-danger"><i class="fa fa-2x fa-times"></i></a></td>'
+            + '<td><select class="form-control ddlPayrollDeductions" id="ddlDeduction_' + deduction_no + '" name="ddlDeduction_' + deduction_no + '"></select></td>'
+            + '<td><input type="text" class="form-control deduction-Description" /></td>'
+            + '<td><input type="text" class="form-control text-right positiveintegeronly deduction-Amount" value=0 onkeyup="CalculateTotals()" onchange="CalculateTotals()" /></td>'
+            + '</tr>';
+        $('#deductionList').append(deductionRow);
+
+        $.get('@Url.Action("getDropdownlistData", "PayrollDeductions")', function (data) {
+            $.each(data.result, function (index, row) {
+                $('#ddlDeduction_' + deduction_no).append("<option value='" + row.Id + "'>" + row.Name + "</option>")
+            });
+        });
+        $('#ddlDeduction_' + deduction_no).select2();
+
+        applyEventsToInputs();
+    }
+
+    //DEBTS ========================================================================================================================================================
+
+    var debt_no = 100;
+    function AddDebt() {
+        debt_no += 1;
+        var debtRow = '<tr id="debt_' + debt_no + '">'
+            + '<td><a href="javascript:void(0)" onclick="RemoveRow(\'debt\',' + debt_no + ')" class="text-danger"><i class="fa fa-2x fa-times"></i></a></td>'
+            + '<td><select class="form-control ddlPayrollDebts" id="ddlDebt_' + debt_no + '" name="ddlDebt_' + debt_no + '"></select></td>'
+            + '<td><input type="text" class="form-control debt-Description" /></td>'
+            + '<td><input type="text" class="form-control text-right integeronly debt-Amount" value=0 onkeyup="CalculateTotals()" onchange="CalculateTotals()" /></td>'
+            + '</tr>';
+        $('#debtList').append(debtRow);
+
+        $.get('@Url.Action("getDropdownlistData", "PayrollDebts")', function (data) {
+            $.each(data.result, function (index, row) {
+                $('#ddlDebt_' + debt_no).append("<option value='" + row.Id + "'>" + row.Name + "</option>")
+            });
+        });
+        $('#ddlDebt_' + debt_no).select2();
+
+        applyEventsToInputs();
+    }
+
+    //REMOVE EARNING / DEDUCTION / DEBT ROWS ==============================================================================================================================
+
+    function RemoveRow(key, row) {
+        $('#' + key + '_' + row).remove();
+        CalculateTotals();
+    }
+
+    //CALCULATE TOTALS =============================================================================================================================================
+
+    function CalculateTotals() {
+        var RegularPayableAmount = $('#RegularPayableAmount').val().replace(/,/g, '');
+        var RegularHourPayableAmount = $('#RegularHourPayableAmount').val().replace(/,/g, '');
+        var RegularOvertimePayableAmount = $('#RegularOvertimePayableAmount').val().replace(/,/g, '');
+        var HolidayPayableAmount = $('#HolidayPayableAmount').val().replace(/,/g, '');
+        var HolidayOvertimePayableAmount = $('#HolidayOvertimePayableAmount').val().replace(/,/g, '');
+        $('#PaymentPercentage').val(ZeroIfEmpty($('#PaymentPercentage').val()));
+        var PaymentPercentage = $('#PaymentPercentage').val();
+        var salaryAmount =
+            Math.ceil((
+                    parseInt(RegularPayableAmount)
+                    + parseInt(RegularHourPayableAmount)
+                    + parseInt(RegularOvertimePayableAmount)
+                    + parseInt(HolidayPayableAmount)
+                    + parseInt(HolidayOvertimePayableAmount)
+                ) * parseInt(PaymentPercentage) / 100
+            );
+        $('#SalaryAmount').html($.number(salaryAmount));
+
+        var totalEarningsAmount = 0;
+        $('input.earning-Amount').each(function () {
+            totalEarningsAmount += parseInt(ZeroIfEmpty($(this).val()));
+        });
+        $('.totalEarningsAmount').text($.number(totalEarningsAmount));
+
+        var totalDeductionsAmount = 0;
+        $('input.deduction-Amount').each(function () {
+            totalDeductionsAmount += parseInt(ZeroIfEmpty($(this).val()));
+        });
+        $('.totalDeductionsAmount').text($.number(totalDeductionsAmount));
+
+        var DebtUpdateAmount = 0;
+        $('input.debt-Amount').each(function () {
+            DebtUpdateAmount += parseInt(ZeroIfEmpty($(this).val()));
+        });
+        $('#DebtUpdateAmount').html($.number(DebtUpdateAmount));
+        var DebtStartingBalance = parseInt($('#DebtStartingBalance').val());
+        $('#DebtEndingBalance').html($.number(DebtStartingBalance + DebtUpdateAmount));
+
+        $('#MandatoryDepositUpdateAmount').val(ZeroIfEmpty($('#MandatoryDepositUpdateAmount').val()));
+        var MandatoryDepositUpdateAmount = parseInt($('#MandatoryDepositUpdateAmount').val());
+
+        var payableAmount = salaryAmount + totalEarningsAmount - totalDeductionsAmount + DebtUpdateAmount - MandatoryDepositUpdateAmount;
+        $('#PayableAmount').html($.number(payableAmount));
+    }
+
+    //REGENERATE DATA ==============================================================================================================================================
+
+    function Regenerate() {
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("GetRegenerateData", "Payrolls", new { Area = "Payroll" })',
+            data: {
+                id: $('#Id').val()
+            },
+            success: function (data) {
+                //User must change some editable properties manually:
+                //- WorkHourPerDay: so it doesn't mess up current calculation.
+                //- PayrollPaymentDates_PayDate
+
+                var log = "";
+
+                log = appendChange(log, $('#EmployeeFullName').val(), data.model.EmployeeFullName, "Nama: ");
+                $('#EmployeeFullName').val(data.model.EmployeeFullName);
+
+                log = appendChange(log, $('#CustomerName').val(), data.model.CustomerName, "Counter: ");
+                $('#CustomerName').val(data.model.CustomerName);
+                $('#Customer_CustomerID').val(data.model.Customer_CustomerID);
+
+                var oldJoinDate = formatDate(new Date($('#JoinDate').val()), 'dd MMM yyyy');
+                var newJoinDate = formatDate(parseJSONDate(data.model.JoinDate), 'dd MMM yyyy');
+                log = appendChange(log, oldJoinDate, newJoinDate, "Tgl Join: ");
+                $('#JoinDate').val(newJoinDate);
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("GetJsonTotalMonthsSinceJoin", "Payrolls", new { Area = "Payroll" })',
+                    data: {
+                        JoinDate: $('#JoinDate').val(),
+                        PayPeriod: $('#PayPeriod').val()
+                    },
+                    success: (function (data) {
+                        $('#TotalMonthsSinceJoin').val(data.TotalMonthsSinceJoin);
+                    })
+                });
+
+                log = appendChange(log, $('#RegularPayrate').val(), data.model.RegularPayrate, "Normal / Hari: ");
+                $('#RegularPayrate').val(data.model.RegularPayrate);
+
+                log = appendChange(log, $('#RegularOvertimeHourlyPayrate').val(), data.model.RegularOvertimeHourlyPayrate, "Lembur Normal / Jam: ");
+                $('#RegularOvertimeHourlyPayrate').val(data.model.RegularOvertimeHourlyPayrate);
+
+                log = appendChange(log, $('#HolidayPayrate').val(), data.model.HolidayPayrate, "Hari Besar / Hari: ");
+                $('#HolidayPayrate').val(data.model.HolidayPayrate);
+
+                log = appendChange(log, $('#HolidayOvertimeHourlyPayrate').val(), data.model.HolidayOvertimeHourlyPayrate, "Lembur Hari Besar / Jam: ");
+                $('#HolidayOvertimeHourlyPayrate').val(data.model.HolidayOvertimeHourlyPayrate);
+
+                log = appendChange(log, $('#LeaveDaysStartingBalance').val(), data.model.LeaveDaysStartingBalance, "Saldo Awal Cuti: ");
+                $('#LeaveDaysStartingBalance').val(data.model.LeaveDaysStartingBalance);
+
+                log = appendChange(log, $('#MandatoryDepositStartingBalance').val(), data.model.MandatoryDepositStartingBalance, "Saldo Awal Tabungan: ");
+                $('#MandatoryDepositStartingBalance').val(data.model.MandatoryDepositStartingBalance);
+
+                log = appendChange(log, $('#DebtStartingBalanceLabel').html(), data.model.DebtStartingBalance, "Saldo Awal Tabungan: ");
+                $('#DebtStartingBalanceLabel').html($.number(data.model.DebtStartingBalance));
+                $('#DebtStartingBalance').val(data.model.DebtStartingBalance);
+
+                CalculatePay();
+
+                log = appendChange(log, $('#ApproverName').val(), data.model.ApproverName, "Nama Approver: ");
+                $('#ApproverName').val(data.model.ApproverName);
+
+                log = appendChange(log, $('#ApproverTitle').val(), data.model.ApproverTitle, "Title Approver: ");
+                $('#ApproverTitle').val(data.model.ApproverTitle);
+
+                log = appendChange(log, $('#ApproverSignatureFilename').val(), data.model.ApproverSignatureFilename, "Tanda Tangan Approver: ");
+                $('#ApproverSignatureFilename').val(data.model.ApproverSignatureFilename);
+
+                if (log == "")
+                    log = "Tidak ada perubahan data";
+                else
+                    log = "Perubahan data:<BR><BR>" + log;
+
+                bootbox.alert({ backdrop: true, message: log });
+            }, //end success
+            error: function (result) {
+                bootbox.alert({ backdrop: true, message: "Error " + result });
+            } //end error
+        }); //end ajax
+    }
+
+    //SUBMISSION ===================================================================================================================================================
+
+    function Print(id) {
+        $('#SubmitAction').val("Print");
+        $('#target').submit();
+
+        var url = '@Url.Action("Print","Payrolls",new { id = "__data" })';
+        url = url.replace("__data", id);
+        window.open(url,"_blank")
+    }
+
+    function Approve(id) {
+        $('#SubmitAction').val("Approve");
+        $('#ApprovalOperator_ID').val(parseInt(@CAJWebApp.Controllers.OperatorController.getUserId(Session)));
+        $('#target').submit();
+    }
+
+    $('#target').submit(function (e) {
+        $(this).find(':submit').attr('disabled', 'disabled'); //prevent double click on submit
+
+        $('#FILTER_PayDate').val(@ViewBag.PayDate);
+        $('#FILTER_PayPeriodYear').val(@ViewBag.PayPeriodYear);
+        $('#FILTER_PayPeriodMonth').val(@ViewBag.PayPeriodMonth);
+
+        var arrTambahan = [];
+        $('#earningList tr').each(function () {
+            var payrollitems_Id = $(this).find('input#earning-PayrollItems_Id').val();
+            var payrolls_Id = $(this).find('input#earning-Payrolls_Id').val();
+            var payrollEarnings_Id = $(this).find('select.ddlPayrollEarnings').val();
+            var description = $(this).find('input.earning-Description').val();
+            var amount = $(this).find('input.earning-Amount').val();
+            var categoryname = $(this).find('select.ddlPayrollEarnings').find(":selected").text();
+
+            var objTambahan = {
+                Id: payrollitems_Id,
+                Payrolls_Id: payrolls_Id,
+                PayrollEarnings_Id: payrollEarnings_Id,
+                CategoryName: categoryname,
+                Description: description,
+                Amount: amount
+            };
+            arrTambahan.push(objTambahan);
+        });
+        $('#PayrollEarningsListString').val(JSON.stringify(arrTambahan));
+
+        var arrPotongan = [];
+        $('#deductionList tr').each(function () {
+            var payrollitems_Id = $(this).find('input#deduction-PayrollItems_Id').val();
+            var payrolls_Id = $(this).find('input#deduction-Payrolls_Id').val();
+            var payrollDeductions_Id = $(this).find('select.ddlPayrollDeductions').val();
+            var description = $(this).find('input.deduction-Description').val();
+            var amount = -1 * $(this).find('input.deduction-Amount').val();
+            var categoryname = $(this).find('select.ddlPayrollDeductions').find(":selected").text();
+
+            var objPotongan = {
+                Id: payrollitems_Id,
+                Payrolls_Id: payrolls_Id,
+                PayrollDeductions_Id: payrollDeductions_Id,
+                CategoryName: categoryname,
+                Description: description,
+                Amount: amount
+            };
+            arrPotongan.push(objPotongan);
+        });
+        $('#PayrollDeductionsListString').val(JSON.stringify(arrPotongan));
+
+        var arrDebts = [];
+        $('#debtList tr').each(function () {
+            var payrollitems_Id = $(this).find('input#debt-PayrollItems_Id').val();
+            var payrolls_Id = $(this).find('input#debt-Payrolls_Id').val();
+            var payrollDebts_Id = $(this).find('select.ddlPayrollDebts').val();
+            var description = $(this).find('input.debt-Description').val();
+            var amount = $(this).find('input.debt-Amount').val();
+            var categoryname = $(this).find('select.ddlPayrollDebts').find(":selected").text();
+
+            var objDebts = {
+                Id: payrollitems_Id,
+                Payrolls_Id: payrolls_Id,
+                PayrollDebts_Id: payrollDebts_Id,
+                CategoryName: categoryname,
+                Description: description,
+                Amount: amount
+            };
+            arrDebts.push(objDebts);
+        });
+        $('#PayrollDebtsListString').val(JSON.stringify(arrDebts));
+    });
+</script>
+

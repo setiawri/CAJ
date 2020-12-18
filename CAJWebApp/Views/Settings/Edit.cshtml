@@ -1,0 +1,391 @@
+﻿@model CAJWebApp.Models.SettingsModel
+
+@{
+    ViewBag.Root = "General Settings";
+    ViewBag.Title = "";
+}
+
+<div class="content-wrapper">
+
+    <!-- Content area -->
+    <div class="content">
+        @using (Html.BeginForm("Edit", "Settings", FormMethod.Post, new { @enctype = "multipart/form-data" }))
+        {
+            @Html.AntiForgeryToken()
+            <!-- Form inputs -->
+            <div class="card animated bounceInLeft">
+                <div class="card-header header-elements-inline">
+                    <h5 class="card-title">@ViewBag.Root</h5>
+                </div>
+                <div class="card-body">
+                    <fieldset class="mb-3">
+                        <legend class="text-uppercase font-size-sm font-weight-bold">@ViewBag.Title</legend>
+
+                        <label class="h5">GAJI POKOK</label>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.WorkHoursPerDay, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-2">
+                                @Html.EditorFor(model => model.WorkHoursPerDay, new { htmlAttributes = new { @class = "form-control positiveintegeronly" } })
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text bg-info border-info text-white"><i class="icon icon-info22"></i></span>
+                                    </span>
+                                    @Html.EditorFor(model => model.WorkHoursPerDay_Notes, new { htmlAttributes = new { @class = "form-control", @placeholder = "Notes", @title = Model.WorkHoursPerDay_Notes } })
+                                </div>
+                            </div>
+                            <div class="col-lg-1 mt-1">
+                                <a href="javascript:void(0)" onclick="Log('@CAJWebApp.Models.SettingsModel.COL_WorkHoursPerDay.Id')">Log</a>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.ValidationMessageFor(model => model.WorkHoursPerDay, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row" style="display:none;">
+                            @Html.LabelFor(model => model.WorkDaysPerMonth, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-2">
+                                @Html.EditorFor(model => model.WorkDaysPerMonth, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text bg-info border-info text-white"><i class="icon icon-info22"></i></span>
+                                    </span>
+                                    @Html.EditorFor(model => model.WorkDaysPerMonth_Notes, new { htmlAttributes = new { @class = "form-control", @placeholder = "Notes", @title = Model.WorkDaysPerMonth_Notes } })
+                                </div>
+                            </div>
+                            <div class="col-lg-1 mt-1">
+                                <a href="javascript:void(0)" onclick="Log('@CAJWebApp.Models.SettingsModel.COL_WorkDaysPerMonth.Id')">Log</a>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.ValidationMessageFor(model => model.WorkDaysPerMonth, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.PaymentPercentageMonth1, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-2">
+                                @Html.EditorFor(model => model.PaymentPercentageMonth1, new { htmlAttributes = new { @class = "form-control positiveintegeronly" } })
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text bg-info border-info text-white"><i class="icon icon-info22"></i></span>
+                                    </span>
+                                    @Html.EditorFor(model => model.PaymentPercentageMonth1_Notes, new { htmlAttributes = new { @class = "form-control", @placeholder = "Notes", @title = Model.PaymentPercentageMonth1_Notes } })
+                                </div>
+                            </div>
+                            <div class="col-lg-1 mt-1">
+                                <a href="javascript:void(0)" onclick="Log('@CAJWebApp.Models.SettingsModel.COL_PaymentPercentageMonth1.Id')">Log</a>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.ValidationMessageFor(model => model.PaymentPercentageMonth1, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.PaymentPercentageMonth2, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-2">
+                                @Html.EditorFor(model => model.PaymentPercentageMonth2, new { htmlAttributes = new { @class = "form-control positiveintegeronly" } })
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text bg-info border-info text-white"><i class="icon icon-info22"></i></span>
+                                    </span>
+                                    @Html.EditorFor(model => model.PaymentPercentageMonth2_Notes, new { htmlAttributes = new { @class = "form-control", @placeholder = "Notes", @title = Model.PaymentPercentageMonth2_Notes } })
+                                </div>
+                            </div>
+                            <div class="col-lg-1 mt-1">
+                                <a href="javascript:void(0)" onclick="Log('@CAJWebApp.Models.SettingsModel.COL_PaymentPercentageMonth2.Id')">Log</a>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.ValidationMessageFor(model => model.PaymentPercentageMonth2, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.PaymentPercentageMonth3, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-2">
+                                @Html.EditorFor(model => model.PaymentPercentageMonth3, new { htmlAttributes = new { @class = "form-control positiveintegeronly" } })
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text bg-info border-info text-white"><i class="icon icon-info22"></i></span>
+                                    </span>
+                                    @Html.EditorFor(model => model.PaymentPercentageMonth3_Notes, new { htmlAttributes = new { @class = "form-control", @placeholder = "Notes", @title = Model.PaymentPercentageMonth3_Notes } })
+                                </div>
+                            </div>
+                            <div class="col-lg-1 mt-1">
+                                <a href="javascript:void(0)" onclick="Log('@CAJWebApp.Models.SettingsModel.COL_PaymentPercentageMonth3.Id')">Log</a>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.ValidationMessageFor(model => model.PaymentPercentageMonth3, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.MultiplierRegularPayrate, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(model => model.MultiplierRegularPayrate, new { @class = "form-control positivenumericonly" })
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text bg-info border-info text-white"><i class="icon icon-info22"></i></span>
+                                    </span>
+                                    @Html.EditorFor(model => model.MultiplierRegularPayrate_Notes, new { htmlAttributes = new { @class = "form-control", @placeholder = "Notes", @title = Model.MultiplierRegularPayrate_Notes } })
+                                </div>
+                            </div>
+                            <div class="col-lg-1 mt-1">
+                                <a href="javascript:void(0)" onclick="Log('@CAJWebApp.Models.SettingsModel.COL_MultiplierRegularPayrate.Id')">Log</a>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.ValidationMessageFor(model => model.MultiplierRegularPayrate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.MultiplierHolidayPayrate, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(model => model.MultiplierHolidayPayrate, new { @class = "form-control positivenumericonly" })
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text bg-info border-info text-white"><i class="icon icon-info22"></i></span>
+                                    </span>
+                                    @Html.EditorFor(model => model.MultiplierHolidayPayrate_Notes, new { htmlAttributes = new { @class = "form-control", @placeholder = "Notes", @title = Model.MultiplierHolidayPayrate_Notes } })
+                                </div>
+                            </div>
+                            <div class="col-lg-1 mt-1">
+                                <a href="javascript:void(0)" onclick="Log('@CAJWebApp.Models.SettingsModel.COL_MultiplierHolidayPayrate.Id')">Log</a>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.ValidationMessageFor(model => model.MultiplierHolidayPayrate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.MultiplierRegularOvertimeHourlyPayrate, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(model => model.MultiplierRegularOvertimeHourlyPayrate, new { @class = "form-control positivenumericonly" })
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text bg-info border-info text-white"><i class="icon icon-info22"></i></span>
+                                    </span>
+                                    @Html.EditorFor(model => model.MultiplierRegularOvertimeHourlyPayrate_Notes, new { htmlAttributes = new { @class = "form-control", @placeholder = "Notes", @title = Model.MultiplierRegularOvertimeHourlyPayrate_Notes } })
+                                </div>
+                            </div>
+                            <div class="col-lg-1 mt-1">
+                                <a href="javascript:void(0)" onclick="Log('@CAJWebApp.Models.SettingsModel.COL_MultiplierRegularOvertimeHourlyPayrate.Id')">Log</a>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.ValidationMessageFor(model => model.MultiplierRegularOvertimeHourlyPayrate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.MultiplierHolidayOvertimeHourlyPayrate, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-2">
+                                @Html.TextBoxFor(model => model.MultiplierHolidayOvertimeHourlyPayrate, new { @class = "form-control positivenumericonly" })
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text bg-info border-info text-white"><i class="icon icon-info22"></i></span>
+                                    </span>
+                                    @Html.EditorFor(model => model.MultiplierHolidayOvertimeHourlyPayrate_Notes, new { htmlAttributes = new { @class = "form-control", @placeholder = "Notes", @title = Model.MultiplierHolidayOvertimeHourlyPayrate_Notes } })
+                                </div>
+                            </div>
+                            <div class="col-lg-1 mt-1">
+                                <a href="javascript:void(0)" onclick="Log('@CAJWebApp.Models.SettingsModel.COL_MultiplierHolidayOvertimeHourlyPayrate.Id')">Log</a>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.ValidationMessageFor(model => model.MultiplierHolidayOvertimeHourlyPayrate, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <hr />
+
+                        <label class="h5">TABUNGAN WAJIB</label>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.DepositAmountPerMonth, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-2">
+                                @Html.EditorFor(model => model.DepositAmountPerMonth, new { htmlAttributes = new { @class = "form-control positiveintegeronly" } })
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text bg-info border-info text-white"><i class="icon icon-info22"></i></span>
+                                    </span>
+                                    @Html.EditorFor(model => model.DepositAmountPerMonth_Notes, new { htmlAttributes = new { @class = "form-control", @placeholder = "Notes", @title = Model.DepositAmountPerMonth_Notes } })
+                                </div>
+                            </div>
+                            <div class="col-lg-1 mt-1">
+                                <a href="javascript:void(0)" onclick="Log('@CAJWebApp.Models.SettingsModel.COL_DepositAmountPerMonth.Id')">Log</a>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.ValidationMessageFor(model => model.DepositAmountPerMonth, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.DepositAmountTotal, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-2">
+                                @Html.EditorFor(model => model.DepositAmountTotal, new { htmlAttributes = new { @class = "form-control positiveintegeronly" } })
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text bg-info border-info text-white"><i class="icon icon-info22"></i></span>
+                                    </span>
+                                    @Html.EditorFor(model => model.DepositAmountTotal_Notes, new { htmlAttributes = new { @class = "form-control", @placeholder = "Notes", @title = Model.DepositAmountTotal_Notes } })
+                                </div>
+                            </div>
+                            <div class="col-lg-1 mt-1">
+                                <a href="javascript:void(0)" onclick="Log('@CAJWebApp.Models.SettingsModel.COL_DepositAmountTotal.Id')">Log</a>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.ValidationMessageFor(model => model.DepositAmountTotal, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.DepositFirstMonthAfterJoin, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-2">
+                                @Html.EditorFor(model => model.DepositFirstMonthAfterJoin, new { htmlAttributes = new { @class = "form-control positiveintegeronly" } })
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text bg-info border-info text-white"><i class="icon icon-info22"></i></span>
+                                    </span>
+                                    @Html.EditorFor(model => model.DepositFirstMonthAfterJoin_Notes, new { htmlAttributes = new { @class = "form-control", @placeholder = "Notes", @title = Model.DepositFirstMonthAfterJoin_Notes } })
+                                </div>
+                            </div>
+                            <div class="col-lg-1 mt-1">
+                                <a href="javascript:void(0)" onclick="Log('@CAJWebApp.Models.SettingsModel.COL_DepositFirstMonthAfterJoin.Id')">Log</a>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.ValidationMessageFor(model => model.DepositFirstMonthAfterJoin, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <hr />
+
+                        <label class="h5">CUTI</label>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.LeaveDaysPerYear, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-2">
+                                @Html.EditorFor(model => model.LeaveDaysPerYear, new { htmlAttributes = new { @class = "form-control positiveintegeronly" } })
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text bg-info border-info text-white"><i class="icon icon-info22"></i></span>
+                                    </span>
+                                    @Html.EditorFor(model => model.LeaveDaysPerYear_Notes, new { htmlAttributes = new { @class = "form-control", @placeholder = "Notes", @title = Model.LeaveDaysPerYear_Notes } })
+                                </div>
+                            </div>
+                            <div class="col-lg-1 mt-1">
+                                <a href="javascript:void(0)" onclick="Log('@CAJWebApp.Models.SettingsModel.COL_LeaveDaysPerYear.Id')">Log</a>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.ValidationMessageFor(model => model.LeaveDaysPerYear, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <hr />
+
+                        <label class="h5">APPROVER</label>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.PayrollApproverName, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-2">
+                                @Html.EditorFor(model => model.PayrollApproverName, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text bg-info border-info text-white"><i class="icon icon-info22"></i></span>
+                                    </span>
+                                    @Html.EditorFor(model => model.PayrollApproverName_Notes, new { htmlAttributes = new { @class = "form-control", @placeholder = "Notes", @title = Model.PayrollApproverName_Notes } })
+                                </div>
+                            </div>
+                            <div class="col-lg-1 mt-1">
+                                <a href="javascript:void(0)" onclick="Log('@CAJWebApp.Models.SettingsModel.COL_PayrollApproverName.Id')">Log</a>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.ValidationMessageFor(model => model.PayrollApproverName, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.PayrollApproverTitle, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-2">
+                                @Html.EditorFor(model => model.PayrollApproverTitle, new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text bg-info border-info text-white"><i class="icon icon-info22"></i></span>
+                                    </span>
+                                    @Html.EditorFor(model => model.PayrollApproverTitle_Notes, new { htmlAttributes = new { @class = "form-control", @placeholder = "Notes", @title = Model.PayrollApproverTitle_Notes } })
+                                </div>
+                            </div>
+                            <div class="col-lg-1 mt-1">
+                                <a href="javascript:void(0)" onclick="Log('@CAJWebApp.Models.SettingsModel.COL_PayrollApproverTitle.Id')">Log</a>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.ValidationMessageFor(model => model.PayrollApproverTitle, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.PayrollApproverSignature, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            <div class="col-lg-2">
+                                <div class="custom-file">
+                                    <input class="form-control custom-file-input" type="file" id="uploadFiles" name="uploadFiles" />
+                                    <label class="custom-file-label">Choose File...</label>
+                                </div>
+                                <div class="my-2">
+                                    <img src="@Helper.getImageUrl(Model.PayrollApproverSignature, Request, Server)" style="width:100px" />
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="input-group">
+                                    <span class="input-group-prepend">
+                                        <span class="input-group-text bg-info border-info text-white"><i class="icon icon-info22"></i></span>
+                                    </span>
+                                    @Html.EditorFor(model => model.PayrollApproverSignature_Notes, new { htmlAttributes = new { @class = "form-control", @placeholder = "Notes", @title = Model.PayrollApproverSignature_Notes } })
+                                </div>
+                            </div>
+                            <div class="col-lg-1 mt-1">
+                                <a href="javascript:void(0)" onclick="Log('@CAJWebApp.Models.SettingsModel.COL_PayrollApproverSignature.Id')">Log</a>
+                            </div>
+                            <div class="col-lg-3">
+                                @Html.ValidationMessageFor(model => model.PayrollApproverSignature, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </fieldset>
+                    <hr />
+
+                    <div>
+                        <button type="submit" class="btn btn-primary">Submit<i class="icon-paperplane ml-2"></i></button>
+                    </div>
+                </div>
+            </div>
+            <!-- /form inputs -->
+        }
+    </div>
+    <!-- /content area -->
+
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('.custom-file-input').on('change', function () {
+            var fileLabel = $(this).next('.custom-file-label');
+            var uploadFiles = $(this)[0].files;
+            if (uploadFiles.length > 1) {
+                fileLabel.html(uploadFiles.length + ' files selected');
+            }
+            else if (uploadFiles.length == 1) {
+                fileLabel.html(uploadFiles[0].name);
+            }
+        });
+    });
+
+    //function DeleteSignatureImage() {
+    //    $('.custom-file-label').html("");
+    //}
+</script>
