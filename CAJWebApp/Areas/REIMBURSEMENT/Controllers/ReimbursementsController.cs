@@ -281,7 +281,17 @@ namespace CAJWebApp.Areas.Reimbursement.Controllers
         private void add(Guid id, Guid payrollEmployees_Id, DateTime payPeriod)
         {
             PayrollEmployeesModel payrollEmployee = new PayrollEmployeesController().get(payrollEmployees_Id);
-            DateTime PaymentDate = new DateTime(payPeriod.Year, payPeriod.Month, payrollEmployee.ReimbursementPaymentDates_PayDate, 0, 0, 0).AddMonths(1);
+
+            //prevent error when pay date is not valid such as feb 29, nov 31, etc.
+            DateTime PaymentDate = new DateTime(payPeriod.Year, payPeriod.Month, 1).AddMonths(1);
+            try
+            {
+                PaymentDate = new DateTime(PaymentDate.Year, PaymentDate.Month, payrollEmployee.ReimbursementPaymentDates_PayDate, 0, 0, 0);
+            }
+            catch
+            {
+                PaymentDate = (DateTime)Util.getLastDayOfSelectedMonth(PaymentDate);
+            }
 
             db.Database.ExecuteSqlCommand(@"                   
                     INSERT INTO DWSystem.Reimbursements (
