@@ -12,6 +12,8 @@ using CAJWebApp.Areas.PAYROLL.Models;
 using CAJWebApp.Controllers;
 using CAJWebApp.Models;
 using LIBUtil;
+using LIBWebMVC;
+using LIBExcel;
 
 namespace CAJWebApp.Areas.PAYROLL.Controllers
 {
@@ -60,7 +62,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
             DateTime payPeriod = Helper.setFilterViewBag(this, null, year, month, payDate, approval, Banks_Id, search, null, null);
             add(Payrolls_Id, PayrollEmployees_Id, payPeriod);
 
-            if (Util.hasBootboxMessage(this))
+            if (UtilWebMVC.hasBootboxMessage(this))
             {
                 ViewBag.PayrollEmployees_Id = PayrollEmployees_Id;
                 PayrollEmployeesController.setDropDownListViewBag(db, this, payPeriod, EnumActionTypes.Payroll);
@@ -517,7 +519,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
 
             if (payrollEmployee.Regions_Id == null)
             {
-                Util.setBootboxMessage(this, string.Format("Wilayah counter {0} tidak ditemukan", payrollEmployee.Customer_Name));
+                UtilWebMVC.setBootboxMessage(this, string.Format("Wilayah counter {0} tidak ditemukan", payrollEmployee.Customer_Name));
                 return;
             }
 
@@ -525,7 +527,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
 
             if (regionPayrate == null)
             {
-                Util.setBootboxMessage(this, string.Format("UMP untuk wilayah {0} tidak ditemukan", payrollEmployee.Regions_Name));
+                UtilWebMVC.setBootboxMessage(this, string.Format("UMP untuk wilayah {0} tidak ditemukan", payrollEmployee.Regions_Name));
                 return;
             }
 

@@ -3,6 +3,7 @@ using System.Web;
 using System.Web.Mvc;
 using System.IO;
 using LIBUtil;
+using LIBWebMVC;
 
 namespace CAJWebApp
 {
@@ -59,14 +60,14 @@ namespace CAJWebApp
                 payPeriod = payPeriod.AddMonths(1);
 
             var ViewBag = controller.ViewBag;
-            ViewBag.PayPeriodYear = Util.validateParameter(payPeriod.Year);
-            ViewBag.PayPeriodMonth = Util.validateParameter(payPeriod.Month);
-            ViewBag.PayPeriod = Util.validateParameter(payPeriod);
-            ViewBag.PayDate = Util.validateParameter(payDate);
-            ViewBag.Approval = Util.validateParameter(approval);
-            ViewBag.Banks_Id = Util.validateParameter(Banks_Id);
-            ViewBag.Search = Util.validateParameter(search);
-            ViewBag.Type = Util.validateParameter(Type);
+            ViewBag.PayPeriodYear = UtilWebMVC.validateParameter(payPeriod.Year);
+            ViewBag.PayPeriodMonth = UtilWebMVC.validateParameter(payPeriod.Month);
+            ViewBag.PayPeriod = UtilWebMVC.validateParameter(payPeriod);
+            ViewBag.PayDate = UtilWebMVC.validateParameter(payDate);
+            ViewBag.Approval = UtilWebMVC.validateParameter(approval);
+            ViewBag.Banks_Id = UtilWebMVC.validateParameter(Banks_Id);
+            ViewBag.Search = UtilWebMVC.validateParameter(search);
+            ViewBag.Type = UtilWebMVC.validateParameter(Type);
 
             return payPeriod;
         }
