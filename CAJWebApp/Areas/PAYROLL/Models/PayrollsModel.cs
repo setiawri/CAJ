@@ -175,7 +175,7 @@ namespace CAJWebApp.Areas.PAYROLL.Models
 
 
         [Display(Name = "Approver")]
-        public int? ApprovalOperator_ID { get; set; }
+        public int? ApprovalOperator_ID { get; set; } = null;
         public static ModelMember COL_ApprovalOperator_ID = new ModelMember { Name = "ApprovalOperator_ID", Display = "Approver" };
 
 

@@ -1,5 +1,4 @@
-﻿@using CAJWebApp.Controllers
-@using LIBUtil 
+﻿@using LIBWebMVC 
 @model CAJWebApp.Areas.PAYROLL.Models.PayrollsModel
 
 @{
@@ -501,7 +500,7 @@
                         <div>
                             <button type="submit" class="btn btn-primary">Update<i class="icon-paperplane ml-2"></i></button>
                             <button type="button" onclick="Print('@Model.Id')" class="btn btn-success">Print<i class="icon-printer4 ml-2"></i></button>
-                            @*@if (Util.hasAccess(Session, OperatorController.SESSION_OperatorPrivilegePayrollModel_PayrollApproval))
+                            @*@if (UtilWebMVC.hasAccess(Session, OperatorController.SESSION_OperatorPrivilegePayrollModel_PayrollApproval))
                             {
                                 <button type="button" onclick="Approve('@Model.Id')" class="btn btn-warning">Approve<i class="icon-database-check ml-2"></i></button>
                             }

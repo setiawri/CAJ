@@ -133,7 +133,7 @@
         </div>
         <div class="mt-2">
             <span class="badge badge-primary ml-2 px-2">
-                <a href='@LIBUtil.Util.getApplicationPath(Request, "/User Manual - Payroll and Reimbursement.pdf")' class="text-white" target="_blank">MANUAL</a>
+                <a href='@LIBWebMVC.UtilWebMVC.getApplicationPath(Request, "/User Manual - Payroll and Reimbursement.pdf")' class="text-white" target="_blank">MANUAL</a>
             </span>
             <span class="badge badge-success ml-2">@Helper.APP_VERSION</span>
         </div>
@@ -171,7 +171,8 @@
         }
 
         applyEventsToInputs(); //call here so it is executed initially
-        showBootboxMessage();
+
+        showControllerMessage();
     });
 
     //format calendar
@@ -406,10 +407,38 @@
         $('#Menu_'+id).addClass('active');
     }
 
-    function showBootboxMessage() {
-        if ('@ViewBag.BootboxMessage' != '') {
-            bootbox.alert({ backdrop: true, message: '@ViewBag.BootboxMessage' });
+    // BOOTBOX =====================================================================================================================================================
+
+    function showControllerMessage() { showMessage('@TempData["BootboxMessage"]'); }
+    function showMessage(message, idToSelectOnEscape) {
+        if (message !== '') {
+            message = message.replaceAll("&lt;", "<").replaceAll("&gt;", ">");
+            bootbox.dialog({ backdrop: true, message: message, onEscape: function () { $('#'+idToSelectOnEscape).select(); } }); //.select() is not working
         }
+    }
+
+    var spinnerDialog;
+    function showLoadingSpinner() { showSpinner('Loading...'); }
+    function showSpinner(message) {
+        spinnerDialog = bootbox.dialog({
+            message: '<p><i class="fa fa-spin fa-spinner"></i> ' + message + '</p>',
+            size: "small"
+        }).find('.modal-content').css({
+            'padding-top':'10px',
+            'font-size': '20pt',
+            'text-align': 'center',
+            'margin-top': function () {
+                var windowHeight = $(window).height();
+                var modalHeight = $(this).height();
+                var topMargin = (windowHeight - modalHeight) / 3;
+                return topMargin + "px";
+            }
+        }).find('.bootbox-close-button').css({
+            'display':'none'
+        });
+    }
+    function closeSpinner() {
+        spinnerDialog.modal('hide');
     }
 
 </script>

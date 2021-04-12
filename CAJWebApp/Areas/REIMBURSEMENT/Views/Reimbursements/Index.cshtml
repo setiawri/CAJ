@@ -1,5 +1,5 @@
 ﻿@using CAJWebApp.Controllers
-@using LIBUtil
+@using LIBWebMVC
 @model IEnumerable<CAJWebApp.Areas.Reimbursement.Models.ReimbursementsModel>
 
 @{
@@ -149,7 +149,7 @@
                                         @if (item.ApprovalOperator_ID == null)
                                         {
                                             <span class="badge badge-dark d-block">Not Approved</span>
-                                            if (Util.hasAccess(Session, OperatorController.SESSION_OperatorPrivilegePayrollModel_ReimbursementApproval))
+                                            if (UtilWebMVC.hasAccess(Session, OperatorController.SESSION_OperatorPrivilegePayrollModel_ReimbursementApproval))
                                             {
                                                 <a href="javascript:void(0)" onclick="UpdateApproval('@item.Id', true, '@item.EmployeeFullName')" class="badge badge-warning d-block">Approve</a>
                                             }
@@ -157,7 +157,7 @@
                                         else
                                         {
                                             <span class="badge badge-success d-block">Approved</span>
-                                            if (Util.hasAccess(Session, OperatorController.SESSION_OperatorPrivilegePayrollModel_ReimbursementApproval))
+                                            if (UtilWebMVC.hasAccess(Session, OperatorController.SESSION_OperatorPrivilegePayrollModel_ReimbursementApproval))
                                             {
                                                 <a href="javascript:void(0)" onclick="UpdateApproval('@item.Id', false, '@item.EmployeeFullName')" class="badge badge-warning d-block">Cancel Approval</a>
                                             }
