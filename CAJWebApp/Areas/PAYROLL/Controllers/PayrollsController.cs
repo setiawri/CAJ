@@ -40,6 +40,22 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
             return View(models);
         }
 
+        // POST: PAYROLL/Payrolls
+        [HttpPost]
+        public ActionResult Index(DateTime? PayPeriod, int? year, int? month, int? payDate, int? approval, string Banks_Id, string search, string periodChange)
+        {
+            PayrollPaymentDatesController.setDropDownListViewBag(db, this);
+            BanksController.setDropDownListViewBag(db, this);
+
+            DateTime payPeriod = Helper.setFilterViewBag(this, PayPeriod, year, month, payDate, approval, Banks_Id, search, periodChange, null);
+
+            List<PayrollsModel> models = get(payPeriod, payDate, approval, Banks_Id);
+            ViewBag.TotalApprovedPayableAmount = string.Format("{0:N0}", models.Where(x => x.ApprovalOperator_ID != null && x.PayableAmount > 0).Sum(x => x.PayableAmount));
+            ViewBag.TotalApprovedDueAmount = string.Format("{0:N0}", models.Where(x => x.ApprovalOperator_ID != null && x.PayableAmount > 0).Sum(x => x.PayableAmount - x.PaymentAmount));
+
+            return View(models);
+        }
+
         /* CREATE *********************************************************************************************************************************************/
 
         // GET: PAYROLL/Payrolls/Create
@@ -69,7 +85,9 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
                 return View();
             }
             else
-                return RedirectToAction(nameof(Edit), new { id = Payrolls_Id, year = year, month = month, payDate = payDate, approval = approval, Banks_Id = Banks_Id, search = search } );
+            {
+                return RedirectToAction(nameof(Edit), new { id = Payrolls_Id, year = year, month = month, payDate = payDate, approval = approval, Banks_Id = Banks_Id, search = search });
+            }
         }
 
         /* EDIT ***********************************************************************************************************************************************/
@@ -93,7 +111,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
         // POST: PAYROLL/Payrolls/Edit/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(PayrollsModel modifiedModel)
+        public ActionResult Edit(PayrollsModel modifiedModel, string redirectType)
         {
             //Util.debug(ModelState, ViewData);
             
@@ -149,7 +167,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
 
                 //approval
                 if(originalModel.ApprovalOperator_ID != modifiedModel.ApprovalOperator_ID)
-                    update_ApprovalOperator_ID(originalModel.ApprovalOperator_ID == null ? EnumActions.Approve.ToString() : EnumActions.Cancel.ToString(), modifiedModel.Id);
+                    update_ApprovalOperator_ID(originalModel.ApprovalOperator_ID != null, modifiedModel.Id);
 
                 //improvement: user SubmitAction property in the model to redirect user to the correct page.
                 //in this case, redirect to print page. However, the print page need button to go back to index page.
@@ -158,12 +176,21 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
                 //    return RedirectToAction(nameof(Print));
                 //else
 
-                return RedirectToAction(nameof(Index), new { 
-                    year = modifiedModel.FILTER_PayPeriodYear, 
-                    month = modifiedModel.FILTER_PayPeriodMonth, 
-                    payDate = modifiedModel.FILTER_PayDate, 
-                    search = modifiedModel.FILTER_Search 
-                });
+                if(redirectType == "Update")
+                    return RedirectToAction(nameof(Index), new { 
+                        year = modifiedModel.FILTER_PayPeriodYear, 
+                        month = modifiedModel.FILTER_PayPeriodMonth, 
+                        payDate = modifiedModel.FILTER_PayDate, 
+                        search = modifiedModel.FILTER_Search 
+                    });
+                else
+                    return RedirectToAction(nameof(Create), new
+                    {
+                        year = modifiedModel.FILTER_PayPeriodYear,
+                        month = modifiedModel.FILTER_PayPeriodMonth,
+                        payDate = modifiedModel.FILTER_PayDate,
+                        search = modifiedModel.FILTER_Search
+                    });
             }
 
             setEditViewBag(modifiedModel.FILTER_PayPeriodYear, modifiedModel.FILTER_PayPeriodMonth, modifiedModel.FILTER_PayDate, modifiedModel.FILTER_Approval, modifiedModel.FILTER_Banks_Id, modifiedModel.FILTER_Search);
@@ -736,10 +763,10 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
             );
         }
 
-        public JsonResult update_ApprovalOperator_ID(string key, Guid id)
+        public JsonResult update_ApprovalOperator_ID(bool value, Guid id)
         {
             int? ApprovalOperator_ID = null;
-            if(key == EnumActions.Approve.ToString()) 
+            if(value) 
                 ApprovalOperator_ID = OperatorController.getUserId(Session);
 
             db.Database.ExecuteSqlCommand(@"
@@ -752,10 +779,10 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
                 DBConnection.getSqlParameter(PayrollsModel.COL_ApprovalOperator_ID.Name, ApprovalOperator_ID)
             );
 
-            ActivityLogsController.Add(db, Session, id, key == EnumActions.Approve.ToString() ? "Approved" : "Approval Cancelled");
+            ActivityLogsController.Add(db, Session, id, value ? "Approved" : "Approval Cancelled");
             db.SaveChanges();
 
-            return Json(new { status = "200" }, JsonRequestBehavior.AllowGet);
+            return Json(new { Message = "" });
         }
 
         public JsonResult GetRegenerateData(Guid id)

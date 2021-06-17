@@ -31,6 +31,7 @@
                 @Html.HiddenFor(model => model.FILTER_PayPeriodYear)
                 @Html.HiddenFor(model => model.FILTER_PayPeriodMonth)
                 @Html.HiddenFor(model => model.FILTER_PayDate)
+                <input type="hidden" id="redirectType" name="redirectType" value="Update" />
                 <!-- Form inputs -->
                 <div class="card">
                     <div class="card-header header-elements-inline">
@@ -498,16 +499,12 @@
                             </div>
                         </fieldset>
                         <div>
-                            <button type="submit" class="btn btn-primary">Update<i class="icon-paperplane ml-2"></i></button>
-                            <button type="button" onclick="Print('@Model.Id')" class="btn btn-success">Print<i class="icon-printer4 ml-2"></i></button>
-                            @*@if (UtilWebMVC.hasAccess(Session, OperatorController.SESSION_OperatorPrivilegePayrollModel_PayrollApproval))
-                            {
-                                <button type="button" onclick="Approve('@Model.Id')" class="btn btn-warning">Approve<i class="icon-database-check ml-2"></i></button>
+                            @if(Model.ApprovalOperator_ID == null)
+                            { 
+                                <button type="submit" class="btn btn-primary" onclick="showLoadingSpinner();">Update<i class="icon-paperplane ml-2"></i></button>
+                                <button type="submit" class="btn btn-secondary" onclick="updateAndAdd();showLoadingSpinner();">Update and Add<i class="icon-plus22 ml-2"></i></button>
                             }
-                            else
-                            {
-                                <button type="button" class="btn btn-warning disabled">Approve<i class="icon-database-check ml-2"></i></button>
-                            }*@
+                            <button type="button" onclick="Print('@Model.Id')" class="btn btn-success">Print<i class="icon-printer4 ml-2"></i></button>
                             <a href="@Url.Action("Index", "Payrolls",
                                     new {  year = ViewBag.PayPeriodYear, month = ViewBag.PayPeriodMonth, payDate = ViewBag.PayDate, approval = ViewBag.Approval, Banks_Id = ViewBag.Banks_Id, search = ViewBag.Search } )"
                                class="btn btn-warning">Cancel<i class="icon-cross2 ml-2"></i></a>
@@ -872,5 +869,9 @@
         });
         $('#PayrollDebtsListString').val(JSON.stringify(arrDebts));
     });
+
+    function updateAndAdd() {
+        $('#redirectType').val('UpdateAndAdd');
+    }
 </script>
 

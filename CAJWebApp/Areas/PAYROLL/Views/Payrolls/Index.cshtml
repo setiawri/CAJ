@@ -5,6 +5,8 @@
 @{
     ViewBag.Root = "Payroll";
     ViewBag.Title = "Index";
+
+    bool hasApprovalAccess = UtilWebMVC.hasAccess(Session, OperatorController.SESSION_OperatorPrivilegePayrollModel_PayrollApproval);
 }
 
 <div class="content-wrapper">
@@ -22,7 +24,7 @@
                             <label class="mb-0">Periode</label>
                             <div class="input-group">
                                 <div class="input-group-prepend">
-                                    <button type="button" class="btn btn-light" onclick="ReloadTable('@EnumActions.Previous.ToString()')">&lt;</button>
+                                    <button type="button" class="btn btn-light" onclick="showLoadingSpinner();ReloadTable('@EnumActions.Previous.ToString()')">&lt;</button>
                                     <select id="PayPeriodMonth" class="form-control select2" onchange="ReloadTable()">
                                         <option value="1">January</option>
                                         <option value="2">February</option>
@@ -39,7 +41,7 @@
                                     </select>
                                 </div>
                                 <input id="PayPeriodYear" type="number" class="form-control text-center positiveintegeronly" value="@ViewBag.PayPeriodYear">
-                                <button type="button" class="btn btn-light" onclick="ReloadTable('@EnumActions.Next.ToString()')">&gt;</button>
+                                <button type="button" class="btn btn-light" onclick="showLoadingSpinner();ReloadTable('@EnumActions.Next.ToString()')">&gt;</button>
                             </div>
                         </div>
                     </div>
@@ -77,7 +79,7 @@
                             <div class="form-group mb-0">
                                 <div class="btn-toolbar">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-outline-primary form-control" onclick="ReloadTable()"><i class="icon-reload-alt mr-2"></i>SEARCH</button>
+                                        <button type="button" class="btn btn-outline-primary form-control" onclick="showLoadingSpinner();ReloadTable()"><i class="icon-reload-alt mr-2"></i>SEARCH</button>
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +91,7 @@
                         <div class="form-group mb-0">
                             <div class="btn-toolbar">
                                 <div class="btn-group">
-                                    <button onclick="Create()" class="btn btn-success">ADD<i class="icon-plus22 ml-2"></i></button>
+                                    <button onclick="showLoadingSpinner();Create()" class="btn btn-success">ADD<i class="icon-plus22 ml-2"></i></button>
                                 </div>
                             </div>
                         </div>
@@ -114,7 +116,7 @@
                                 <span class="input-group-text bg-white">Approved Due</span>
                             </div>
                             <input type="text" class="form-control text-right" value="@ViewBag.TotalApprovedDueAmount" readonly>
-                            <button type="button" class="btn btn-outline-warning form-control ml-1" onclick="CreatePayments()"><i class="icon-coins mr-2"></i>Create Payments</button>
+                            <button type="button" class="btn btn-outline-warning form-control ml-1" onclick="showLoadingSpinner();CreatePayments()"><i class="icon-coins mr-2"></i>Create Payments</button>
                         </div>
                     </div>
                 </div>
@@ -123,88 +125,82 @@
                     <table class="table table-hover datatable">
                         <thead>
                             <tr>
-                                <th>No</th>
+                                <th style="width:10px;">No</th>
                                 <th>Nama/Counter/Tgl Bayar</th>
                                 <th class="text-right">Cuti</th>
                                 <th class="text-right">Gaji</th>
                                 <th class="text-right">Tabungan</th>
                                 <th class="text-right">Hutang</th>
-                                <th class="text-right">Total</th>
-                                <th class="text-right">Payment</th>
-                                <th class="text-right">Due</th>
-                                <th class="non-searchable non-sortable"></th>
+                                <th class="text-right non-searchable non-sortable"></th>
+                                @if (hasApprovalAccess) 
+                                {
+                                    <th class="text-center non-searchable non-sortable" style="width:10px;">OK</th>
+                                }
+                                <th class="non-searchable non-sortable" style="width:110px;"></th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach (var item in Model)
-                            {
-                                <tr>
-                                    <td>@Html.DisplayFor(modelItem => item.RowNumber)</td>
-                                    <td>
-                                        @Html.ActionLink(item.EmployeeFullName, "Index", "PayrollEmployees", new { Area = "", search = item.EmployeeFullName }, new { target = "_blank" })
-                                        <br />@Html.DisplayFor(modelItem => item.CustomerName)
-                                        <br />Tgl Bayar: @Html.DisplayFor(modelItem => item.PayrollPaymentDates_PayDate)
-                                    </td>
-                                    <td class="text-right">
-                                        Awal: @Html.DisplayFor(modelItem => item.LeaveDaysStartingBalance)
-                                        <br />Update: @Html.DisplayFor(modelItem => item.LeaveDaysAdjustment)
-                                        <br />Saldo: @(string.Format("{0:N0}", item.LeaveDaysStartingBalance+@item.LeaveDaysAdjustment))
-                                    </td>
-                                    <td class="text-right">
-                                        Pokok: @Html.DisplayFor(modelItem => item.SalaryAmount)
-                                        <br />Tambahan: @Html.DisplayFor(modelItem => item.EarningsAmount)
-                                        <br />Potongan: @Html.DisplayFor(modelItem => item.DeductionsAmount)
-                                    </td>
-                                    <td class="text-right">
-                                        Awal: @Html.DisplayFor(modelItem => item.MandatoryDepositStartingBalance)
-                                        <br />Update: @Html.DisplayFor(modelItem => item.MandatoryDepositUpdateAmount)
-                                        <br />Saldo: @(string.Format("{0:N0}", item.MandatoryDepositStartingBalance + @item.MandatoryDepositUpdateAmount))
-                                    </td>
-                                    <td class="text-right">
-                                        Awal: @Html.DisplayFor(modelItem => item.DebtStartingBalance)
-                                        <br />Update: @Html.DisplayFor(modelItem => item.DebtUpdateAmount)
-                                        <br />Saldo: @(string.Format("{0:N0}", item.DebtStartingBalance + @item.DebtUpdateAmount))
-                                    </td>
-                                    <td class="text-right">@Html.DisplayFor(modelItem => item.PayableAmount)</td>
-                                    <td class="text-right">
-                                        @if (item.PaymentAmount != 0)
-                                        {
-                                            @Html.ActionLink(item.PaymentAmount.ToString("N0"), "Index", "PayrollPayments", new { Area = "Payroll", PayPeriod = item.PayPeriod.ToShortDateString(), search = item.EmployeeFullName }, new { target = "_blank" })
-                                        }
-                                        else
-                                        {
-                                            @Html.DisplayFor(modelItem => item.PaymentAmount)
-                                        }
-                                    </td>
-                                    <td class="text-right">@(string.Format("{0:N0}", item.PayableAmount - @item.PaymentAmount))</td>
-                                    <td>
-                                        @if (item.ApprovalOperator_ID == null)
-                                        {
-                                            <span class="badge badge-dark d-block">Not Approved</span>
-                                            if (UtilWebMVC.hasAccess(Session, OperatorController.SESSION_OperatorPrivilegePayrollModel_PayrollApproval))
+                            @if (Model != null) { 
+                                var rowCount = 0;
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td>@Html.DisplayFor(modelItem => item.RowNumber)</td>
+                                        <td>
+                                            @Html.ActionLink(item.EmployeeFullName, "Index", "PayrollEmployees", new { Area = "", search = item.EmployeeFullName }, new { target = "_blank" })
+                                            <br />@Html.DisplayFor(modelItem => item.CustomerName)
+                                            <br />Tgl Bayar: @Html.DisplayFor(modelItem => item.PayrollPaymentDates_PayDate)
+                                        </td>
+                                        <td class="text-right">
+                                            Awal: @Html.DisplayFor(modelItem => item.LeaveDaysStartingBalance)
+                                            <br />Update: @Html.DisplayFor(modelItem => item.LeaveDaysAdjustment)
+                                            <br />Saldo: @(string.Format("{0:N0}", item.LeaveDaysStartingBalance+@item.LeaveDaysAdjustment))
+                                        </td>
+                                        <td class="text-right">
+                                            Pokok: @Html.DisplayFor(modelItem => item.SalaryAmount)
+                                            <br />Tambahan: @Html.DisplayFor(modelItem => item.EarningsAmount)
+                                            <br />Potongan: @Html.DisplayFor(modelItem => item.DeductionsAmount)
+                                        </td>
+                                        <td class="text-right">
+                                            Awal: @Html.DisplayFor(modelItem => item.MandatoryDepositStartingBalance)
+                                            <br />Update: @Html.DisplayFor(modelItem => item.MandatoryDepositUpdateAmount)
+                                            <br />Saldo: @(string.Format("{0:N0}", item.MandatoryDepositStartingBalance + @item.MandatoryDepositUpdateAmount))
+                                        </td>
+                                        <td class="text-right">
+                                            Awal: @Html.DisplayFor(modelItem => item.DebtStartingBalance)
+                                            <br />Update: @Html.DisplayFor(modelItem => item.DebtUpdateAmount)
+                                            <br />Saldo: @(string.Format("{0:N0}", item.DebtStartingBalance + @item.DebtUpdateAmount))
+                                        </td>
+                                        <td class="text-right">
+                                            Total: @Html.DisplayFor(modelItem => item.PayableAmount)
+                                            <br />Payment:
+                                            @if (item.PaymentAmount != 0)
                                             {
-                                                <a href="javascript:void(0)" onclick="UpdateApproval('@item.Id', true, '@item.EmployeeFullName')" class="badge badge-warning d-block">Approve</a>
+                                                <span class="font-weight-semibold text-primary">
+                                                    @Html.ActionLink(item.PaymentAmount.ToString("N0"), "Index", "PayrollPayments", new { Area = "Payroll", PayPeriod = item.PayPeriod.ToShortDateString(), search = item.EmployeeFullName }, new { target = "_blank" })
+                                                </span>
                                             }
-                                        }
-                                        else
-                                        {
-                                            <span class="badge badge-success d-block">Approved</span>
-                                            if (UtilWebMVC.hasAccess(Session, OperatorController.SESSION_OperatorPrivilegePayrollModel_PayrollApproval))
+                                            else
                                             {
-                                                <a href="javascript:void(0)" onclick="UpdateApproval('@item.Id', false, '@item.EmployeeFullName')" class="badge badge-warning d-block">Cancel Approval</a>
+                                                @Html.DisplayFor(modelItem => item.PaymentAmount)
                                             }
-                                        }
-
-                                        <a href="@Url.Action("Print","Payrolls",new { id = item.Id })" target="_blank">View</a>
-                                        • @Html.ActionLink("PDF", "PrintToPdf", new { id = item.Id, name = item.EmployeeFullName, payPeriod = item.PayPeriod })
-                                        • <a href="javascript:void(0)" onclick="Log('@item.Id')">Log</a>
-
-                                        @if (item.ApprovalOperator_ID == null)
+                                            <br />DUE: <span class="font-weight-semibold text-warning">@(string.Format("{0:N0}", item.PayableAmount - @item.PaymentAmount))</span>
+                                        </td>
+                                        @if (hasApprovalAccess) 
                                         {
-                                            @(" • ")<a href="javascript:void(0)" onclick="Edit('@item.Id')">Edit</a>
+                                            <td class="align-top" style="text-align:center;">
+                                                <input type="checkbox" id='@("chkApproval_" + ++rowCount)' onclick="UpdateApproval(this, '@item.Id', '@item.EmployeeFullName')" @(item.ApprovalOperator_ID != null ? "checked" : "") />
+                                            </td>
                                         }
-                                    </td>
-                                </tr>
+                                        <td class="align-top">
+                                            <a href="@Url.Action("Print","Payrolls",new { id = item.Id })" target="_blank">View</a>
+                                            • @Html.ActionLink("PDF", "PrintToPdf", new { id = item.Id, name = item.EmployeeFullName, payPeriod = item.PayPeriod })
+                                            <br/><a href="javascript:void(0)" onclick="Log('@item.Id')">Log</a>
+
+                                            <a href="javascript:void(0)" id='@("lnkEdit_" + rowCount)' class='@(item.ApprovalOperator_ID == null ? "" : "d-none")' onclick="Edit('@item.Id')">• Edit</a>
+                                        </td>
+                                    </tr>
+                                }
                             }
                         </tbody>
                     </table>
@@ -286,29 +282,48 @@
         }); //end ajax
     }
 
-    function UpdateApproval(id, isApproval, employeeName) {
+    function UpdateApproval(control, id, employeeName) {
         var confirmationMessage = "Konfirmasi approval ";
-        if (isApproval == false)
+        if (!control.checked)
             confirmationMessage = "Konfirmasi cancel approval "
 
         confirmationMessage += employeeName + "?";
 
+        var elementId = $(control).prop('id');
         if (confirm(confirmationMessage)) {
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("update_ApprovalOperator_ID", "Payrolls")',
-                data: {
-                    key: isApproval ? '@EnumActions.Approve.ToString()' : '@EnumActions.Cancel.ToString()',
-                    id: id
-                },
+                data: { id: id, value: control.checked },
                 success: function (data) {
-                    ReloadTable();
-                }, //end success
+                    if (data.Message != '') {
+                        toggleCheckboxValue(elementId);
+                        bootbox.alert({ backdrop: true, message: data.Message });
+                    } else {
+                        toggleVisibility(elementId);
+                    }
+                },
                 error: function (result) {
+                    toggleCheckboxValue($(control).prop('id'));
                     bootbox.alert({ backdrop: true, message: "Error " + result });
-                } //end error
-            }); //end ajax
+                }
+            });
+        } else {
+            toggleCheckboxValue($(control).prop('id'));
         }
+    }
+
+    function getRowNo(id) {
+        return id.substring(id.indexOf('_') + 1, id.length);
+    }
+
+    function toggleVisibility(id) {
+        var lnkEditId = 'lnkEdit_' + getRowNo(id);
+
+        if ($('#' + lnkEditId).hasClass('d-none')) 
+            $('#' + lnkEditId).removeClass('d-none');
+        else
+            $('#' + lnkEditId).addClass('d-none');
     }
 
 </script>

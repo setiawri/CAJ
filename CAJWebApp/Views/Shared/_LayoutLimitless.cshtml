@@ -407,6 +407,89 @@
         $('#Menu_'+id).addClass('active');
     }
 
+
+    // CHECKBOXES ==================================================================================================================================================
+
+    function setCheckboxState(id, value) {
+        if (value == 'True')
+            value = true;
+        else if (value == 'False')
+            value = false;
+
+        $('#' + id).prop('checked', value);
+    }
+
+    function getCheckboxValue(id) {
+        return $('#' + id).prop('checked');
+    }
+
+    function toggleCheckboxValue(id) {
+        if (getCheckboxValue(id))
+            setCheckboxState(id, false);
+        else
+            setCheckboxState(id, true);
+    }
+
+    // AJAX ========================================================================================================================================================
+
+    function AjaxExecute(action, controller, param1, callbackfunction, onEscapeFunction) {
+        var url = '@Url.Action("__action", "__controller")';
+        url = url.replace("__action", action).replace("__controller", controller);
+        $.ajax({
+            type: "POST", url: url, data: { param1: param1 },
+            success: function (data) {
+                if (data.Message != '')
+                    bootbox.dialog({ backdrop: true, message: data.Message, onEscape: function () { if (onEscapeFunction != null) onEscapeFunction(); } });
+
+                if (callbackfunction != null)
+                    callbackfunction();
+            },
+            error: function (result) { bootbox.alert({ backdrop: true, message: "Error " + result }); }
+        });
+    }
+
+    function AjaxUpdate(action, controller, id, value) {
+        var url = '@Url.Action("__action", "__controller")';
+        url = url.replace("__action", action).replace("__controller", controller);
+        $.ajax({
+            type: "POST", url: url, data: { id: id, value: value },
+            success: function (data) {
+                if (data.Message != '')
+                    bootbox.alert({ backdrop: true, message: data.Message });
+            },
+            error: function (result) { bootbox.alert({ backdrop: true, message: "Error " + result }); }
+        });
+    }
+
+    function AjaxGet(id, title, size, action, controller) {
+        var url = '@Url.Action("__action", "__controller")';
+        url = url.replace("__action", action).replace("__controller", controller);
+        $.ajax({
+            type: "POST", url: url, data: { id: id },
+            success: function (data) { bootbox.dialog({ backdrop: true, onEscape: true, title: title, size: size, message: data.content }); },
+            error: function (result) { bootbox.alert({ backdrop: true, message: "Error " + result }); }
+        });
+    }
+
+    function AjaxGetDropdownlistData(id, action, controller) {
+        var url = '@Url.Action("__action", "__controller")';
+        url = url.replace("__action", action).replace("__controller", controller);
+        $('#'+id).select2({
+            placeholder: 'Pilih',
+            ajax: {
+                url: url,
+                data: function (params) {
+                    var query = {
+                        keyword: params.term,
+                        page: params.page || 1,
+                        take: 20
+                    }
+                    return query;
+                }
+            }
+        });
+    }
+
     // BOOTBOX =====================================================================================================================================================
 
     function showControllerMessage() { showMessage('@TempData["BootboxMessage"]'); }
