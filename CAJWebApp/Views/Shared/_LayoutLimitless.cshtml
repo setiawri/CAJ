@@ -172,6 +172,12 @@
 
         applyEventsToInputs(); //call here so it is executed initially
 
+        //popovers
+        $('[data-toggle="popover"]').popover({
+            html: true,
+            trigger: 'hover'
+        });
+
         showControllerMessage();
     });
 

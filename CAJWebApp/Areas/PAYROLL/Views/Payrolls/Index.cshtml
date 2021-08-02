@@ -109,13 +109,19 @@
                     <div class="col-lg-7">
                         <div class="input-group">
                             <div class="input-group-prepend">
-                                <span class="input-group-text bg-white">Approved Total</span>
+                                <span class="input-group-text bg-white">
+                                    Approved Total
+                                    <i class="icon-help text-primary ml-2" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Saat approval checkbox di klik, nilai ini dirubah menjadi '-'. Silahkan klik tombol search untuk update nilai ini."></i>
+                                </span>
                             </div>
-                            <input type="text" class="form-control text-right" value="@ViewBag.TotalApprovedPayableAmount" readonly>
+                            <input type="text" id="TotalApprovedPayableAmount" class="form-control text-right" value="@ViewBag.TotalApprovedPayableAmount" readonly>
                             <div class="input-group-prepend ml-1">
-                                <span class="input-group-text bg-white">Approved Due</span>
+                                <span class="input-group-text bg-white">
+                                    Approved Due
+                                    <i class="icon-help text-primary ml-2" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Saat approval checkbox di klik, nilai ini dirubah menjadi '-'. Silahkan klik tombol search untuk update nilai ini."></i>
+                                </span>
                             </div>
-                            <input type="text" class="form-control text-right" value="@ViewBag.TotalApprovedDueAmount" readonly>
+                            <input type="text" id="TotalApprovedDueAmount" class="form-control text-right" value="@ViewBag.TotalApprovedDueAmount" readonly>
                             <button type="button" class="btn btn-outline-warning form-control ml-1" onclick="showLoadingSpinner();CreatePayments()"><i class="icon-coins mr-2"></i>Create Payments</button>
                         </div>
                     </div>
@@ -301,6 +307,8 @@
                         bootbox.alert({ backdrop: true, message: data.Message });
                     } else {
                         toggleVisibility(elementId);
+                        $('#TotalApprovedPayableAmount').val('-');
+                        $('#TotalApprovedDueAmount').val('-');
                     }
                 },
                 error: function (result) {
