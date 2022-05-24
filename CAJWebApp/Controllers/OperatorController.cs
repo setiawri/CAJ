@@ -45,7 +45,7 @@ namespace CAJWebApp.Controllers
         public ActionResult Login(OperatorModel model, string returnUrl)
         {
             //bypass login
-            if (true && Server.MachineName == "RQ-ASUS")
+            if (true && Server.MachineName == "RQ")
             {
                 if(string.IsNullOrEmpty(model.UserName))
                     model.UserName = "ricky";

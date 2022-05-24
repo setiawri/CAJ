@@ -18,107 +18,99 @@
                 <h5 class="card-title">@ViewBag.Root</h5>
             </div>
             <div class="card-body">
-                <div class="row mt-0">
-                    <div class="col-lg-3">
-                        <div class="row col-lg-12">
-                            <label class="mb-0">Periode</label>
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <button type="button" class="btn btn-light" onclick="showLoadingSpinner();ReloadTable('@EnumActions.Previous.ToString()')">&lt;</button>
-                                    <select id="PayPeriodMonth" class="form-control select2" onchange="ReloadTable()">
-                                        <option value="1">January</option>
-                                        <option value="2">February</option>
-                                        <option value="3">March</option>
-                                        <option value="4">April</option>
-                                        <option value="5">May</option>
-                                        <option value="6">June</option>
-                                        <option value="7">July</option>
-                                        <option value="8">August</option>
-                                        <option value="9">September</option>
-                                        <option value="10">October</option>
-                                        <option value="11">November</option>
-                                        <option value="12">December</option>
-                                    </select>
-                                </div>
-                                <input id="PayPeriodYear" type="number" class="form-control text-center positiveintegeronly" value="@ViewBag.PayPeriodYear">
-                                <button type="button" class="btn btn-light" onclick="showLoadingSpinner();ReloadTable('@EnumActions.Next.ToString()')">&gt;</button>
-                            </div>
+
+                <div class="row mx-0">
+                    <div class="row ml-0 mr-2" style="width:150px;">
+                        <label class="mb-0">
+                            Keyword
+                            <i class="icon-help text-primary ml-0" data-container="body" data-toggle="popover" data-placement="right" data-content="Keyword untuk nama karyawan atau counter"></i>
+                        </label>
+                        <div class="input-group">
+                            <input type="text" name="FILTER_Keyword" id="FILTER_Keyword" class="form-control" />
                         </div>
                     </div>
-                    <div class="row col-lg-1">
-                        <div class="col-lg-12">
-                            <label class="mb-0">Tgl Bayar</label>
-                            <div class="input-group">
-                                @Html.DropDownList("PayrollPaymentDates", ViewBag.PayrollPaymentDates as SelectList, "ALL", new { @class = "custom-select", @style = "height:auto;", onchange = "ReloadTable()" })
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row col-lg-2">
-                        <div class="col-lg-12">
-                            <label class="mb-0">Bank</label>
-                            <div class="input-group">
-                                @Html.DropDownList("Banks", ViewBag.Banks as SelectList, "ALL", new { @class = "custom-select", @style = "height:auto;", onchange = "ReloadTable()" })
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row col-lg-2">
-                        <div class="col-lg-10">
-                            <label class="mb-0">Approval</label>
-                            <div class="input-group">
-                                <select id="FILTER_Approval" class="custom-select" onchange="ReloadTable()">
-                                    <option value="" selected>ALL</option>
-                                    <option value="1">Approved</option>
-                                    <option value="0">Not Approved</option>
+
+                    <div class="row ml-0 mr-2" style="width:300px;">
+                        <label class="mb-0">Periode</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend" style="width:160px">
+                                <button type="button" class="btn btn-light" onclick="updateFILTER_DatePeriod_Month('previous',null,'PayPeriodMonth','PayPeriodYear')">&lt;</button>
+                                <select id="PayPeriodMonth" class="form-control select2">
+                                    <option value="1">January</option>
+                                    <option value="2">February</option>
+                                    <option value="3">March</option>
+                                    <option value="4">April</option>
+                                    <option value="5">May</option>
+                                    <option value="6">June</option>
+                                    <option value="7">July</option>
+                                    <option value="8">August</option>
+                                    <option value="9">September</option>
+                                    <option value="10">October</option>
+                                    <option value="11">November</option>
+                                    <option value="12">December</option>
                                 </select>
                             </div>
+                            <input id="PayPeriodYear" type="number" class="form-control text-center positiveintegeronly" value="@ViewBag.PayPeriodYear">
+                            <button type="button" class="btn btn-light" onclick="updateFILTER_DatePeriod_Month('next',null,'PayPeriodMonth','PayPeriodYear')">&gt;</button>
                         </div>
                     </div>
-                    <div class="row col-lg-2">
-                        <div class="col-lg-12">
-                            <label class="mb-0">&nbsp;</label>
-                            <div class="form-group mb-0">
-                                <div class="btn-toolbar">
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-outline-primary form-control" onclick="showLoadingSpinner();ReloadTable()"><i class="icon-reload-alt mr-2"></i>SEARCH</button>
-                                    </div>
-                                </div>
-                            </div>
+
+                    <div class="row ml-0 mr-2" style="width:80px;">
+                        <label class="mb-0">Tgl Bayar</label>
+                        <div class="input-group">
+                            @Html.DropDownList("PayrollPaymentDates", ViewBag.PayrollPaymentDates as SelectList, "ALL", new { @class = "custom-select", @style = "height:auto;" })
                         </div>
+                    </div>
+
+                    <div class="row ml-0 mr-2" style="width:150px;">
+                        <label class="mb-0">Bank</label>
+                        <div class="input-group">
+                            @Html.DropDownList("Banks", ViewBag.Banks as SelectList, "ALL", new { @class = "custom-select", @style = "height:auto;" })
+                        </div>
+                    </div>
+
+                    <div class="row ml-0 mr-2" style="width:150px;">
+                        <label class="mb-0">Approval</label>
+                        <div class="input-group">
+                            <select id="FILTER_Approval" class="custom-select">
+                                <option value="" selected>ALL</option>
+                                <option value="1">Approved</option>
+                                <option value="0">Not Approved</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="ml-0 mr-2">
+                        <label class="mb-0">&nbsp;</label>
+                        <button type="button" class="btn btn-outline-primary form-control" onclick="showLoadingSpinner(); ReloadTable();"><i class="icon-reload-alt mr-2"></i>SEARCH</button>
                     </div>
                 </div>
-                <div class="row mt-2">
-                    <div class="col-lg-1">
-                        <div class="form-group mb-0">
-                            <div class="btn-toolbar">
-                                <div class="btn-group">
-                                    <button onclick="showLoadingSpinner();Create()" class="btn btn-success">ADD<i class="icon-plus22 ml-2"></i></button>
-                                </div>
-                            </div>
+
+                <div class="row mx-0 mt-2">
+                    <div class="mr-2">
+                        <div class="btn-group">
+                            <button onclick="showLoadingSpinner();Create()" class="btn btn-success">ADD<i class="icon-plus22 ml-2"></i></button>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="form-group mb-0">
-                            <div class="btn-toolbar">
-                                <div class="btn-group">
-                                    <button type="button" class="btn btn-outline-success form-control" onclick="PrintToPdf()"><i class="icon-file-pdf mr-2"></i>PDF</button>
-                                    <button type="button" class="btn btn-outline-success form-control" onclick="GenerateReport()"><i class="icon-coins mr-2"></i>Report</button>
-                                </div>
-                            </div>
+                    <div class="mr-2">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-outline-success form-control" onclick="PrintToPdf()"><i class="icon-file-pdf mr-2"></i>PDF</button>
+                            <button type="button" class="btn btn-outline-success form-control" onclick="GenerateReport()"><i class="icon-coins mr-2"></i>Report</button>
                         </div>
                     </div>
-                    <div class="col-lg-7">
+                    <div class="mr-2">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text bg-white">
                                     Approved Total
-                                    <i class="icon-help text-primary ml-2" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Saat approval checkbox di klik, nilai ini dirubah menjadi '-'. Silahkan klik tombol search untuk update nilai ini."></i>
+                                    <i class="icon-help text-primary ml-2" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Total dari data yang ditampilkan berdasarkan filter.<br/><br/>Saat approval checkbox di klik, nilai ini dirubah menjadi '-'. Silahkan klik tombol search untuk update nilai ini."></i>
                                 </span>
                             </div>
                             <input type="text" id="TotalApprovedPayableAmount" class="form-control text-right" value="@ViewBag.TotalApprovedPayableAmount" readonly>
                             <div class="input-group-prepend ml-1">
                                 <span class="input-group-text bg-white">
                                     Approved Due
-                                    <i class="icon-help text-primary ml-2" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Saat approval checkbox di klik, nilai ini dirubah menjadi '-'. Silahkan klik tombol search untuk update nilai ini."></i>
+                                    <i class="icon-help text-primary ml-2" data-container="body" data-toggle="popover" data-placement="bottom" data-content="Total dari data yang ditampilkan berdasarkan filter.<br/><br/>Saat approval checkbox di klik, nilai ini dirubah menjadi '-'. Silahkan klik tombol search untuk update nilai ini."></i>
                                 </span>
                             </div>
                             <input type="text" id="TotalApprovedDueAmount" class="form-control text-right" value="@ViewBag.TotalApprovedDueAmount" readonly>
@@ -138,7 +130,7 @@
                                 <th class="text-right">Tabungan</th>
                                 <th class="text-right">Hutang</th>
                                 <th class="text-right non-searchable non-sortable"></th>
-                                @if (hasApprovalAccess) 
+                                @if (hasApprovalAccess)
                                 {
                                     <th class="text-center non-searchable non-sortable" style="width:10px;">OK</th>
                                 }
@@ -146,7 +138,8 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @if (Model != null) { 
+                            @if (Model != null)
+                            {
                                 var rowCount = 0;
                                 foreach (var item in Model)
                                 {
@@ -192,7 +185,7 @@
                                             }
                                             <br />DUE: <span class="font-weight-semibold text-warning">@(string.Format("{0:N0}", item.PayableAmount - @item.PaymentAmount))</span>
                                         </td>
-                                        @if (hasApprovalAccess) 
+                                        @if (hasApprovalAccess)
                                         {
                                             <td class="align-top" style="text-align:center;">
                                                 <input type="checkbox" id='@("chkApproval_" + ++rowCount)' onclick="UpdateApproval(this, '@item.Id', '@item.EmployeeFullName')" @(item.ApprovalOperator_ID != null ? "checked" : "") />
@@ -201,7 +194,7 @@
                                         <td class="align-top">
                                             <a href="@Url.Action("Print","Payrolls",new { id = item.Id })" target="_blank">View</a>
                                             • @Html.ActionLink("PDF", "PrintToPdf", new { id = item.Id, name = item.EmployeeFullName, payPeriod = item.PayPeriod })
-                                            <br/><a href="javascript:void(0)" onclick="Log('@item.Id')">Log</a>
+                                            <br /><a href="javascript:void(0)" onclick="Log('@item.Id')">Log</a>
 
                                             <a href="javascript:void(0)" id='@("lnkEdit_" + rowCount)' class='@(item.ApprovalOperator_ID == null ? "" : "d-none")' onclick="Edit('@item.Id')">• Edit</a>
                                         </td>

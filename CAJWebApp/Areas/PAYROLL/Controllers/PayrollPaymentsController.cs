@@ -48,7 +48,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
 
             if((EnumActionTypes)actionType == EnumActionTypes.Payroll)
             {
-                List<PayrollsModel> models = new PayrollsController().get(payPeriod, payDate, null, Banks_Id);
+                List<PayrollsModel> models = new PayrollsController().get(payPeriod, payDate, null, Banks_Id, null);
                 foreach (PayrollsModel model in models)
                 {
                     if (model.ApprovalOperator_ID != null && model.PayableAmount - model.PaymentAmount > 0)
@@ -81,7 +81,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
             return Json(new { status = "200", insertCount = string.Format("{0:N0}", insertCount) }, JsonRequestBehavior.AllowGet);
         }
 
-        private string add(string sql, Guid? Payrolls_Id, Guid? Reimbursements_Id, DateTime PaymentDate, int Amount, Guid PayrollEmployees_Id)
+        private string add(string sql, Guid? Payrolls_Id, Guid? Reimbursements_Id, DateTime PaymentDate, long Amount, Guid PayrollEmployees_Id)
         {
             Guid paymentId = Guid.NewGuid();
 

@@ -24,32 +24,33 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
         /* INDEX **********************************************************************************************************************************************/
 
         // GET: PAYROLL/Payrolls
-        public ActionResult Index(int? rss, DateTime? PayPeriod, int? year, int? month, int? payDate, int? approval, string Banks_Id, string search, string periodChange)
+        public ActionResult Index(int? rss, DateTime? PayPeriod, int? year, int? month, int? payDate, int? approval, string Banks_Id, string search, string periodChange, string FILTER_Keyword)
         {
             ViewBag.RemoveDatatablesStateSave = rss;
 
             PayrollPaymentDatesController.setDropDownListViewBag(db, this);
             BanksController.setDropDownListViewBag(db, this);
 
-            DateTime payPeriod = Helper.setFilterViewBag(this, PayPeriod, year, month, payDate, approval, Banks_Id, search, periodChange, null);
+            DateTime payPeriod = Helper.setFilterViewBag(this, PayPeriod, year, month, payDate, approval, Banks_Id, search, periodChange, null, FILTER_Keyword);
 
-            List<PayrollsModel> models = get(payPeriod, payDate, approval, Banks_Id);
+            List<PayrollsModel> models = get(payPeriod, payDate, approval, Banks_Id, FILTER_Keyword);
             ViewBag.TotalApprovedPayableAmount = string.Format("{0:N0}", models.Where(x => x.ApprovalOperator_ID != null && x.PayableAmount > 0).Sum(x => x.PayableAmount));
             ViewBag.TotalApprovedDueAmount = string.Format("{0:N0}", models.Where(x => x.ApprovalOperator_ID != null && x.PayableAmount > 0).Sum(x => x.PayableAmount - x.PaymentAmount));
+            ViewBag.FILTER_Keyword = FILTER_Keyword;
 
             return View(models);
         }
 
         // POST: PAYROLL/Payrolls
         [HttpPost]
-        public ActionResult Index(DateTime? PayPeriod, int? year, int? month, int? payDate, int? approval, string Banks_Id, string search, string periodChange)
+        public ActionResult Index(DateTime? PayPeriod, int? year, int? month, int? payDate, int? approval, string Banks_Id, string search, string periodChange, string FILTER_Keyword)
         {
             PayrollPaymentDatesController.setDropDownListViewBag(db, this);
             BanksController.setDropDownListViewBag(db, this);
 
-            DateTime payPeriod = Helper.setFilterViewBag(this, PayPeriod, year, month, payDate, approval, Banks_Id, search, periodChange, null);
+            DateTime payPeriod = Helper.setFilterViewBag(this, PayPeriod, year, month, payDate, approval, Banks_Id, search, periodChange, null, FILTER_Keyword);
 
-            List<PayrollsModel> models = get(payPeriod, payDate, approval, Banks_Id);
+            List<PayrollsModel> models = get(payPeriod, payDate, approval, Banks_Id, FILTER_Keyword);
             ViewBag.TotalApprovedPayableAmount = string.Format("{0:N0}", models.Where(x => x.ApprovalOperator_ID != null && x.PayableAmount > 0).Sum(x => x.PayableAmount));
             ViewBag.TotalApprovedDueAmount = string.Format("{0:N0}", models.Where(x => x.ApprovalOperator_ID != null && x.PayableAmount > 0).Sum(x => x.PayableAmount - x.PaymentAmount));
 
@@ -59,12 +60,12 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
         /* CREATE *********************************************************************************************************************************************/
 
         // GET: PAYROLL/Payrolls/Create
-        public ActionResult Create(int? year, int? month, int? payDate, int? approval, string Banks_Id, string search)
+        public ActionResult Create(int? year, int? month, int? payDate, int? approval, string Banks_Id, string search, string FILTER_Keyword)
         {
             if (year == null || month == null)
                 return RedirectToAction(nameof(Index));
 
-            DateTime payPeriod = Helper.setFilterViewBag(this, null, year, month, payDate, approval, Banks_Id, search, null, null);
+            DateTime payPeriod = Helper.setFilterViewBag(this, null, year, month, payDate, approval, Banks_Id, search, null, null, FILTER_Keyword);
             PayrollEmployeesController.setDropDownListViewBag(db, this, payPeriod, EnumActionTypes.Payroll);
 
             return View();
@@ -72,10 +73,10 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
 
         // POST: PAYROLL/Payrolls/Create/id
         [HttpPost]
-        public ActionResult Create(Guid PayrollEmployees_Id, int year, int month, int? payDate, int? approval, string Banks_Id, string search)
+        public ActionResult Create(Guid PayrollEmployees_Id, int year, int month, int? payDate, int? approval, string Banks_Id, string search, string FILTER_Keyword)
         {
             Guid Payrolls_Id = Guid.NewGuid();
-            DateTime payPeriod = Helper.setFilterViewBag(this, null, year, month, payDate, approval, Banks_Id, search, null, null);
+            DateTime payPeriod = Helper.setFilterViewBag(this, null, year, month, payDate, approval, Banks_Id, search, null, null, FILTER_Keyword);
             add(Payrolls_Id, PayrollEmployees_Id, payPeriod);
 
             if (UtilWebMVC.hasBootboxMessage(this))
@@ -93,7 +94,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
         /* EDIT ***********************************************************************************************************************************************/
 
         // GET: PAYROLL/Payrolls/Edit/{id}
-        public ActionResult Edit(Guid? id, int? year, int? month, int? payDate, int? approval, string Banks_Id, string search)
+        public ActionResult Edit(Guid? id, int? year, int? month, int? payDate, int? approval, string Banks_Id, string search, string FILTER_Keyword)
         {
             if(id == null)
                 return RedirectToAction(nameof(Index));
@@ -104,14 +105,14 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
             if (model.ApprovalOperator_ID != null)
                 return RedirectToAction(nameof(Index));
 
-            setEditViewBag(year, month, payDate, approval, Banks_Id, search);
+            setEditViewBag(year, month, payDate, approval, Banks_Id, search, FILTER_Keyword);
             return View(model);
         }
 
         // POST: PAYROLL/Payrolls/Edit/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(PayrollsModel modifiedModel, string redirectType)
+        public ActionResult Edit(PayrollsModel modifiedModel, string redirectType, string FILTER_Keyword)
         {
             //Util.debug(ModelState, ViewData);
             
@@ -193,28 +194,28 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
                     });
             }
 
-            setEditViewBag(modifiedModel.FILTER_PayPeriodYear, modifiedModel.FILTER_PayPeriodMonth, modifiedModel.FILTER_PayDate, modifiedModel.FILTER_Approval, modifiedModel.FILTER_Banks_Id, modifiedModel.FILTER_Search);
+            setEditViewBag(modifiedModel.FILTER_PayPeriodYear, modifiedModel.FILTER_PayPeriodMonth, modifiedModel.FILTER_PayDate, modifiedModel.FILTER_Approval, modifiedModel.FILTER_Banks_Id, modifiedModel.FILTER_Search, FILTER_Keyword);
             return View(modifiedModel);
         }
 
-        private void setEditViewBag(int? year, int? month, int? payDate, int? approval, string Banks_Id, string search)
+        private void setEditViewBag(int? year, int? month, int? payDate, int? approval, string Banks_Id, string search, string FILTER_Keyword)
         {
             PayrollEarningsController.setDropDownListViewBag(db, this);
             PayrollDeductionsController.setDropDownListViewBag(db, this);
             PayrollDebtsController.setDropDownListViewBag(db, this);
 
-            Helper.setFilterViewBag(this, null, year, month, payDate, approval, Banks_Id, search, null, null);
+            Helper.setFilterViewBag(this, null, year, month, payDate, approval, Banks_Id, search, null, null, FILTER_Keyword);
         }
 
         /* PRINT **********************************************************************************************************************************************/
 
         // GET: PAYROLL/Payrolls/Print/{id, year, month, paymentDate}
-        public ActionResult Print(Guid? id, int? year, int? month, int? payDate, int? approval, string Banks_Id, string search)
+        public ActionResult Print(Guid? id, int? year, int? month, int? payDate, int? approval, string Banks_Id, string search, string FILTER_Keyword)
         {
             if(id == null && year == null && month == null)
                 return RedirectToAction(nameof(Index));
 
-            return View(get(id, Helper.setFilterViewBag(this, null, year, month, payDate, approval, Banks_Id, search, null, null), payDate, approval, Banks_Id));
+            return View(get(id, Helper.setFilterViewBag(this, null, year, month, payDate, approval, Banks_Id, search, null, null, FILTER_Keyword), payDate, approval, Banks_Id));
         }
 
         public ActionResult PrintToPdf(Guid? id, string name, DateTime? payPeriod, int? year, int? month, int? payDate, string search)
@@ -438,11 +439,11 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
                 ).FirstOrDefault();
         }
 
-        private List<PayrollsModel> get() { return getData(null, null, null, null, null); }
-        private PayrollsModel get(Guid id) { return getData(id, null, null, null, null).FirstOrDefault(); }
-        public List<PayrollsModel> get(DateTime? payPeriod, int? payDate, int? approvalStatus, string Banks_Id) { return getData(null, payPeriod, payDate, approvalStatus, Banks_Id); }
-        private List<PayrollsModel> get(Guid? id, DateTime? payPeriod, int? payDate, int? approvalStatus, string Banks_Id) { return getData(id, payPeriod, payDate, approvalStatus, Banks_Id); }
-        private List<PayrollsModel> getData(Guid? id, DateTime? payPeriod, int? payDate, int? approvalStatus, string banks_Id)
+        private List<PayrollsModel> get() { return getData(null, null, null, null, null, null); }
+        private PayrollsModel get(Guid id) { return getData(id, null, null, null, null, null).FirstOrDefault(); }
+        public List<PayrollsModel> get(DateTime? payPeriod, int? payDate, int? approvalStatus, string Banks_Id, string FILTER_Keyword) { return getData(null, payPeriod, payDate, approvalStatus, Banks_Id, FILTER_Keyword); }
+        private List<PayrollsModel> get(Guid? id, DateTime? payPeriod, int? payDate, int? approvalStatus, string Banks_Id) { return getData(id, payPeriod, payDate, approvalStatus, Banks_Id, null); }
+        private List<PayrollsModel> getData(Guid? id, DateTime? payPeriod, int? payDate, int? approvalStatus, string banks_Id, string FILTER_Keyword)
         {
             Guid? Banks_Id = null;
             if (!string.IsNullOrEmpty(banks_Id))
@@ -463,7 +464,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
                             ISNULL(Earnings.Amount,0) AS EarningsAmount,
                             ISNULL(Deductions.Amount,0) AS DeductionsAmount,
                             ISNULL(DebtUpdate.Amount,0) AS DebtUpdateAmount,
-                            CONVERT(int, 
+                            CONVERT(BIGINT, 
 								CEILING(((
 											CEILING(RegularWorkDay*RegularPayrate)
     										+ CEILING(RegularWorkHour*CEILING(RegularPayrate/(Payrolls.WorkHourPerDay*1.0)))
@@ -473,7 +474,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
 										) * Payrolls.PaymentPercentage / 100)
 									) + ISNULL(Earnings.Amount,0) + ISNULL(Deductions.Amount,0) + ISNULL(DebtUpdate.Amount,0) + ISNULL(MandatoryDepositUpdate.Amount,0)
 								) AS PayableAmount,
-							ISNULL(Payments.Amount,0) AS PaymentAmount,
+							CONVERT(BIGINT, ISNULL(Payments.Amount,0)) AS PaymentAmount,
                             NULL AS PayrollEarningsList,
                             '' AS PayrollEarningsListString,
                             NULL AS PayrollDeductionsList,
@@ -511,7 +512,8 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
                         WHERE 1=1
                             AND (@Id IS NULL OR Payrolls.Id = @Id)
 							AND (@Id IS NOT NULL OR (
-								(@PayrollPaymentDates_PayDate IS NULL OR Payrolls.PayrollPaymentDates_PayDate=@PayrollPaymentDates_PayDate)
+                                (@FILTER_Keyword IS NULL OR (Payrolls.EmployeeFullName LIKE '%'+@FILTER_Keyword+'%' OR Payrolls.CustomerName LIKE '%'+@FILTER_Keyword+'%'))
+								AND (@PayrollPaymentDates_PayDate IS NULL OR Payrolls.PayrollPaymentDates_PayDate=@PayrollPaymentDates_PayDate)
 								AND (@Banks_Id IS NULL OR PayrollEmployees.Banks_Id = @Banks_Id)
 								AND (@PayPeriod IS NULL OR Payrolls.PayPeriod = @PayPeriod)
 								AND (@FILTER_ApprovalStatus IS NULL OR 
@@ -525,7 +527,8 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
                     DBConnection.getSqlParameter(PayrollsModel.COL_PayPeriod.Name, payPeriod),
                     DBConnection.getSqlParameter(PayrollsModel.COL_PayrollPaymentDates_PayDate.Name, payDate),
                     DBConnection.getSqlParameter(PayrollEmployeesModel.COL_Banks_Id.Name, Banks_Id),
-                    DBConnection.getSqlParameter("FILTER_ApprovalStatus", approvalStatus)
+                    DBConnection.getSqlParameter("FILTER_ApprovalStatus", approvalStatus),
+                    DBConnection.getSqlParameter("FILTER_Keyword", FILTER_Keyword)
                 ).ToList();
 
             foreach(PayrollsModel model in models)
@@ -900,7 +903,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
             else if (approval == 1)
                 filename += " Not Approved";
 
-            return Excel.GenerateExcelReport(filename, CompileExcelPackage(get(payPeriod, payDate, approval, Banks_Id)));
+            return Excel.GenerateExcelReport(filename, CompileExcelPackage(get(payPeriod, payDate, approval, Banks_Id, null)));
         }
 
         public ExcelPackage CompileExcelPackage(List<PayrollsModel> models)

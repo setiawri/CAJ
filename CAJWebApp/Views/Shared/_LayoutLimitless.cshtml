@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    @*<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">*@ @*code to witch to mobile mode*@
     <title>@Helper.COMPANYNAME</title>
     @Html.Partial("Scripts")
 </head>
@@ -158,6 +158,54 @@
             return value;
     }
 
+    function updateFILTER_DatePeriod_Month(action, idFilter, idMonth, idYear) {
+        var date = new Date($('#' + idYear).val(), getDDLSelectedValue(idMonth) - 1, 1, 0, 0, 0, 0);
+        if (action == 'previous') {
+            date = addMonths(date, -1);
+        } else if (action == 'next') {
+            date = addMonths(date, 1);
+        }
+        setDatePeriodFilter(idFilter, idMonth, idYear, date.toString());
+    }
+
+    function addMonths(date, value) {
+        var d = date.getDate();
+        date.setMonth(date.getMonth() + +value);
+        if (date.getDate() != d) {
+            date.setDate(0);
+        }
+        return date;
+    }
+
+    function getDDLSelectedValue(id) {
+        return $('#' + id + ' option:selected').val();
+    }
+
+    function setDatePeriodFilter(idFilter, idMonth, idYear, value) {
+        if ($('#' + idMonth) != null && $('#' + idYear) != null) {
+            var date = new Date(value);
+            setDDLSelectedValue(idMonth, (date.getMonth() + 1).toString());
+            setDDLSelectedValue(idYear, date.getFullYear().toString());
+            //updateFILTER_DatePeriod(idFilter, idMonth, idYear);
+        }
+    }
+
+    function updateFILTER_DatePeriod(idFilter, idMonth, idYear) {
+        $('#' + idFilter).val(formatDate(new Date($('#' + idYear).val(), getDDLSelectedValue(idMonth) - 1, 1, 0, 0, 0, 0), 'yyyy/MM/dd'));
+
+    }
+
+    //for select2
+    function setDDLSelectedValue(id, value) {
+        $('#' + id).val(value).trigger('change');
+    }
+
+    function setValue(id, value) { $('#' + id).val(value); }
+
+    function selectFirstInput() {
+        $('form:not(.filter) :input:not([readonly]):visible:enabled:first').select(); //select content of first visible and enabled control
+    }
+
     //==============================================================================================================================================================
 
     $(document).ready(function () {
@@ -171,6 +219,8 @@
         }
 
         applyEventsToInputs(); //call here so it is executed initially
+
+        selectFirstInput();
 
         //popovers
         $('[data-toggle="popover"]').popover({
@@ -301,6 +351,8 @@
         filter += validateFilterNaN(Banks_Id, "Banks_Id");
 
         filter += getFilter_Search(search);
+        if ($('#FILTER_Keyword').val() != null && $('#FILTER_Keyword').val() != '')
+            filter += "&FILTER_Keyword=" +$('#FILTER_Keyword').val();
 
         return filter;
     }
@@ -529,5 +581,21 @@
     function closeSpinner() {
         spinnerDialog.modal('hide');
     }
+
+</script>
+
+
+<!--================================================================================================================================================================
+FILTERING
+=================================================================================================================================================================-->
+
+<input type="hidden" id="FILTER_Keyword" name="FILTER_Keyword" value="@ViewBag.FILTER_Keyword" />
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        setValue('FILTER_Keyword', '@ViewBag.FILTER_Keyword');
+    });
 
 </script>
