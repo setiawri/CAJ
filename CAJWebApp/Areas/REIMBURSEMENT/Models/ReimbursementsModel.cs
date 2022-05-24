@@ -102,11 +102,11 @@ namespace CAJWebApp.Areas.Reimbursement.Models
 
 
         [DisplayFormat(DataFormatString = "{0:N0}")]
-        public int PayableAmount { get; set; }
+        public long PayableAmount { get; set; }
 
 
         [DisplayFormat(DataFormatString = "{0:N0}")]
-        public int PaymentAmount { get; set; }
+        public long PaymentAmount { get; set; }
 
 
         public List<PayrollPaymentsModel> PaymentList { get; set; }

@@ -230,8 +230,8 @@ namespace CAJWebApp.Areas.Reimbursement.Controllers
 
             List<ReimbursementsModel> models = db.Database.SqlQuery<ReimbursementsModel>(@"
                         SELECT Reimbursements.*,
-                            ISNULL(ReimbursementItems.Amount,0) AS PayableAmount,
-							ISNULL(Payments.Amount,0) AS PaymentAmount,
+                            CONVERT(BIGINT,ISNULL(ReimbursementItems.Amount,0)) AS PayableAmount,
+							CONVERT(BIGINT,ISNULL(Payments.Amount,0)) AS PaymentAmount,
                             NULL AS ReimbursementItemsList,
                             '' AS ReimbursementItemsListString,
                             NULL AS FILTER_PayPeriodYear,

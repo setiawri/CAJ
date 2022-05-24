@@ -113,6 +113,7 @@
     <!-- /Secondary navbar ----------------------------------------------------------------------------------------------------------------------------->
     <!-- Page content ---------------------------------------------------------------------------------------------------------------------------------->
     <div class="page-content">
+        <div id="scrollToTopOnPaginationClick"></div>
         <!-- Main content -->
         @RenderBody()
         <!-- /main content -->
@@ -295,6 +296,13 @@
     var datatable = $('.datatable').DataTable({
         autoWidth: false,
         pagingType: 'full_numbers',
+        fnDrawCallback: function (o) {
+            if (o._iDisplayStart != scrollToTopOnPaginationClick) {
+                var targetOffset = $('#scrollToTopOnPaginationClick').offset().top;
+                $('html,body').animate({ scrollTop: targetOffset }, 500);
+                scrollToTopOnPaginationClick = o._iDisplayStart;
+            }
+        },
         order: [[0, 'asc']],
         bStateSave: true,
         stateSaveCallback: function (settings, data) {
