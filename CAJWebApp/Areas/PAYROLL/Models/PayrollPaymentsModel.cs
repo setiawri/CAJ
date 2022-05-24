@@ -29,7 +29,7 @@ namespace CAJWebApp.Areas.PAYROLL.Models
 
         [Display(Name = "Jumlah")]
         [DisplayFormat(DataFormatString = "{0:N0}")]
-        public int Amount { get; set; }
+        public long Amount { get; set; }
         public static ModelMember COL_Amount = new ModelMember { Name = "Amount", Display = "Jumlah" };
 
 
