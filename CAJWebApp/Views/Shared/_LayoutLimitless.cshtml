@@ -207,6 +207,18 @@
         $('form:not(.filter) :input:not([readonly]):visible:enabled:first').select(); //select content of first visible and enabled control
     }
 
+    function OnKeyPress_Enter(id, functionToExecute) {
+        $('#' + id).on('keypress', function (e) {
+            if (e.which === 13) {
+                $(this).attr("disabled", "disabled"); //Disable textbox to prevent multiple submit
+
+                functionToExecute();
+
+                $(this).removeAttr("disabled"); //Enable the textbox again if needed.
+            }
+        });
+    }
+
     //==============================================================================================================================================================
 
     $(document).ready(function () {

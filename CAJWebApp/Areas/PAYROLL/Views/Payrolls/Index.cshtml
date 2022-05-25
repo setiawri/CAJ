@@ -228,6 +228,9 @@
 
         if('@ViewBag.Search' != null && '@ViewBag.Search' != '')
             setSearch('@ViewBag.Search');
+
+        OnKeyPress_Enter('FILTER_Keyword', ReloadTable);
+        $('#FILTER_Keyword').select();
     });
 
     function ReloadTable(periodChange) {
