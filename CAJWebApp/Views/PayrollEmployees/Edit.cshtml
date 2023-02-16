@@ -116,7 +116,7 @@
                             <div class="col-lg-5"></div>
                         </div>
                         <div class="form-group row">
-                            @Html.LabelFor(model => model.EmploymentTypes_Id, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            @Html.LabelFor(model => model.EmploymentTypes_Id, htmlAttributes: new { @class = "col-form-label col-lg-2 required" })
                             <div class="col-lg-5">
                                 @Html.DropDownListFor(model => model.EmploymentTypes_Id, ViewBag.EmploymentTypes as SelectList, "Pilih", new { @class = "form-control select2" })
                                 @Html.ValidationMessageFor(model => model.EmploymentTypes_Id, "", new { @class = "text-danger" })
@@ -124,7 +124,7 @@
                             <div class="col-lg-5"></div>
                         </div>
                         <div class="form-group row">
-                            @Html.LabelFor(model => model.PayrollDepartments_Id, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            @Html.LabelFor(model => model.PayrollDepartments_Id, htmlAttributes: new { @class = "col-form-label col-lg-2 required" })
                             <div class="col-lg-5">
                                 @Html.DropDownListFor(model => model.PayrollDepartments_Id, ViewBag.PayrollDepartments as SelectList, "Pilih", new { @class = "form-control select2" })
                                 @Html.ValidationMessageFor(model => model.PayrollDepartments_Id, "", new { @class = "text-danger" })
@@ -132,10 +132,18 @@
                             <div class="col-lg-5"></div>
                         </div>
                         <div class="form-group row">
-                            @Html.LabelFor(model => model.CounterAreas_Id, htmlAttributes: new { @class = "col-form-label col-lg-2" })
+                            @Html.LabelFor(model => model.CounterAreas_Id, htmlAttributes: new { @class = "col-form-label col-lg-2 required" })
                             <div class="col-lg-5">
                                 @Html.DropDownListFor(model => model.CounterAreas_Id, ViewBag.CounterAreas as SelectList, "Pilih", new { @class = "form-control select2" })
                                 @Html.ValidationMessageFor(model => model.CounterAreas_Id, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="col-lg-5"></div>
+                        </div>
+                        <div class="form-group row">
+                            @Html.LabelFor(model => model.MaritalStatuses_Id, htmlAttributes: new { @class = "col-form-label col-lg-2 required" })
+                            <div class="col-lg-5">
+                                @Html.DropDownListFor(model => model.MaritalStatuses_Id, ViewBag.MaritalStatuses as SelectList, "Pilih", new { @class = "form-control select2" })
+                                @Html.ValidationMessageFor(model => model.MaritalStatuses_Id, "", new { @class = "text-danger" })
                             </div>
                             <div class="col-lg-5"></div>
                         </div>
@@ -173,14 +181,6 @@
                             <div class="col-lg-5">
                                 @Html.EditorFor(model => model.Phone2, new { htmlAttributes = new { @class = "form-control" } })
                                 @Html.ValidationMessageFor(model => model.Phone2, "", new { @class = "text-danger" })
-                            </div>
-                            <div class="col-lg-5"></div>
-                        </div>
-                        <div class="form-group row">
-                            @Html.LabelFor(model => model.MaritalStatuses_Id, htmlAttributes: new { @class = "col-form-label col-lg-2" })
-                            <div class="col-lg-5">
-                                @Html.DropDownListFor(model => model.MaritalStatuses_Id, ViewBag.MaritalStatuses as SelectList, "Pilih", new { @class = "form-control select2" })
-                                @Html.ValidationMessageFor(model => model.MaritalStatuses_Id, "", new { @class = "text-danger" })
                             </div>
                             <div class="col-lg-5"></div>
                         </div>

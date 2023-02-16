@@ -15,11 +15,25 @@ namespace CAJWebApp.Controllers
 
         /* INDEX **********************************************************************************************************************************************/
 
-        // GET: PayrollEmployees
         public ActionResult Index(int? rss, string search)
         {
             ViewBag.RemoveDatatablesStateSave = rss;
 
+            if (rss != null)
+            {
+                ViewBag.RemoveDatatablesStateSave = rss;
+                return View();
+            }
+            else
+            {
+                Helper.setFilterViewBag(this, null, null, null, null, null, null, search, null, null);
+                return View(get());
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Index(string search)
+        {
             Helper.setFilterViewBag(this, null, null, null, null, null, null, search, null, null);
             return View(get());
         }
