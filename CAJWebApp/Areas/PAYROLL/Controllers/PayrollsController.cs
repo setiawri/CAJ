@@ -675,7 +675,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
 
             //reset leave days on January
             if (payPeriod.Month == 1)
-                model.LeaveDaysAdjustment = settings.LeaveDaysPerYear - model.LeaveDaysAdjustment;
+                model.LeaveDaysStartingBalance = settings.LeaveDaysPerYear;
 
             int totalMonthAfterJoin = model.PayPeriod.Month - model.JoinDate.Month + 12 * (model.PayPeriod.Year - model.JoinDate.Year);
             if (model.MandatoryDepositStartingBalance < settings.DepositAmountTotal)

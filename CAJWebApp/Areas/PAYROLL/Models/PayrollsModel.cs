@@ -12,7 +12,7 @@ namespace CAJWebApp.Areas.PAYROLL.Models
         /* DATABASE COLUMNS ***********************************************************************************************************************************/
 
         [Required]
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
         public static ModelMember COL_Id = new ModelMember { Name = "Id", Display = "Id" };
 
 
