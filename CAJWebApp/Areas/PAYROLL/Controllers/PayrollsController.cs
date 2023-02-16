@@ -31,7 +31,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
             PayrollPaymentDatesController.setDropDownListViewBag(db, this);
             BanksController.setDropDownListViewBag(db, this);
 
-            DateTime payPeriod = Helper.setFilterViewBag(this, PayPeriod, year, month, payDate, approval, Banks_Id, search, periodChange, null, FILTER_Keyword);
+            DateTime payPeriod = Helper.setFilterViewBag(this, PayPeriod, year, month, payDate, approval, Banks_Id, search, periodChange, null, FILTER_Keyword, null);
 
             List<PayrollsModel> models = get(payPeriod, payDate, approval, Banks_Id, FILTER_Keyword);
             ViewBag.TotalApprovedPayableAmount = string.Format("{0:N0}", models.Where(x => x.ApprovalOperator_ID != null && x.PayableAmount > 0).Sum(x => x.PayableAmount));
@@ -48,7 +48,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
             PayrollPaymentDatesController.setDropDownListViewBag(db, this);
             BanksController.setDropDownListViewBag(db, this);
 
-            DateTime payPeriod = Helper.setFilterViewBag(this, PayPeriod, year, month, payDate, approval, Banks_Id, search, periodChange, null, FILTER_Keyword);
+            DateTime payPeriod = Helper.setFilterViewBag(this, PayPeriod, year, month, payDate, approval, Banks_Id, search, periodChange, null, FILTER_Keyword, null);
 
             List<PayrollsModel> models = get(payPeriod, payDate, approval, Banks_Id, FILTER_Keyword);
             ViewBag.TotalApprovedPayableAmount = string.Format("{0:N0}", models.Where(x => x.ApprovalOperator_ID != null && x.PayableAmount > 0).Sum(x => x.PayableAmount));
@@ -65,7 +65,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
             if (year == null || month == null)
                 return RedirectToAction(nameof(Index));
 
-            DateTime payPeriod = Helper.setFilterViewBag(this, null, year, month, payDate, approval, Banks_Id, search, null, null, FILTER_Keyword);
+            DateTime payPeriod = Helper.setFilterViewBag(this, null, year, month, payDate, approval, Banks_Id, search, null, null, FILTER_Keyword, null);
             PayrollEmployeesController.setDropDownListViewBag(db, this, payPeriod, EnumActionTypes.Payroll);
 
             return View(new PayrollsModel());
@@ -76,7 +76,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
         public ActionResult Create(Guid PayrollEmployees_Id, int year, int month, int? payDate, int? approval, string Banks_Id, string search, string FILTER_Keyword)
         {
             Guid Payrolls_Id = Guid.NewGuid();
-            DateTime payPeriod = Helper.setFilterViewBag(this, null, year, month, payDate, approval, Banks_Id, search, null, null, FILTER_Keyword);
+            DateTime payPeriod = Helper.setFilterViewBag(this, null, year, month, payDate, approval, Banks_Id, search, null, null, FILTER_Keyword, null);
             add(Payrolls_Id, PayrollEmployees_Id, payPeriod);
 
             if (UtilWebMVC.hasBootboxMessage(this))
@@ -204,7 +204,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
             PayrollDeductionsController.setDropDownListViewBag(db, this);
             PayrollDebtsController.setDropDownListViewBag(db, this);
 
-            Helper.setFilterViewBag(this, null, year, month, payDate, approval, Banks_Id, search, null, null, FILTER_Keyword);
+            Helper.setFilterViewBag(this, null, year, month, payDate, approval, Banks_Id, search, null, null, FILTER_Keyword, null);
         }
 
         /* PRINT **********************************************************************************************************************************************/
@@ -215,7 +215,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
             if(id == null && year == null && month == null)
                 return RedirectToAction(nameof(Index));
 
-            return View(get(id, Helper.setFilterViewBag(this, null, year, month, payDate, approval, Banks_Id, search, null, null, FILTER_Keyword), payDate, approval, Banks_Id));
+            return View(get(id, Helper.setFilterViewBag(this, null, year, month, payDate, approval, Banks_Id, search, null, null, FILTER_Keyword, null), payDate, approval, Banks_Id));
         }
 
         public ActionResult PrintToPdf(Guid? id, string name, DateTime? payPeriod, int? year, int? month, int? payDate, string search)

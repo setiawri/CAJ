@@ -15,7 +15,7 @@ namespace CAJWebApp.Controllers
 
         /* INDEX **********************************************************************************************************************************************/
 
-        public ActionResult Index(int? rss, string search)
+        public ActionResult Index(int? rss, string search, string FILTER_Keyword, int? FILTER_Active)
         {
             ViewBag.RemoveDatatablesStateSave = rss;
 
@@ -26,16 +26,16 @@ namespace CAJWebApp.Controllers
             }
             else
             {
-                Helper.setFilterViewBag(this, null, null, null, null, null, null, search, null, null);
-                return View(get());
+                Helper.setFilterViewBag(this, null, null, null, null, null, null, search, null, null, FILTER_Keyword, FILTER_Active);
+                return View(get(FILTER_Keyword, FILTER_Active));
             }
         }
 
         [HttpPost]
-        public ActionResult Index(string search)
+        public ActionResult Index(string search, string FILTER_Keyword, int? FILTER_Active)
         {
-            Helper.setFilterViewBag(this, null, null, null, null, null, null, search, null, null);
-            return View(get());
+            Helper.setFilterViewBag(this, null, null, null, null, null, null, search, null, null, FILTER_Keyword, FILTER_Active);
+            return View(get(FILTER_Keyword, FILTER_Active));
         }
 
         /* CREATE *********************************************************************************************************************************************/
@@ -167,10 +167,10 @@ namespace CAJWebApp.Controllers
             ViewBag.DefaultWorkHoursPerDay = settings.WorkHoursPerDay;
         }
 
-        public List<PayrollEmployeesModel> get() { return getData(null, false, null, EnumActionTypes.All); }
-        public List<PayrollEmployeesModel> get(bool onlyActive, DateTime? payPeriod, EnumActionTypes actionType) { return getData(null, onlyActive, payPeriod, actionType); }
-        public PayrollEmployeesModel get(Guid id) { return getData(id, false, null, EnumActionTypes.All).FirstOrDefault(); }
-        private List<PayrollEmployeesModel> getData(Guid? id, bool onlyActive, DateTime? payPeriod, EnumActionTypes actionType)
+        public List<PayrollEmployeesModel> get(string FILTER_Keyword, int? FILTER_Active) { return getData(null, false, null, EnumActionTypes.All, FILTER_Keyword, FILTER_Active); }
+        public List<PayrollEmployeesModel> get(bool onlyActive, DateTime? payPeriod, EnumActionTypes actionType) { return getData(null, onlyActive, payPeriod, actionType, null, null); }
+        public PayrollEmployeesModel get(Guid id) { return getData(id, false, null, EnumActionTypes.All, null, null).FirstOrDefault(); }
+        private List<PayrollEmployeesModel> getData(Guid? id, bool onlyActive, DateTime? payPeriod, EnumActionTypes actionType, string FILTER_Keyword, int? FILTER_Active)
         {
             List< PayrollEmployeesModel> list = db.Database.SqlQuery<PayrollEmployeesModel>(@"
                         SELECT PayrollEmployees.*,
@@ -217,6 +217,8 @@ namespace CAJWebApp.Controllers
                         WHERE 1=1
                             AND (@Id IS NULL OR PayrollEmployees.Id = @Id)
                             AND (@FILTER_OnlyActive = 0 OR (@FILTER_OnlyActive = 1 AND PayrollEmployees.Active = 1))
+                            AND (@FILTER_Active IS NULL OR PayrollEmployees.Active = @FILTER_Active)
+    						AND (@FILTER_Keyword IS NULL OR (PayrollEmployees.Fullname LIKE '%'+@FILTER_Keyword+'%'))
 							AND (@PayPeriod IS NULL OR (
 									@FILTER_ActionType = 0 OR (
 											@FILTER_ActionType = 1 AND 
@@ -240,7 +242,9 @@ namespace CAJWebApp.Controllers
                     DBConnection.getSqlParameter(PayrollEmployeesModel.COL_Id.Name, id),
                     DBConnection.getSqlParameter(PayrollsModel.COL_PayPeriod.Name, payPeriod),
                     DBConnection.getSqlParameter("FILTER_OnlyActive", onlyActive),
-                    DBConnection.getSqlParameter("FILTER_ActionType", actionType)
+                    DBConnection.getSqlParameter("FILTER_ActionType", actionType),
+                    DBConnection.getSqlParameter("FILTER_Keyword", FILTER_Keyword),
+                    DBConnection.getSqlParameter("FILTER_Active", FILTER_Active)
                 ).ToList();
 
             return list;

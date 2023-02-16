@@ -43,8 +43,8 @@ namespace CAJWebApp
             return (Request.ApplicationPath + IMAGEFOLDERURL + filename).Replace("//", "/");
         }
 
-        public static DateTime setFilterViewBag(ControllerBase controller, DateTime? PayPeriod, int? year, int? month, int? payDate, int? approval, string Banks_Id, string search, string periodChange, int? Type) { return setFilterViewBag(controller, PayPeriod, year, month, payDate, approval, Banks_Id, search, periodChange, Type, null); }
-        public static DateTime setFilterViewBag(ControllerBase controller, DateTime? PayPeriod, int? year, int? month, int? payDate, int? approval, string Banks_Id, string search, string periodChange, int? Type, string FILTER_Keyword)
+        public static DateTime setFilterViewBag(ControllerBase controller, DateTime? PayPeriod, int? year, int? month, int? payDate, int? approval, string Banks_Id, string search, string periodChange, int? Type) { return setFilterViewBag(controller, PayPeriod, year, month, payDate, approval, Banks_Id, search, periodChange, Type, null, null); }
+        public static DateTime setFilterViewBag(ControllerBase controller, DateTime? PayPeriod, int? year, int? month, int? payDate, int? approval, string Banks_Id, string search, string periodChange, int? Type, string FILTER_Keyword, int? FILTER_Active)
         {
             DateTime payPeriod;
 
@@ -62,6 +62,7 @@ namespace CAJWebApp
 
             var ViewBag = controller.ViewBag;
             ViewBag.FILTER_Keyword = FILTER_Keyword;
+            ViewBag.FILTER_Active = FILTER_Active;
             ViewBag.PayPeriodYear = UtilWebMVC.validateParameter(payPeriod.Year);
             ViewBag.PayPeriodMonth = UtilWebMVC.validateParameter(payPeriod.Month);
             ViewBag.PayPeriod = UtilWebMVC.validateParameter(payPeriod);
