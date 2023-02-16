@@ -673,9 +673,9 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
             SettingsModel settings = SettingsController.get(db);
             PayrollsModel model = get(id);
 
-            //reset leave days on January
-            if (payPeriod.Month == 1)
-                model.LeaveDaysAdjustment = settings.LeaveDaysPerYear - model.LeaveDaysStartingBalance;
+            //reset leave days on January. DISABLED because there are other rules (1 year minimum to receive leave days). Need fixed rules from client and create the mechanism.
+            //if (payPeriod.Month == 1)
+            //    model.LeaveDaysAdjustment = settings.LeaveDaysPerYear - model.LeaveDaysStartingBalance;
 
             int totalMonthAfterJoin = model.PayPeriod.Month - model.JoinDate.Month + 12 * (model.PayPeriod.Year - model.JoinDate.Year);
             if (model.MandatoryDepositStartingBalance < settings.DepositAmountTotal)
