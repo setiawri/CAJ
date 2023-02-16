@@ -30,7 +30,7 @@ namespace CAJWebApp.Controllers
         public ActionResult Create()
         {
             populateViewBag();
-            return View();
+            return View(new PayrollEmployeesModel());
         }
 
         // POST: PayrollEmployees/Create

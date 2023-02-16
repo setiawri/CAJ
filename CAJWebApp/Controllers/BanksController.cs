@@ -26,7 +26,7 @@ namespace CAJWebApp.Controllers
         // GET: PAYROLL/Banks/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new BanksModel());
         }
 
         // POST: PAYROLL/Banks/Create

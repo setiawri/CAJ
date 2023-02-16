@@ -68,7 +68,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
             DateTime payPeriod = Helper.setFilterViewBag(this, null, year, month, payDate, approval, Banks_Id, search, null, null, FILTER_Keyword);
             PayrollEmployeesController.setDropDownListViewBag(db, this, payPeriod, EnumActionTypes.Payroll);
 
-            return View();
+            return View(new PayrollsModel());
         }
 
         // POST: PAYROLL/Payrolls/Create/id

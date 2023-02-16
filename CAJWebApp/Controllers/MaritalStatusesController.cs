@@ -26,7 +26,7 @@ namespace CAJWebApp.Controllers
         // GET: PAYROLL/MaritalStatuses/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new MaritalStatusesModel());
         }
 
         // POST: PAYROLL/MaritalStatuses/Create

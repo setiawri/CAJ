@@ -29,7 +29,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
         public ActionResult Create()
         {
             populateViewBag();
-            return View();
+            return View(new RegionPayratesModel());
         }
 
         // POST: PAYROLL/RegionPayrates/Create

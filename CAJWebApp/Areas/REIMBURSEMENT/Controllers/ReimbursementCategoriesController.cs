@@ -28,7 +28,7 @@ namespace CAJWebApp.Areas.Reimbursement.Controllers
         // GET: PAYROLL/ReimbursementCategories/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new ReimbursementCategoriesModel());
         }
 
         // POST: PAYROLL/ReimbursementCategories/Create

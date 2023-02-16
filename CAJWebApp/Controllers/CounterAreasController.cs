@@ -26,7 +26,7 @@ namespace CAJWebApp.Controllers
         // GET: PAYROLL/CounterAreas/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new CounterAreasModel());
         }
 
         // POST: PAYROLL/CounterAreas/Create

@@ -28,7 +28,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
         // GET: PAYROLL/PayrollEarnings/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new PayrollEarningsModel());
         }
 
         // POST: PAYROLL/PayrollEarnings/Create

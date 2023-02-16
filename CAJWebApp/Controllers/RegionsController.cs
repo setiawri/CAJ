@@ -26,7 +26,7 @@ namespace CAJWebApp.Controllers
         // GET: PAYROLL/Regions/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new RegionsModel());
         }
 
         // POST: PAYROLL/Regions/Create

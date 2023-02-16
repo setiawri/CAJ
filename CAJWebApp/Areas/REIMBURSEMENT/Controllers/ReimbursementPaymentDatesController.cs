@@ -27,7 +27,7 @@ namespace CAJWebApp.Areas.Reimbursement.Controllers
         // GET: Reimbursement/ReimbursementPaymentDates/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new ReimbursementPaymentDatesModel());
         }
 
         // POST: Reimbursement/ReimbursementPaymentDates/Create

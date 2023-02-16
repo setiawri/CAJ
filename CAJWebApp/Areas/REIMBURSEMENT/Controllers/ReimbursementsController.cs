@@ -51,7 +51,7 @@ namespace CAJWebApp.Areas.Reimbursement.Controllers
             DateTime payPeriod = Helper.setFilterViewBag(this, null, year, month, payDate, approval, Banks_Id, search, null, null);
             PayrollEmployeesController.setDropDownListViewBag(db, this, payPeriod, EnumActionTypes.Reimbursement);
 
-            return View();
+            return View(new ReimbursementsModel());
         }
 
         // POST: PAYROLL/Reimbursements/Generate/id

@@ -26,7 +26,7 @@ namespace CAJWebApp.Controllers
         // GET: PAYROLL/EmploymentTypes/Create
         public ActionResult Create()
         {
-            return View();
+            return View(new EmploymentTypesModel());
         }
 
         // POST: PAYROLL/EmploymentTypes/Create
