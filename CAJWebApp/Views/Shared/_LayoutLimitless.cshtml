@@ -347,6 +347,23 @@
         }
     });
 
+    function ActionWithId(id, action, controller, newwindow, returnurl) {
+        if(newwindow == false)
+            showLoadingSpinner();
+        var url = '@Url.Action("__action", "__controller", new { id = "__data" })';
+        url = url.replace("__data", id + "?" + getFilterString());
+        ProcessAction(url, action, controller, newwindow, returnurl)
+    }
+
+    function ProcessAction(url, action, controller, newwindow, returnurl) {
+        url = url.replace("__action", action).replace("__controller", controller);
+        if (returnurl != undefined)
+            url += "&ReturnUrl=" + returnurl;
+        if (newwindow == null)
+            newwindow = "false";
+        OpenWindow(url, newwindow);
+    }
+
     function getAllFilterString() { return getFilterString(null, null, null, null, null, null, null); }
     function getMainFilterString(year, month, payDate, search) { return getFilterString(year, month, payDate, null, null, search, null); }
     function getFilterString(year, month, payDate, approval, Banks_Id, search, Type) {
@@ -373,6 +390,10 @@
         filter += getFilter_Search(search);
         if ($('#FILTER_Keyword').val() != null && $('#FILTER_Keyword').val() != '')
             filter += "&FILTER_Keyword=" +$('#FILTER_Keyword').val();
+
+        if ($('#FILTER_Active') != null)
+            FILTER_Active = $('#FILTER_Active').val();
+        filter += appendFilter(FILTER_Active, "FILTER_Active");
 
         return filter;
     }
@@ -422,6 +443,23 @@
                 return "&" + filterName + "=" + value;
         }
         return "";
+    }
+
+    function appendFilter(value, filterName) {
+        if (value != null && value.toString() != "") {
+            if (filterName == "")
+                return value;
+            else
+                return "&" + filterName + "=" + value;
+        }
+        return "";
+    }
+
+    function appendFilterIfNumber(value, filterName) {
+        if (isNaN(value) == true)
+            return ""
+        else
+            return appendFilter(value, filterName);
     }
 
     function getSearch() {
@@ -609,13 +647,16 @@
 FILTERING
 =================================================================================================================================================================-->
 
-<input type="hidden" id="FILTER_Keyword" name="FILTER_Keyword" value="@ViewBag.FILTER_Keyword" />
+@*<input type="hidden" id="FILTER_Keyword" name="FILTER_Keyword" value="@ViewBag.FILTER_Keyword" />*@
 
 <script type="text/javascript">
 
     $(document).ready(function () {
 
+        console.log('keyword::'+Date.now()+'::@ViewBag.FILTER_Keyword');
+        console.log('active::'+Date.now()+'::@ViewBag.FILTER_Active');
         setValue('FILTER_Keyword', '@ViewBag.FILTER_Keyword');
+        setValue('FILTER_Active', '@ViewBag.FILTER_Active');
     });
 
 </script>

@@ -12,6 +12,9 @@
         @using (Html.BeginForm())
         {
             @Html.AntiForgeryToken()
+
+            <input type="hidden" id="FILTER_Keyword" name="FILTER_Keyword" value="@ViewBag.FILTER_Keyword" />
+
             <!-- Form inputs -->
             <div class="card">
                 <div class="card-header header-elements-inline">
@@ -186,7 +189,7 @@
                     </fieldset>
                     <div>
                         <button type="submit" class="btn btn-primary">Submit<i class="icon-paperplane ml-2"></i></button>
-                        <a href="@Url.Action("Index", "PayrollEmployees", new { Area = "" })" class="btn btn-warning">Cancel<i class="icon-cross2 ml-2"></i></a>
+                        <a href="@Url.Action("Index", "PayrollEmployees", new { Area = "", FILTER_Keyword=ViewBag.FILTER_Keyword, FILTER_Active=ViewBag.FILTER_Active } )" class="btn btn-warning">Cancel<i class="icon-cross2 ml-2"></i></a>
                     </div>
                 </div>
             </div>

@@ -21,6 +21,10 @@
             @Html.HiddenFor(model => model.CounterAreas_Name)
             @Html.HiddenFor(model => model.MaritalStatuses_Name)
             @Html.HiddenFor(model => model.PayrollDepartments_Name)
+
+            <input type="hidden" id="FILTER_Keyword" name="FILTER_Keyword" value="@ViewBag.FILTER_Keyword" />
+            <input type="hidden" id="FILTER_Active" name="FILTER_Active" value="@ViewBag.FILTER_Active" />
+
             <!-- Form inputs -->
             <div class="card">
                 <div class="card-header header-elements-inline">
@@ -207,7 +211,7 @@
                     </fieldset>
                     <div>
                         <button type="submit" class="btn btn-primary">Submit<i class="icon-paperplane ml-2"></i></button>
-                        <a href="@Url.Action("Index", "PayrollEmployees", new { Area = "" })" class="btn btn-warning">Cancel<i class="icon-cross2 ml-2"></i></a>
+                        <a href="@Url.Action("Index", "PayrollEmployees", new { Area = "", FILTER_Keyword=ViewBag.FILTER_Keyword, FILTER_Active=ViewBag.FILTER_Active })" class="btn btn-warning">Cancel<i class="icon-cross2 ml-2"></i></a>
                     </div>
                 </div>
             </div>
@@ -221,6 +225,8 @@
 <script type="text/javascript">
     $(document).ready(function () {
         activateMenu('PayrollEmployees');
+
+        @*console.log('@Model.Banks_Id'+' ::: ' + '@Model.Banks_Name');*@
 
         //set calendar values
         $('#JoinDate').data('daterangepicker').setStartDate('@string.Format("{0:yyyy/MM/dd}", Model.JoinDate)');

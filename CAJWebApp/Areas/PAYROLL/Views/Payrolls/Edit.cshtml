@@ -31,7 +31,11 @@
                 @Html.HiddenFor(model => model.FILTER_PayPeriodYear)
                 @Html.HiddenFor(model => model.FILTER_PayPeriodMonth)
                 @Html.HiddenFor(model => model.FILTER_PayDate)
+
+                <input type="hidden" id="FILTER_Keyword" name="FILTER_Keyword" value="@ViewBag.FILTER_Keyword" />
+                <input type="hidden" id="FILTER_Active" name="FILTER_Active" value="@ViewBag.FILTER_Active" />
                 <input type="hidden" id="redirectType" name="redirectType" value="Update" />
+
                 <!-- Form inputs -->
                 <div class="card">
                     <div class="card-header header-elements-inline">
@@ -499,17 +503,17 @@
                             </div>
                         </fieldset>
                         <div>
-                            @if(Model.ApprovalOperator_ID == null)
-                            { 
+                            @if (Model.ApprovalOperator_ID == null)
+                            {
                                 <button type="submit" class="btn btn-primary" onclick="showLoadingSpinner();">Update<i class="icon-paperplane ml-2"></i></button>
-                                <button type="submit" class="btn btn-secondary" onclick="updateAndAdd();showLoadingSpinner();">Update and Add<i class="icon-plus22 ml-2"></i></button>
+                                <button type="submit" class="btn btn-secondary" onclick="updateAndAdd();showLoadingSpinner();">Update and Create<i class="icon-plus22 ml-2"></i></button>
                             }
                             <button type="button" onclick="Print('@Model.Id')" class="btn btn-success">Print<i class="icon-printer4 ml-2"></i></button>
                             <a href="@Url.Action("Index", "Payrolls",
-                                    new {  year = ViewBag.PayPeriodYear, month = ViewBag.PayPeriodMonth, payDate = ViewBag.PayDate, approval = ViewBag.Approval, Banks_Id = ViewBag.Banks_Id, search = ViewBag.Search } )"
+                                    new {  year = ViewBag.PayPeriodYear, month = ViewBag.PayPeriodMonth, payDate = ViewBag.PayDate, approval = ViewBag.Approval, Banks_Id = ViewBag.Banks_Id, search = ViewBag.Search, FILTER_Keyword=ViewBag.Filter_Keyword } )"
                                class="btn btn-warning">Cancel<i class="icon-cross2 ml-2"></i></a>
 
-                            <button type="button" class="btn btn-danger ml-5" onclick="Regenerate()">Regenerate<i class="icon-reload-alt ml-2"></i></button>
+                            <button type="button" class="btn btn-danger ml-5" onclick="Regenerate()">Regenerate data<i class="icon-reload-alt ml-2"></i></button>
                         </div>
                     </div>
                 </div>
@@ -534,7 +538,7 @@
 
         $('#CalculatedRegularWorkHour').val(ZeroIfEmpty($('#CalculatedRegularWorkHour').val()));
         $('#RegularWorkDay').val(parseFloat($('#CalculatedRegularWorkHour').val()) / parseFloat($('#WorkHourPerDay').val()));
-        
+
         $('#HolidayWorkHour').val(ZeroIfEmpty($('#HolidayWorkHour').val()));
         $('#HolidayWorkDay').val(parseFloat($('#HolidayWorkHour').val()) / parseFloat($('#WorkHourPerDay').val()));
 

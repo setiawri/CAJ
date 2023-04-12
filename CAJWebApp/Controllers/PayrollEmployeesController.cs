@@ -41,16 +41,17 @@ namespace CAJWebApp.Controllers
         /* CREATE *********************************************************************************************************************************************/
 
         // GET: PayrollEmployees/Create
-        public ActionResult Create()
+        public ActionResult Create(string FILTER_Keyword, int? FILTER_Active)
         {
             populateViewBag();
+            Helper.setFilterViewBag(this, null, null, null, null, null, null, null, null, null, FILTER_Keyword, FILTER_Active);
             return View(new PayrollEmployeesModel());
         }
 
         // POST: PayrollEmployees/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(PayrollEmployeesModel model)
+        public ActionResult Create(PayrollEmployeesModel model, string FILTER_Keyword, int? FILTER_Active)
         {
             if (ModelState.IsValid)
             {
@@ -63,30 +64,34 @@ namespace CAJWebApp.Controllers
                     add(model);
                     ActivityLogsController.AddCreateLog(db, Session, model.Id);
                     db.SaveChanges();
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index), new
+                    {
+                        FILTER_Keyword = FILTER_Keyword,
+                        FILTER_Active = FILTER_Active
+                    });
                 }
             }
 
             populateViewBag();
+            Helper.setFilterViewBag(this, null, null, null, null, null, null, null, null, null, FILTER_Keyword, FILTER_Active);
             return View(model);
         }
 
         /* EDIT ***********************************************************************************************************************************************/
 
-        // GET: PayrollEmployees/Edit/{id}
-        public ActionResult Edit(Guid? id)
+        public ActionResult Edit(Guid? id, string FILTER_Keyword, int? FILTER_Active)
         {
             if (id == null)
                 return RedirectToAction(nameof(Index));
 
             populateViewBag();
+            Helper.setFilterViewBag(this, null, null, null, null, null, null, null, null, null, FILTER_Keyword, FILTER_Active);
             return View(get((Guid)id));
         }
 
-        // POST: PayrollEmployees/Edit/{id}
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(PayrollEmployeesModel modifiedModel)
+        public ActionResult Edit(PayrollEmployeesModel modifiedModel, string FILTER_Keyword, int? FILTER_Active)
         {
             if (modifiedModel.WorkHourPerDay == 0)
                 ModelState.AddModelError("WorkHourPerDay", "Jam Kerja / Hari harus lebih dari 0");
@@ -129,11 +134,16 @@ namespace CAJWebApp.Controllers
                         db.SaveChanges();
                     }
 
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(Index), new
+                    {
+                        FILTER_Keyword = FILTER_Keyword,
+                        FILTER_Active = FILTER_Active
+                    });
                 }
             }
 
             populateViewBag();
+            Helper.setFilterViewBag(this, null, null, null, null, null, null, null, null, null, FILTER_Keyword, FILTER_Active);
             return View(modifiedModel);
         }
 

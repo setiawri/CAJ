@@ -33,12 +33,20 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
 
             DateTime payPeriod = Helper.setFilterViewBag(this, PayPeriod, year, month, payDate, approval, Banks_Id, search, periodChange, null, FILTER_Keyword, null);
 
-            List<PayrollsModel> models = get(payPeriod, payDate, approval, Banks_Id, FILTER_Keyword);
-            ViewBag.TotalApprovedPayableAmount = string.Format("{0:N0}", models.Where(x => x.ApprovalOperator_ID != null && x.PayableAmount > 0).Sum(x => x.PayableAmount));
-            ViewBag.TotalApprovedDueAmount = string.Format("{0:N0}", models.Where(x => x.ApprovalOperator_ID != null && x.PayableAmount > 0).Sum(x => x.PayableAmount - x.PaymentAmount));
-            ViewBag.FILTER_Keyword = FILTER_Keyword;
+            if (rss != null)
+            {
+                ViewBag.RemoveDatatablesStateSave = rss;
+                return View();
+            }
+            else
+            {
+                List<PayrollsModel> models = get(payPeriod, payDate, approval, Banks_Id, FILTER_Keyword);
+                ViewBag.TotalApprovedPayableAmount = string.Format("{0:N0}", models.Where(x => x.ApprovalOperator_ID != null && x.PayableAmount > 0).Sum(x => x.PayableAmount));
+                ViewBag.TotalApprovedDueAmount = string.Format("{0:N0}", models.Where(x => x.ApprovalOperator_ID != null && x.PayableAmount > 0).Sum(x => x.PayableAmount - x.PaymentAmount));
+                ViewBag.FILTER_Keyword = FILTER_Keyword;
 
-            return View(models);
+                return View(models);
+            }
         }
 
         // POST: PAYROLL/Payrolls
@@ -87,7 +95,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
             }
             else
             {
-                return RedirectToAction(nameof(Edit), new { id = Payrolls_Id, year = year, month = month, payDate = payDate, approval = approval, Banks_Id = Banks_Id, search = search });
+                return RedirectToAction(nameof(Edit), new { id = Payrolls_Id, year = year, month = month, payDate = payDate, approval = approval, Banks_Id = Banks_Id, search = search, FILTER_Keyword = FILTER_Keyword });
             }
         }
 
@@ -179,6 +187,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
 
                 if(redirectType == "Update")
                     return RedirectToAction(nameof(Index), new { 
+                        FILTER_Keyword = FILTER_Keyword,
                         year = modifiedModel.FILTER_PayPeriodYear, 
                         month = modifiedModel.FILTER_PayPeriodMonth, 
                         payDate = modifiedModel.FILTER_PayDate, 
@@ -187,6 +196,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
                 else
                     return RedirectToAction(nameof(Create), new
                     {
+                        FILTER_Keyword = FILTER_Keyword,
                         year = modifiedModel.FILTER_PayPeriodYear,
                         month = modifiedModel.FILTER_PayPeriodMonth,
                         payDate = modifiedModel.FILTER_PayDate,

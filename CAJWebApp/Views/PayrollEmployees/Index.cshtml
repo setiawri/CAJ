@@ -9,98 +9,96 @@
 <div class="content-wrapper">
     <!-- Content area -->
     <div class="content">
-        @using (Html.BeginForm("Index", ControllerName, FormMethod.Post))
-        {
-            <!-- Form inputs -->
-            <div class="card animated bounceInLeft">
-                <div class="card-header header-elements-inline">
-                    <h5 class="card-title text-uppercase">@ViewBag.Root</h5>
+        <!-- Form inputs -->
+        <div class="card animated bounceInLeft">
+            <div class="card-header header-elements-inline">
+                <h5 class="card-title text-uppercase">@ViewBag.Root</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mx-0">
+                    <div class="mr-2">
+                        <label class="mb-0">&nbsp;</label>
+                        <div><button onclick="showLoadingSpinner();Create()" class="btn btn-success">CREATE<i class="icon-plus22 ml-2"></i></button></div>
+                    </div>
+
+                    <div class="row ml-0 mr-2" style="width:100px;">
+                        <label class="mb-0">Keyword</label>
+                        <div class="input-group">
+                            <input type="text" name="FILTER_Keyword" id="FILTER_Keyword" class="form-control" />
+                        </div>
+                    </div>
+
+                    <div class="row ml-0 mr-2">
+                        <label class="mb-0">Active</label>
+                        <div class="input-group">
+                            <select id="FILTER_Active" name="FILTER_Active" class="custom-select">
+                                <option value="" selected>ALL</option>
+                                <option value="1">Active</option>
+                                <option value="0">Not Active</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="ml-0 mr-2">
+                        <label class="mb-0">&nbsp;</label>
+                        <button type="submit" onclick="showLoadingSpinner()" class="btn btn-outline-primary form-control"><i class="icon-reload-alt mr-2"></i>LOAD</button>
+                    </div>
                 </div>
-                <div class="card-body">
-                    <div class="row mx-0">
-                        <div class="mr-2">
-                            <label class="mb-0">&nbsp;</label>
-                            <div><a href="@Url.Action("Create", ControllerName, new { Area = "" })" class="btn btn-success">CREATE<i class="icon-plus22 ml-2"></i></a></div>
-                        </div>
 
-                        <div class="row ml-0 mr-2" style="width:100px;">
-                            <label class="mb-0">Keyword</label>
-                            <div class="input-group">
-                                <input type="text" name="FILTER_Keyword" id="FILTER_Keyword" class="form-control" />
-                            </div>
-                        </div>
-
-                        <div class="row ml-0 mr-2">
-                            <label class="mb-0">Active</label>
-                            <div class="input-group">
-                                <select id="FILTER_Active" name="FILTER_Active" class="custom-select">
-                                    <option value="" selected>ALL</option>
-                                    <option value="1">Active</option>
-                                    <option value="0">Not Active</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="ml-0 mr-2">
-                            <label class="mb-0">&nbsp;</label>
-                            <button type="submit" onclick="showLoadingSpinner()" class="btn btn-outline-primary form-control"><i class="icon-reload-alt mr-2"></i>LOAD</button>
-                        </div>
-                    </div>
-
-                    <div class="table-responsive">
-                        <table class="table table-hover datatable">
-                            <thead>
-                                <tr>
-                                    <th>Nama / Join / Tipe</th>
-                                    <th>Counter</th>
-                                    <th>Rekening</th>
-                                    <th class="text-right">@Html.DisplayNameFor(model => model.MandatoryDepositBalance)</th>
-                                    <th class="text-right">@Html.DisplayNameFor(model => model.DebtBalance)</th>
-                                    <th class="non-searchable non-sortable"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @if (Model != null)
+                <div class="table-responsive">
+                    <table class="table table-hover datatable">
+                        <thead>
+                            <tr>
+                                <th>Nama / Join / Tipe</th>
+                                <th>Counter</th>
+                                <th>Rekening</th>
+                                <th class="text-right">@Html.DisplayNameFor(model => model.MandatoryDepositBalance)</th>
+                                <th class="text-right">@Html.DisplayNameFor(model => model.DebtBalance)</th>
+                                <th class="non-searchable non-sortable"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null)
+                            {
+                                foreach (var item in Model)
                                 {
-                                    foreach (var item in Model)
-                                    {
-                                        <tr>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Fullname)
-                                                <br />@Html.DisplayFor(modelItem => item.JoinDate), @Html.DisplayFor(modelItem => item.EmploymentTypes_Name)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.Customer_Name)
-                                                <br />@Html.DisplayFor(modelItem => item.Regions_Name)
-                                            </td>
-                                            <td>
-                                                @Html.DisplayFor(modelItem => item.AccountName)
-                                                <br />[@Html.DisplayFor(modelItem => item.Banks_Name)] @Html.DisplayFor(modelItem => item.AccountNumber)
-                                            </td>
-                                            <td class="text-right">@Html.DisplayFor(modelItem => item.MandatoryDepositBalance)</td>
-                                            <td class="text-right">@Html.DisplayFor(modelItem => item.DebtBalance)</td>
-                                            <td>
-                                                @if (item.Active == true)
-                                                {
-                                                    <span class="badge badge-success d-block">Aktif</span>
-                                                }
-                                                else
-                                                {
-                                                    <span class="badge badge-dark d-block">Non aktif</span>
-                                                }
-                                                @Html.ActionLink("Edit", "Edit", new { id = item.Id })
-                                                • <a href="javascript:void(0)" onclick="Log('@item.Id')">Log</a>
-                                            </td>
-                                        </tr>
-                                    }
+                                    <tr>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Fullname)
+                                            <br />@Html.DisplayFor(modelItem => item.JoinDate), @Html.DisplayFor(modelItem => item.EmploymentTypes_Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.Customer_Name)
+                                            <br />@Html.DisplayFor(modelItem => item.Regions_Name)
+                                        </td>
+                                        <td>
+                                            @Html.DisplayFor(modelItem => item.AccountName)
+                                            <br />[@Html.DisplayFor(modelItem => item.Banks_Name)] @Html.DisplayFor(modelItem => item.AccountNumber)
+                                        </td>
+                                        <td class="text-right">@Html.DisplayFor(modelItem => item.MandatoryDepositBalance)</td>
+                                        <td class="text-right">@Html.DisplayFor(modelItem => item.DebtBalance)</td>
+                                        <td>
+                                            @if (item.Active == true)
+                                            {
+                                                <span class="badge badge-success d-block">Aktif</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge badge-dark d-block">Non aktif</span>
+                                            }
+                                            @*@Html.ActionLink("Edit", "Edit", new { id = item.Id })*@
+                                            <a href="javascript:void(0)" onclick="ActionWithId('@item.Id', 'Edit', 'PayrollEmployees')">Edit</a>
+                                            • <a href="javascript:void(0)" onclick="Log('@item.Id')">Log</a>
+                                        </td>
+                                    </tr>
                                 }
-                            </tbody>
-                        </table>
-                    </div>
+                            }
+                        </tbody>
+                    </table>
                 </div>
             </div>
-            <!-- /form inputs -->
-        }
+        </div>
+        <!-- /form inputs -->
     </div>
     <!-- /content area -->
 </div>
@@ -113,5 +111,20 @@
 
         if('@ViewBag.Search' != null && '@ViewBag.Search' != '')
             $('input[aria-controls=DataTables_Table_0]').val('@ViewBag.Search').keyup(); //apply search
+
+        OnKeyPress_Enter('FILTER_Keyword', ReloadTable);
+        OnKeyPress_Enter('FILTER_Active', ReloadTable);
+        $('#FILTER_Keyword').select();
     });
+
+    function ReloadTable(periodChange) {
+        var url = '@Url.Action("Index","PayrollEmployees",new { year = "__data" })';
+        window.location.href = url.replace("__data", getAllFilterString());
+    }
+
+    function Create() {
+        var url = '@Url.Action("Create", "PayrollEmployees",new { year = "__data" })';
+        window.location.href = url.replace("__data", getAllFilterString());
+    }
+
 </script>

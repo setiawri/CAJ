@@ -18,6 +18,10 @@
             <input type="hidden" name="approval" id="Approval" value="@ViewBag.Approval" />
             <input type="hidden" name="Banks_Id" id="Banks_Id" value="@ViewBag.Banks_Id" />
             <input type="hidden" name="search" id="Search" value="@ViewBag.Search" />
+
+            <input type="hidden" id="FILTER_Keyword" name="FILTER_Keyword" value="@ViewBag.FILTER_Keyword" />
+            <input type="hidden" id="FILTER_Active" name="FILTER_Active" value="@ViewBag.FILTER_Active" />
+
             <!-- Form inputs -->
             <div class="card">
                 <div class="card-header header-elements-inline">
@@ -56,7 +60,7 @@
                     </fieldset>
                     <div class="mt-4">
                         <button type="submit" class="btn btn-primary" onclick="showLoadingSpinner();">Generate<i class="icon-paperplane ml-2"></i></button>
-                        <a href="@Url.Action("Index", "Payrolls", new { year = ViewBag.PayPeriodYear, month = ViewBag.PayPeriodMonth, payDate = ViewBag.PayDate, approval = ViewBag.Approval, Banks_Id = ViewBag.Banks_Id, search = ViewBag.Search } )" class="btn btn-warning">Cancel<i class="icon-cross2 ml-2"></i></a>
+                        <a href="@Url.Action("Index", "Payrolls", new { year = ViewBag.PayPeriodYear, month = ViewBag.PayPeriodMonth, payDate = ViewBag.PayDate, approval = ViewBag.Approval, Banks_Id = ViewBag.Banks_Id, search = ViewBag.Search, FILTER_Keyword=ViewBag.FILTER_Keyword } )" class="btn btn-warning">Cancel<i class="icon-cross2 ml-2"></i></a>
                     </div>
                 </div>
             </div>
