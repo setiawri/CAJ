@@ -173,8 +173,7 @@ namespace CAJWebApp.Controllers
             ViewBag.ReimbursementPaymentDates = new SelectList(db.ReimbursementPaymentDatesModel.OrderBy(x => x.PayDate).ToList(), ReimbursementPaymentDatesModel.COL_Id.Name, ReimbursementPaymentDatesModel.COL_PayDate.Name);
             ViewBag.PayrollDepartments = new SelectList(db.PayrollDepartmentsModel.OrderBy(x => x.Name).ToList(), PayrollDepartmentsModel.COL_Id.Name, PayrollDepartmentsModel.COL_Name.Name);
 
-            SettingsModel settings = SettingsController.get(db);
-            ViewBag.DefaultWorkHoursPerDay = settings.WorkHoursPerDay;
+            ViewBag.DefaultWorkHoursPerDay = SettingsController.get(db).WorkHoursPerDay;
         }
 
         public List<PayrollEmployeesModel> get(string FILTER_Keyword, int? FILTER_Active) { return getData(null, false, null, EnumActionTypes.All, FILTER_Keyword, FILTER_Active); }

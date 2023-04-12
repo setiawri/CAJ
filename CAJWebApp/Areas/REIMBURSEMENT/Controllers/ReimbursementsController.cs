@@ -24,16 +24,16 @@ namespace CAJWebApp.Areas.Reimbursement.Controllers
         /* INDEX **********************************************************************************************************************************************/
 
         // GET: PAYROLL/Reimbursements
-        public ActionResult Index(int? rss, DateTime? PayPeriod, int? year, int? month, int? payDate, int? approval, string Banks_Id, string search, string periodChange)
+        public ActionResult Index(int? rss, DateTime? PayPeriod, int? year, int? month, int? payDate, int? approval, string FILTER_Banks_Id, string search, string periodChange)
         {
             ViewBag.RemoveDatatablesStateSave = rss;
 
             ReimbursementPaymentDatesController.setDropDownListViewBag(db, this);
             BanksController.setDropDownListViewBag(db, this);
 
-            DateTime payPeriod = Helper.setFilterViewBag(this, PayPeriod, year, month, payDate, approval, Banks_Id, search, periodChange, null);
+            DateTime payPeriod = Helper.setFilterViewBag(this, PayPeriod, year, month, payDate, approval, FILTER_Banks_Id, search, periodChange, null);
 
-            List<ReimbursementsModel> models = get(payPeriod, approval, Banks_Id);
+            List<ReimbursementsModel> models = get(payPeriod, approval, FILTER_Banks_Id);
             ViewBag.TotalApprovedPayableAmount = string.Format("{0:N0}", models.Where(x => x.ApprovalOperator_ID != null).Sum(x => x.PayableAmount));
             ViewBag.TotalApprovedDueAmount = string.Format("{0:N0}", models.Where(x => x.ApprovalOperator_ID != null).Sum(x => x.PayableAmount - x.PaymentAmount));
 

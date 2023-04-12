@@ -206,7 +206,7 @@
                             {
                                 <button type="button" class="btn btn-warning disabled">Approve<i class="icon-database-check ml-2"></i></button>
                             }*@
-                            <a href="@Url.Action("Index", "Reimbursements", new {  year = ViewBag.PayPeriodYear, month = ViewBag.PayPeriodMonth, payDate = ViewBag.PayDate, approval = ViewBag.Approval, Banks_Id = ViewBag.Banks_Id, search = ViewBag.Search } )" class="btn btn-warning">Cancel<i class="icon-cross2 ml-2"></i></a>
+                            <a href="@Url.Action("Index", "Reimbursements", new {  year = ViewBag.PayPeriodYear, month = ViewBag.PayPeriodMonth, payDate = ViewBag.PayDate, approval = ViewBag.Approval, FILTER_Banks_Id = ViewBag.FILTER_Banks_Id, search = ViewBag.Search } )" class="btn btn-warning">Cancel<i class="icon-cross2 ml-2"></i></a>
 
                             <button type="button" class="btn btn-danger ml-5" onclick="Regenerate()">Regenerate<i class="icon-reload-alt ml-2"></i></button>
                         </div>

@@ -22,8 +22,8 @@
             @Html.HiddenFor(model => model.MaritalStatuses_Name)
             @Html.HiddenFor(model => model.PayrollDepartments_Name)
 
-            <input type="hidden" id="FILTER_Keyword" name="FILTER_Keyword" value="@ViewBag.FILTER_Keyword" />
-            <input type="hidden" id="FILTER_Active" name="FILTER_Active" value="@ViewBag.FILTER_Active" />
+            @*<input type="hidden" id="FILTER_Keyword" name="FILTER_Keyword" value="@ViewBag.FILTER_Keyword" />
+            <input type="hidden" id="FILTER_Active" name="FILTER_Active" value="@ViewBag.FILTER_Active" />*@
 
             <!-- Form inputs -->
             <div class="card">
@@ -103,6 +103,7 @@
                             </div>
                             <div class="col-lg-5"></div>
                         </div>
+
                         <div class="form-group row">
                             @Html.LabelFor(model => model.AccountName, htmlAttributes: new { @class = "col-form-label col-lg-2 required" })
                             <div class="col-lg-5">
@@ -226,7 +227,7 @@
     $(document).ready(function () {
         activateMenu('PayrollEmployees');
 
-        @*console.log('@Model.Banks_Id'+' ::: ' + '@Model.Banks_Name');*@
+        console.log('@Model.Banks_Id'+' ::: ' + '@Model.Banks_Name');
 
         //set calendar values
         $('#JoinDate').data('daterangepicker').setStartDate('@string.Format("{0:yyyy/MM/dd}", Model.JoinDate)');

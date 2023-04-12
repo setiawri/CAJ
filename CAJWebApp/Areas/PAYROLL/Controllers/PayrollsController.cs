@@ -51,14 +51,14 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
 
         // POST: PAYROLL/Payrolls
         [HttpPost]
-        public ActionResult Index(DateTime? PayPeriod, int? year, int? month, int? payDate, int? approval, string Banks_Id, string search, string periodChange, string FILTER_Keyword)
+        public ActionResult Index(DateTime? PayPeriod, int? year, int? month, int? payDate, int? approval, string FILTER_Banks_Id, string search, string periodChange, string FILTER_Keyword)
         {
             PayrollPaymentDatesController.setDropDownListViewBag(db, this);
             BanksController.setDropDownListViewBag(db, this);
 
-            DateTime payPeriod = Helper.setFilterViewBag(this, PayPeriod, year, month, payDate, approval, Banks_Id, search, periodChange, null, FILTER_Keyword, null);
+            DateTime payPeriod = Helper.setFilterViewBag(this, PayPeriod, year, month, payDate, approval, FILTER_Banks_Id, search, periodChange, null, FILTER_Keyword, null);
 
-            List<PayrollsModel> models = get(payPeriod, payDate, approval, Banks_Id, FILTER_Keyword);
+            List<PayrollsModel> models = get(payPeriod, payDate, approval, FILTER_Banks_Id, FILTER_Keyword);
             ViewBag.TotalApprovedPayableAmount = string.Format("{0:N0}", models.Where(x => x.ApprovalOperator_ID != null && x.PayableAmount > 0).Sum(x => x.PayableAmount));
             ViewBag.TotalApprovedDueAmount = string.Format("{0:N0}", models.Where(x => x.ApprovalOperator_ID != null && x.PayableAmount > 0).Sum(x => x.PayableAmount - x.PaymentAmount));
 

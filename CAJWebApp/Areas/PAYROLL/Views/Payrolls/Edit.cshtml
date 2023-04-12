@@ -510,7 +510,7 @@
                             }
                             <button type="button" onclick="Print('@Model.Id')" class="btn btn-success">Print<i class="icon-printer4 ml-2"></i></button>
                             <a href="@Url.Action("Index", "Payrolls",
-                                    new {  year = ViewBag.PayPeriodYear, month = ViewBag.PayPeriodMonth, payDate = ViewBag.PayDate, approval = ViewBag.Approval, Banks_Id = ViewBag.Banks_Id, search = ViewBag.Search, FILTER_Keyword=ViewBag.Filter_Keyword } )"
+                                    new {  year = ViewBag.PayPeriodYear, month = ViewBag.PayPeriodMonth, payDate = ViewBag.PayDate, approval = ViewBag.Approval, FILTER_Banks_Id = ViewBag.FILTER_Banks_Id, search = ViewBag.Search, FILTER_Keyword=ViewBag.Filter_Keyword } )"
                                class="btn btn-warning">Cancel<i class="icon-cross2 ml-2"></i></a>
 
                             <button type="button" class="btn btn-danger ml-5" onclick="Regenerate()">Regenerate data<i class="icon-reload-alt ml-2"></i></button>
