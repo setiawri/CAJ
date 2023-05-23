@@ -1086,7 +1086,8 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
                     //Payroll Earnings
                     foreach (PayrollItemsModel payrollitem in item.PayrollEarningsList)
                     {
-                        ExcelCellFormat header = payrollEarningHeaders.Find(x => x.Text == payrollitem.CategoryName);
+                        string categoryName = payrollEarnings.Find(x => x.Id == payrollitem.PayrollEarnings_Id).Name;
+                        ExcelCellFormat header = payrollEarningHeaders.Find(x => x.Text == categoryName);
                         object cellValue = Excel.getCellValue(ws, rowIdx, header.ColumnIndex);
                         int amount = (int)payrollitem.Amount + (cellValue == null ? 0 : Convert.ToInt32(cellValue));
 
@@ -1097,7 +1098,8 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
                     //Payroll Deductions
                     foreach (PayrollItemsModel payrollitem in item.PayrollDeductionsList)
                     {
-                        ExcelCellFormat header = payrollDeductionHeaders.Find(x => x.Text == payrollitem.CategoryName);
+                        string categoryName = payrollDeductions.Find(x => x.Id == payrollitem.PayrollDeductions_Id).Name;
+                        ExcelCellFormat header = payrollDeductionHeaders.Find(x => x.Text == categoryName);
                         object cellValue = Excel.getCellValue(ws, rowIdx, header.ColumnIndex);
                         int amount = (int)payrollitem.Amount + (cellValue == null ? 0 : Convert.ToInt32(cellValue));
 
