@@ -459,6 +459,7 @@ namespace CAJWebApp.Areas.PAYROLL.Controllers
             if (!string.IsNullOrEmpty(banks_Id))
                 Banks_Id = new Guid(banks_Id);
 
+            db.Database.CommandTimeout = 1000;
             List<PayrollsModel> models = db.Database.SqlQuery<PayrollsModel>(@"
                         SELECT Payrolls.*,
 							ISNULL(MandatoryDepositUpdate.Amount,0) * -1 AS MandatoryDepositUpdateAmount,
